@@ -1,0 +1,28 @@
+# Generated distribution, duplicate databases and validation output
+/dist/
+/logs/
+/*.log
+/test-results/
+/playwright-report/
+node_modules/
+.cache/
+
+# LevelDB diagnostics/locks only. Numeric *.log files contain pack data:
+# never ignore all *.log files globally.
+/packs/**/LOG
+/packs/**/LOG.old*
+/packs/**/LOCK
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+**/license.json
+*.pem
+*.key
+
+# Source books/scans and operating-system metadata
+*.pdf
+.DS_Store
+Thumbs.db
+Desktop.ini
