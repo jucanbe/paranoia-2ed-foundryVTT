@@ -2,7 +2,7 @@
 
 Release candidate 0.2.0-rc.1, verified against V14.368. This unofficial system requires a licensed Foundry installation. No rulebook PDF or scanned art is distributed.
 
-Original code and original documentation are licensed under [MIT](LICENSE), Copyright (c) 2026 Juan Cano. Third-party game material is outside that grant; see [NOTICE](NOTICE). Before publishing the repository or its contents, follow [to_github](to_github).
+Original code and original documentation are licensed under [MIT](LICENSE), Copyright (c) 2026 Juan Cano. Third-party game material is outside that grant; see [NOTICE](NOTICE).
 
 ## Install
 
