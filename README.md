@@ -2,7 +2,7 @@
 
 Release candidate 0.2.0-rc.1, verified against V14.368. This unofficial system requires a licensed Foundry installation. No rulebook PDF or scanned art is distributed.
 
-Original code and original documentation are licensed under [MIT](LICENSE), Copyright (c) 2026 Juan Cano. Third-party game material is outside that grant; see [NOTICE](NOTICE). Before publishing the repository or its contents, follow [to_github](to_github).
+Original code and original documentation are licensed under [MIT](LICENSE), Copyright (c) 2026 Juan Cano. Third-party game material is outside that grant; see [NOTICE](NOTICE).
 
 ## Install
 
@@ -31,7 +31,7 @@ node scripts/package-system.mjs
 node scripts/verify-pack-build.mjs
 ```
 
-The first command rebuilds installed packs: stop any server using them first. Set `PACK_OUTPUT` to a separate directory to build safely while installed packs are open. Sources are `packs-source/*.json` and the canonical society registry. IDs and embedded relationships are deterministic; database binary bytes are not expected to be identical. The second command builds new packs under `dist/paranoia-2-edition` and produces a ZIP. It cleans only that staging directory. The third compares all database records across two successive source builds in a separate output directory. Runtime allowlist: manifest, modules, templates, styles, localization, documentation, packs. Tests, scripts, source assets, source PDFs, dependencies, diagnostic logs and credentials are excluded. Numeric LevelDB journal files are required database content.
+The first command rebuilds installed packs: stop any server using them first. Set `PACK_OUTPUT` to a separate directory to build safely while installed packs are open. Sources are `packs-source/*.json` and the canonical society registry. IDs and embedded relationships are deterministic; database binary bytes are not expected to be identical. The second command builds new packs under `dist/paranoia-2-edition` and produces a ZIP. It cleans only that staging directory. The third compares all database records across two successive source builds in a separate output directory. Runtime allowlist: manifest, modules, templates, styles, localization, packs. Tests, scripts, source assets, source PDFs, dependencies, diagnostic logs and credentials are excluded. Numeric LevelDB journal files are required database content.
 
 Browser validation uses Playwright (`PLAYWRIGHT_MODULE` if installed elsewhere). `scripts/verify-release-live.cjs` accepts `FOUNDRY_URL` and `AUDIT_WORLD_ID`, defaulting to localhost:30001 and release-audit-clean. Run only in a disposable World. Historical live tests remain guarded against execution in a user's World.
 
@@ -39,7 +39,7 @@ Browser validation uses Playwright (`PLAYWRIGHT_MODULE` if installed elsewhere).
 
 Actors: `character`, `npc`, `robot`, `vehicle`, each with its own V14 sheet and DataModel. Items: `weapon`, `armor`, `equipment`, `robotProgram`, `robotPeripheral`. Memory cards use the existing program/card schema, not an unused extra Item type.
 
-`module/paranoia-2-edition.mjs` registers models, V14 sheets and services. `game.paranoia` exposes RollService functions, CombatService, DamageService, HealthService, CloneService, MutantPowerService, TreasonService, SecretSocietyService, SecurityClearanceService, DevelopmentService, CreditService, NPCGenerator and MigrationService. See subsystem docs for exact exported methods. Sheets delegate rules and writes to these services. Active Effects contain temporary power effects; human/robot/vehicle health remains canonical in system data.
+`module/paranoia-2-edition.mjs` registers models, V14 sheets and services. `game.paranoia` exposes RollService functions, CombatService, DamageService, HealthService, CloneService, MutantPowerService, TreasonService, SecretSocietyService, SecurityClearanceService, DevelopmentService, CreditService, NPCGenerator and MigrationService. Sheets delegate rules and writes to these services. Active Effects contain temporary power effects; human/robot/vehicle health remains canonical in system data.
 
 Canonical registries: identity clearances in `module/actors/identity.mjs`; Services in `module/creation/config.mjs`; skill labels/paths in `module/sheets/labels.mjs` and `module/items/config.mjs`; weapon/equipment categories in the latter; powers in `module/powers/registry.mjs`; societies in `module/societies/registry.mjs`; combat phases/movement in `module/combat/config.mjs`; damage mappings in the respective damage/health/robot/vehicle rule modules; promotion requirements in `module/clearance/rules.mjs`.
 
@@ -49,8 +49,8 @@ Back up your entire World before upgrading. Patch-safe DataModel migrations norm
 
 Foundry-native privacy is intended to prevent accidental/table-level disclosure, not to defend against an authorized player deliberately inspecting synchronized client data.
 
-Normal play uses native Foundry whispers, ownership and sheet visibility over HTTP. See [tabletop privacy](docs/native-privacy-audit.md).
+Normal play uses native Foundry whispers, ownership and sheet visibility over HTTP.
 
 ## Known source gaps
 
-Missing Damage Table columns and Annex B hit-location probabilities remain manual. Unknown weapon statistics, repair difficulties, vehicle accident values and Service/NPC source mappings are not guessed. See `packs-source/missing-statistics.md` in the developer checkout and subsystem docs. No salary tables, economic simulation or additional mechanics are introduced by this release.
+Missing Damage Table columns and Annex B hit-location probabilities remain manual. Unknown weapon statistics, repair difficulties, vehicle accident values and Service/NPC source mappings are not guessed. No salary tables, economic simulation or additional mechanics are introduced by this release.
