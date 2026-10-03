@@ -1,0 +1,46 @@
+import {registerCompendiumLocalization} from "./i18n/compendiums.mjs";
+import {registerLocalization} from "./i18n/index.mjs";
+import { registerDataModels } from "./data/models/register.mjs";
+import { registerSheets } from "./sheets/register.mjs";
+import { registerRolls } from "./rolls/register.mjs";
+import { registerCombat } from "./combat/register.mjs";
+import {ItemCatalog} from "./items/catalog.mjs";
+import {registerHealth} from "./health/register.mjs";
+import {CloneService} from "./clones/service.mjs";
+import {registerCloneRequests} from "./clones/requests.mjs";
+import {registerPowers} from "./powers/register.mjs";
+import {registerNPC} from "./npc/register.mjs";
+import {registerRobots} from "./robots/register.mjs";
+
+import {registerVehicles} from "./vehicles/register.mjs";
+import {registerTreason} from "./treason/register.mjs";
+import {registerSocieties} from "./societies/register.mjs";
+import {registerSecurityClearance} from "./clearance/register.mjs";
+import {registerDevelopment} from "./development/register.mjs";
+import {registerCredits} from "./credits/register.mjs";
+import {registerMigrations} from "./migrations/register.mjs";
+
+Hooks.once("init", () => {
+  registerLocalization();
+  registerCompendiumLocalization();
+  registerDataModels();
+  registerSheets();
+  registerRolls();
+  registerCombat();
+  game.paranoia=Object.freeze({...game.paranoia,ItemCatalog});
+  registerHealth();
+  registerCloneRequests();
+  registerPowers();
+  registerNPC();
+  registerRobots();
+  registerVehicles();
+  registerTreason();
+  registerSecurityClearance();
+  registerDevelopment();
+  registerCredits();
+  registerSocieties();
+  game.paranoia=Object.freeze({...game.paranoia,CloneService});
+  registerMigrations();
+  for(const hook of ["updateCompendium","createItem","updateItem","deleteItem"])Hooks.on(hook,document=>{if(document.collection?.startsWith?.("paranoia-2-edition.")||document.pack?.startsWith("paranoia-2-edition."))ItemCatalog.invalidate();});
+  console.info("paranoia-2-edition | System initialized; Actor and Item data models registered.");
+});

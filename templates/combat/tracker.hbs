@@ -1,0 +1,18 @@
+<ol class="combat-tracker plain p2-combat-tracker">
+{{#each turns}}<li class="combatant {{css}}" data-combatant-id="{{id}}" data-action="activateCombatant">
+  <img class="token-image" src="{{img}}" alt="{{name}}">
+  <div class="token-name"><strong class="name">{{name}}</strong>
+    {{#if healthLabel}}<small>{{p2t healthLabel}}</small>{{/if}}
+    <small>{{p2t actionLabel}} {{#if resolved}}{{localize "P2.Text.mcjnixb"}}{{/if}}{{#if pending}}{{localize "P2.Text.m1w1upt5"}}{{/if}}</small>
+    <small>{{movement}}{{#if movementResolved}} {{localize "P2.Text.mbht5zd"}}{{/if}}</small>{{#if declaration}}<small>{{declaration}}</small>{{/if}}
+    {{#if weaponProgressLabel}}<small>{{p2t weaponProgressLabel}}</small>{{/if}}{{#if readyLabel}}<small>{{p2t readyLabel}}</small>{{/if}}<div class="p2-combat-buttons">{{#if canReady}}<button type="button" data-action="phaseAction" data-operation="setReady">{{localize "P2.Text.m1rdnetk"}}</button>{{/if}}
+    {{#if canDeclare}}<button type="button" data-action="phaseAction" data-operation="declare">{{localize "P2.Text.m1jehwhd"}}</button>{{/if}}
+    {{#if canHandle}}<button type="button" data-action="phaseAction" data-operation="handling">{{localize "P2.Text.mvk9bzw"}}</button>{{#if isGM}}<button type="button" data-action="phaseAction" data-operation="handlingOverride">{{localize "P2.Text.ml2nlxi"}}</button>{{/if}}{{/if}}
+    {{#if canAttack}}<button type="button" data-action="phaseAction" data-operation="attack">{{localize "P2.Text.m1q5eunf"}}</button>{{/if}}
+    {{#if canMove}}<button type="button" data-action="phaseAction" data-operation="movement">{{localize "P2.Text.mf988rb"}}</button>{{/if}}
+    {{#if canMarkAttack}}<button type="button" data-action="phaseAction" data-operation="markAttack">{{localize "P2.Text.m1ry7vkz"}}</button>{{/if}}
+    {{#if isGM}}<button type="button" data-action="toggleHidden" title="{{localize "P2.Text.mkg1zp4"}}">{{localize "P2.Text.m7fn3nf"}}</button>{{/if}}{{#if canRelease}}<button type="button" data-action="phaseAction" data-operation="release" title="{{localize "P2.Text.m1x2faef"}}">{{localize "P2.Text.mgysm6p"}}</button>{{/if}}
+    </div>
+  </div>
+</li>{{/each}}
+</ol>

@@ -1,0 +1,18 @@
+<strong>{{name}}</strong>
+<label>{{localize "P2.Text.mcntuqk"}}<select name="weaponId">{{#each weapons}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.mvtj33x"}}<select name="targetId"><option value="">{{localize "P2.Text.m12q8ymp"}}</option>{{#each targets}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.mfh0ygi"}}<input type="text" name="impactPoint" placeholder="{{localize "P2.Text.m1rypirc"}}" maxlength="200"></label>
+{{#unless detailedRange}}<label><input type="checkbox" name="pointBlank"> {{localize "P2.Text.mt0upj2"}}</label>{{/unless}}
+{{{optionalHTML}}}
+{{#if isGM}}<label>{{localize "P2.Text.mtviprx"}}<input type="number" name="gmModifier" value="{{gmModifier}}" step="1"></label>
+<label><input type="checkbox" name="override"> {{localize "P2.Text.m1hmdjx3"}}{{#if optionalHTML}} {{localize "P2.Text.mottygi"}}{{/if}}</label>{{/if}}
+<dl class="p2-combat-math">
+<dt>{{localize "P2.Text.m7j8ib9"}}</dt><dd data-value="skill">—</dd>
+<dt>{{localize "P2.Text.m1dc15ma"}}</dt><dd data-value="baseValue">—</dd>
+{{#unless detailedRange}}<dt>{{localize "P2.Text.m1j6l5zu"}}</dt><dd data-value="pointBlank">—</dd>{{/unless}}
+{{#if isBurst}}<dt>{{localize "P2.Text.m42oto8"}}</dt><dd data-value="burstSkill">—</dd>{{/if}}{{#if detailedRange}}<dt>{{localize "P2.Text.m1ub5rvz"}}</dt><dd data-value="range">—</dd>{{/if}}{{#if coverEnabled}}<dt>{{localize "P2.Text.m1jcgj3m"}}</dt><dd data-value="cover">—</dd>{{/if}}{{#if movementEnabled}}<dt>{{localize "P2.Text.mu93xfb"}}</dt><dd data-value="movement">—</dd>{{/if}}
+<dt>{{localize "P2.Text.m19qqce8"}}</dt><dd data-value="wounded">—</dd>
+<dt>{{localize "P2.Text.m1syuedo"}}</dt><dd data-value="defenderEvading">—</dd>
+<dt>{{localize "P2.Text.mtviprx"}}</dt><dd data-value="gmModifier">—</dd>
+<dt>{{localize "P2.Text.muzyc9k"}}</dt><dd data-value="finalTarget">—</dd>
+</dl><p class="p2-combat-notice" role="status"></p>

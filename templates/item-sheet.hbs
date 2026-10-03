@@ -1,0 +1,31 @@
+{{#*inline "itemField"}}
+<label class="{{#if isBoolean}}p2-checkbox{{/if}} {{#if isMultiline}}p2-item-wide{{/if}}">
+  <span>{{p2t label}}</span>
+  {{#if choices}}<select name="{{path}}" {{#if disabled}}disabled{{/if}}>{{#each choices}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select>
+  {{else if isBoolean}}<input type="checkbox" name="{{path}}" {{#if value}}checked{{/if}}>
+  {{else if isMultiline}}<textarea name="{{path}}" rows="3">{{value}}</textarea>
+  {{else if isNumber}}<input type="number" name="{{path}}" value="{{value}}" min="0" step="any" data-dtype="Number">
+  {{else}}<input type="text" name="{{path}}" value="{{value}}">{{/if}}
+</label>
+{{/inline}}
+<div class="p2-item-editor">
+  <header class="p2-item-header">
+    <img src="{{img}}" alt="{{p2t labels.image}}" data-action="editImage" data-edit="img" title="{{p2t labels.image}}">
+    <div><label>{{p2t labels.name}}<input name="name" type="text" value="{{name}}"></label>
+    {{#if experimental}}<strong class="p2-item-badge">{{p2t labels.experimental}}</strong>{{/if}}
+    {{#if assigned}}<span class="p2-item-badge">{{p2t labels.assigned}}</span>{{/if}}</div>
+  </header>
+  {{#if ammunitionProfiles}}<details class="p2-item-optional"><summary>{{localize "P2.Text.m1370zkb"}}</summary>
+    <p>{{localize "P2.Text.mpv2ncz"}}</p>
+    <table><thead><tr><th>{{localize "P2.Text.m1oe6ix3"}}</th><th>{{localize "P2.Text.mihd0m6"}}</th><th>{{localize "P2.Text.mz7vv8y"}}</th><th>{{localize "P2.Text.m1fudywd"}}</th><th></th></tr></thead><tbody>
+    {{#each ammunitionProfiles}}<tr><td>{{p2t label}}</td><td>{{damage}}</td><td>{{range}}</td><td>{{radius}}</td><td>{{#if selected}}{{localize "P2.Text.m1v23pg7"}}{{else}}{{#if @root.editable}}<button type="button" data-action="selectWeaponProfile" data-profile="{{id}}">{{localize "P2.Text.m1sjgk7i"}}</button>{{/if}}{{/if}}</td></tr>{{/each}}
+    </tbody></table>
+  </details>{{/if}}
+  {{#each sections}}
+    {{#if optional}}<details class="p2-item-optional" {{#if @root.optionalExpanded}}open{{/if}}><summary>{{p2t label}}</summary><div class="p2-item-grid">{{#each fields}}{{> itemField}}{{/each}}</div>{{#if repair}}<button type="button" data-action="repairWeapon">{{localize "P2.Text.m99chr1"}}</button>{{/if}}</details>
+    {{else}}<section class="p2-section"><h2>{{p2t label}}</h2><div class="p2-item-grid">{{#each fields}}{{> itemField}}{{/each}}</div>
+    {{#if armorCode}}<div class="p2-armor-code">{{../labels.armorCode}}: <output>{{armorCode}}</output></div>{{/if}}
+    {{#if armor}}<div>{{#each protections}}<p>{{p2t label}}: {{value}} {{#if @root.editable}}<button type="button" data-action="editProtection" data-index="{{index}}">{{localize "P2.Text.mfw3ajq"}}</button><button type="button" data-action="removeProtection" data-index="{{index}}">{{localize "P2.Text.m1gob5id"}}</button>{{/if}}</p>{{/each}}{{#if @root.editable}}<button type="button" data-action="addProtection">{{localize "P2.Text.m14w6a4e"}}</button>{{/if}}</div>{{/if}}
+    </section>{{/if}}
+  {{/each}}
+</div>

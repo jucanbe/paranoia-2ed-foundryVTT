@@ -1,0 +1,21 @@
+<div class="p2-power-form"><p>{{localize "P2.Text.m13ewefo"}}</p>
+<label>{{localize "P2.Text.mgkc078"}}<select name="securityClearance">{{#each clearances}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.moatr31"}}<select name="service">{{#each services}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<details><summary>{{localize "P2.Text.m1i7g9g"}}</summary>
+<div class="p2-power-grid"><label>{{localize "P2.Text.m1mhbddn"}}<input type="text" name="name"></label><label>{{localize "P2.Text.mptt5h7"}}<input type="text" name="sector"></label><label>{{localize "P2.Text.m1hmeo6r"}}<input name="cloneNumber" type="number" min="1" step="1" value="1" required></label></div>
+<label><input name="useCitizenId" type="checkbox" checked> {{localize "P2.Text.m1arqgnv"}}</label>
+<label>{{localize "P2.Text.m1og6qkg"}}<select name="competence">{{#each competences}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<p>{{localize "P2.Text.m2xp7tv"}}</p>
+<label>{{localize "P2.Text.mzz3lyb"}}<select name="role">{{#each roles}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<label><input name="mutation" type="checkbox"> {{localize "P2.Text.myyrzy1"}}</label>
+<label>{{localize "P2.Text.m15gyemk"}}<select name="societyMode"><option value="none">{{localize "P2.Text.m1aj7rmb"}}</option><option value="random">{{localize "P2.Text.mdeinj7"}}</option><option value="choose">{{localize "P2.Text.mbwq7pj"}}</option></select></label>
+<label>{{localize "P2.Text.m154fhgc"}}<select name="societyKey">{{#each societies}}<option value="{{key}}">{{p2t label}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.mzk36nm"}}<input name="societyCustomName"></label>
+<label><input name="basicEquipment" type="checkbox"> {{localize "P2.Text.mj6fb6j"}}</label>
+<label><input name="randomEquipment" type="checkbox"> {{localize "P2.Text.me8n0if"}}</label>
+<p>{{localize "P2.Text.m948bib"}}</p>
+<div class="p2-power-grid"><label>{{localize "P2.Text.mies69e"}} {{maxQuantity}})<input name="quantity" type="number" min="1" max="{{maxQuantity}}" value="1" step="1" required></label><label>{{localize "P2.Text.m1fgtb0f"}}<select name="disposition"><option value="1">{{localize "P2.Text.m4ynv90"}}</option><option value="0" selected>{{localize "P2.Text.m1spd2m0"}}</option><option value="-1">{{localize "P2.Text.m1bwzh3u"}}</option></select></label></div>
+<label><input name="sameProfile" type="checkbox"> {{localize "P2.Text.mzkbiu1"}}</label>
+<label>{{localize "P2.Text.md15zz"}}<textarea name="notes" rows="2"></textarea></label>
+<label><input name="preview" type="checkbox"> {{localize "P2.Text.m1lifo8y"}}</label>
+</details><p>{{localize "P2.Text.m1euojet"}}</p></div>

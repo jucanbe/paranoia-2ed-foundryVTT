@@ -1,0 +1,481 @@
+[
+  {
+    "catalogId": "laser-charge",
+    "name": "Carga de láser",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "consumable": true,
+      "assigned": true,
+      "price": null,
+      "charges": {
+        "value": 6,
+        "max": 6
+      },
+      "description": "Carga desmontable para armas láser; seis disparos normalmente seguros.",
+      "specialRules": "Sustituirla ocupa un Turno de Combate. Codificada por color; no se permite una carga por encima del nivel del ciudadano. Sin consumo automático."
+    }
+  },
+  {
+    "catalogId": "refreshing-fizzy-beverage",
+    "name": "Bebaje Espumoso Refrescante",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "consumable",
+      "consumable": true,
+      "price": 2,
+      "priceUnit": "bottle"
+    }
+  },
+  {
+    "catalogId": "happiness-energy-bar",
+    "name": "Barrita energética \"Felicidad\"",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "consumable",
+      "consumable": true,
+      "price": 2
+    }
+  },
+  {
+    "catalogId": "megaphone",
+    "name": "Megáfono",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 50
+    }
+  },
+  {
+    "catalogId": "flashlight",
+    "name": "Linterna",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 10
+    }
+  },
+  {
+    "catalogId": "lighter-knife",
+    "name": "Navaja-encendedor",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "tool",
+      "price": 100,
+      "description": "Navaja plegable combinada con un encendedor."
+    }
+  },
+  {
+    "catalogId": "gas-mask",
+    "name": "Máscara de gas",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 50
+    }
+  },
+  {
+    "catalogId": "superglue-with-solvent",
+    "name": "Super Pegamento con Disolvente",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "tool",
+      "price": 25
+    }
+  },
+  {
+    "catalogId": "infrared-goggles",
+    "name": "Gafas de luz infrarroja",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 100
+    }
+  },
+  {
+    "catalogId": "smoke-detector-alarm",
+    "name": "Alarma / detector de humo",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 25
+    }
+  },
+  {
+    "catalogId": "plasticord",
+    "name": "Plasticuerda",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 3,
+      "priceUnit": "meter",
+      "length": null,
+      "description": "Cuerda vendida por metro. El precio es por longitud, no por número de objetos."
+    }
+  },
+  {
+    "catalogId": "thermos",
+    "name": "Termo",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "general",
+      "price": 25
+    }
+  },
+  {
+    "catalogId": "first-aid-kit",
+    "name": "Kit de primeros auxilios",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "medical",
+      "price": 25
+    }
+  },
+  {
+    "catalogId": "portrait-mado-n-nah-1",
+    "name": "Retrato de Mado-N-NAH-1",
+    "type": "equipment",
+    "startingPurchase": true,
+    "system": {
+      "category": "other",
+      "price": 5,
+      "description": "Retrato de la heroína de vídeo con espejo en el reverso."
+    }
+  },
+  {
+    "catalogId": "cone-rifle-standard-bullets",
+    "name": "Balas",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Proyectiles metálicos convencionales que causan daño por impacto."
+    }
+  },
+  {
+    "catalogId": "cone-rifle-dum-dum",
+    "name": "Balas Dum-Dum",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Se expanden al impactar; más daño y menor alcance que las balas normales, sin valores exactos disponibles."
+    }
+  },
+  {
+    "catalogId": "cone-rifle-explosive-bullets",
+    "name": "Balas explosivas",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Explotan al impactar; la versión para rifle cónico afecta aproximadamente a cinco metros de radio.",
+      "sourceDetails": {
+        "areaRadiusMeters": 5
+      }
+    }
+  },
+  {
+    "catalogId": "armor-piercing-bullets",
+    "name": "Balas perforantes",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Diseñadas para atravesar materiales resistentes, como kevlar y armadura pesada.",
+      "sourceDetails": {
+        "ammunitionCategory": "piercingProjectile"
+      }
+    }
+  },
+  {
+    "catalogId": "flare-rounds",
+    "name": "Bengalas",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Iluminan alrededor del punto de impacto en lugar de infligir daño.",
+      "sourceDetails": {
+        "illuminationRadiusMeters": 10,
+        "durationFormula": "1d20 / 2 turnos"
+      }
+    }
+  },
+  {
+    "catalogId": "hallucinogenic-gas-round",
+    "name": "Gas alucinógeno",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Nube de gas tóxico y alucinógeno.",
+      "specialRules": "Organismos: prueba de Resistencia cada turno; un fallo reduce a la mitad todas las habilidades durante 24 horas y dificulta distinguir realidad y alucinación. Los seres inorgánicos no resultan afectados."
+    }
+  },
+  {
+    "catalogId": "corrosive-gas-round",
+    "name": "Gas corrosivo",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Ataca a seres inorgánicos/metálicos con F3 cada turno. La armadura expuesta pierde un nivel de protección por turno. Notación de la fuente, sin interpretación automática."
+    }
+  },
+  {
+    "catalogId": "gauss-gas-round",
+    "name": "Gas de Gauss",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Aumenta la «permitividad» según la pseudociencia de la fuente.",
+      "specialRules": "+3 a la tirada/efecto de la Tabla de Daño donde corresponda. Sin automatización."
+    }
+  },
+  {
+    "catalogId": "emetic-gas-round",
+    "name": "Gas emético",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Organismos que respiran: prueba de Resistencia por turno; cada episodio de vómitos impide actuar durante 1d20/2 turnos.",
+      "sourceDetails": {
+        "durationFormula": "1d20 / 2 turnos por episodio"
+      }
+    }
+  },
+  {
+    "catalogId": "laughing-gas-round",
+    "name": "Gas hilarante",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Funciona de forma similar al gas emético, provocando risa en vez de vómitos."
+    }
+  },
+  {
+    "catalogId": "lethal-gas-round",
+    "name": "Gas letal",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Causa un ataque/daño F3 a cada blanco animal/orgánico que respira en el área. Se conserva la notación de la fuente."
+    }
+  },
+  {
+    "catalogId": "viscous-gas-round",
+    "name": "Gas viscoso",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Capa negra adherente: movimiento L2 y protección Réflex L1 mientras permanezca. Unos dos turnos de limpieza con agua y detergente restauran la armadura. Notación de la fuente, sin efectos automáticos."
+    }
+  },
+  {
+    "catalogId": "smoke-round",
+    "name": "Humo",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Reduce visibilidad y modifica dificultad, sin magnitud verificada. Dispersa rayos láser: el disparo a través del humo produce el efecto reducido L1 descrito por la fuente."
+    }
+  },
+  {
+    "catalogId": "anti-electronic-projectile",
+    "name": "Proyectil antielectrónico",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Interfiere o inutiliza circuitos al impactar; destinado a robots, radio, radar y dispositivos que emiten o reciben señales electromagnéticas."
+    }
+  },
+  {
+    "catalogId": "biochemical-projectile",
+    "name": "Proyectil BR / Bioquímico",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Libera un agente químico o biológico tóxico al impactar. La carga concreta varía."
+    }
+  },
+  {
+    "catalogId": "napalm-projectile",
+    "name": "Proyectil de napalm",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "specialRules": "Recubre el blanco con mezcla ardiente de petróleo/fósforo; sigue dañando durante 1d20 turnos, hasta agotarse. Normalmente no se apaga con agua o mantas.",
+      "sourceDetails": {
+        "durationFormula": "1d20 turnos"
+      }
+    }
+  },
+  {
+    "catalogId": "explosive-at-projectile",
+    "name": "Proyectil explosivo AT",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Proyectil explosivo antitanque. Valores numéricos pendientes."
+    }
+  },
+  {
+    "catalogId": "tactical-projectile",
+    "name": "Proyectil táctico",
+    "type": "equipment",
+    "system": {
+      "category": "consumable",
+      "description": "Munición de rifle cónico descrita humorísticamente como armamento nuclear táctico; daño y radio no especificados."
+    }
+  },
+  {
+    "catalogId": "contact-detonator",
+    "name": "Detonador de contacto",
+    "type": "equipment",
+    "system": {
+      "category": "general",
+      "description": "Se activa al impactar.",
+      "sourceDetails": {
+        "detonatorType": "contact"
+      }
+    }
+  },
+  {
+    "catalogId": "gauss-detonator",
+    "name": "Detonador Gauss",
+    "type": "equipment",
+    "system": {
+      "category": "general",
+      "description": "Se activa por un flujo electromagnético fuerte: armas Gauss/energéticas, radio o señales luminosas.",
+      "sourceDetails": {
+        "detonatorType": "gauss"
+      }
+    }
+  },
+  {
+    "catalogId": "remote-detonator",
+    "name": "Detonador remoto",
+    "type": "equipment",
+    "system": {
+      "category": "general",
+      "description": "Activación mediante señal de radio.",
+      "sourceDetails": {
+        "detonatorType": "remote"
+      }
+    }
+  },
+  {
+    "catalogId": "delayed-detonator",
+    "name": "Detonador retardado",
+    "type": "equipment",
+    "system": {
+      "category": "general",
+      "description": "Activación tras un retardo programado.",
+      "sourceDetails": {
+        "detonatorType": "delayed"
+      }
+    }
+  },
+  {
+    "catalogId": "thermal-detonator",
+    "name": "Detonador térmico",
+    "type": "equipment",
+    "system": {
+      "category": "general",
+      "description": "Activación a una temperatura definida.",
+      "sourceDetails": {
+        "detonatorType": "thermal"
+      }
+    }
+  },
+  {
+    "catalogId": "communicator",
+    "name": "Comunicador",
+    "type": "equipment",
+    "system": {
+      "category": "communicator",
+      "description": "Equipo de comunicación identificado en la fuente. Modelos y prestaciones concretas pendientes."
+    }
+  },
+  {
+    "catalogId": "multirecorder",
+    "name": "Multigrabadora",
+    "type": "equipment",
+    "system": {
+      "category": "recorder",
+      "description": "Equipo de grabación identificado en la fuente. Modelos y programas concretos pendientes."
+    }
+  },
+  {
+    "catalogId": "vehicle-smoke-launcher",
+    "name": "Lanzahumos de vehículo",
+    "type": "equipment",
+    "system": {
+      "category": "other",
+      "price": null,
+      "sourceDetails": {
+        "countermeasure": "smoke"
+      },
+      "specialRules": "Reduce visibilidad. Mientras la cobertura sea apropiada, +5 a la protección contra láser. Activación y retirada por el DJ."
+    }
+  },
+  {
+    "catalogId": "interference-emitter-a",
+    "name": "Emisor de interferencias A",
+    "type": "equipment",
+    "system": {
+      "category": "other",
+      "price": null,
+      "sourceDetails": {
+        "countermeasure": "interferenceA"
+      },
+      "specialRules": "Desvía misiles guiados o teleguiados con prueba de Artillería. Necesita recarga tras cada emisión; duración no suministrada."
+    }
+  },
+  {
+    "catalogId": "interference-emitter-r",
+    "name": "Emisor de interferencias R",
+    "type": "equipment",
+    "system": {
+      "category": "other",
+      "price": null,
+      "sourceDetails": {
+        "countermeasure": "interferenceR",
+        "radiusKm": 10
+      },
+      "specialRules": "Impide comunicaciones de radio en unos 10 km. No simula redes de radio."
+    }
+  },
+  {
+    "catalogId": "interference-emitter-gauss",
+    "name": "Emisor de interferencias Gauss",
+    "type": "equipment",
+    "system": {
+      "category": "other",
+      "price": null,
+      "sourceDetails": {
+        "countermeasure": "interferenceGauss"
+      },
+      "specialRules": "Protección frente a misiles radio-rastreadores; sin bono numérico supuesto."
+    }
+  },
+  {
+    "catalogId": "interference-emitter-t",
+    "name": "Emisor de interferencias T",
+    "type": "equipment",
+    "system": {
+      "category": "other",
+      "price": null,
+      "sourceDetails": {
+        "countermeasure": "interferenceT"
+      },
+      "specialRules": "Señales térmicas que desvían misiles termo-rastreadores; adjudicación del DJ."
+    }
+  }
+]

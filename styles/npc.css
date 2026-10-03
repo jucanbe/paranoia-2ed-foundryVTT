@@ -1,0 +1,16 @@
+.paranoia-npc {min-width:380px;min-height:420px}
+.paranoia-npc .p2-npc-tools {display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.paranoia-npc .p2-npc-tools button {flex:1 1 120px;font-size:12px}
+.paranoia-npc .p2-attributes {grid-template-columns:repeat(7,minmax(0,1fr))}
+.paranoia-npc .p2-skills {max-height:310px;overflow:auto;grid-template-columns:repeat(3,minmax(0,1fr))}
+.paranoia-npc .p2-section {margin-bottom:8px}
+.paranoia-npc summary {font-weight:bold;cursor:pointer;padding:6px;background:#171717;color:#fff}
+.paranoia-npc .p2-npc-secret {border:2px solid #171717}
+.paranoia-npc .p2-npc-secret>div {padding:8px}
+.p2-npc-generator label {display:flex;flex-direction:column;gap:3px;margin:7px 0}
+.p2-npc-generator label:has(input[type=checkbox]) {flex-direction:row;align-items:center}
+.p2-npc-generator details {margin-top:10px}
+.p2-npc-generator .dialog-content {max-height:65vh;overflow-y:auto}
+.p2-npc-generator .p2-npc-preview {max-height:65vh;overflow:auto}
+@container (max-width:650px){.paranoia-npc .p2-attributes{grid-template-columns:repeat(4,minmax(0,1fr))}.paranoia-npc .p2-skills{grid-template-columns:repeat(2,minmax(0,1fr))}.paranoia-npc .p2-item-row{flex-wrap:wrap}}
+@container (max-width:430px){.paranoia-npc .p2-skills{grid-template-columns:1fr}}

@@ -1,0 +1,17 @@
+<div class="standard-form">
+  <p>{{localize "P2.Text.m7yxzqz"}} <strong>{{current}}</strong> {{localize "P2.Text.m1degdiu"}} {{health}}</p>
+  <p>{{localize "P2.Text.m9iuu8s"}} <strong>{{next}}</strong></p>
+  {{#if living}}<p>{{localize "P2.Text.mxlz36c"}}</p>
+  <label><input type="checkbox" name="livingOverride"> {{localize "P2.Text.mfp78no"}}</label>{{/if}}
+  <label>{{localize "P2.Text.m1noe81z"}}<input type="text" name="causeOfDeath"></label>
+  <label>{{localize "P2.Text.m1qb5sbs"}}<select name="inventory">{{#each inventoryOptions}}<option value="{{value}}">{{p2t label}}</option>{{/each}}</select></label>
+  <p>{{localize "P2.Text.m149rqdz"}}</p>
+  <label>{{localize "P2.Text.maqvbfz"}}<select name="power">{{#each powerOptions}}<option value="{{value}}">{{p2t label}}</option>{{/each}}</select></label>
+  <details><summary>{{localize "P2.Text.m3m25pr"}}</summary><label>{{localize "P2.Text.mnxzxeq"}}<input type="text" name="powerName" value="{{powerName}}"></label><p>{{localize "P2.Text.m3wtm9o"}}</p></details>
+  <label>{{localize "P2.Text.m99uchm"}}<input type="number" name="credits" value="{{credits}}" step="any" required></label>
+  <details><summary>{{localize "P2.Text.mvxgf0d"}}</summary>
+    <label>{{localize "P2.Text.m1cpzsfm"}}<textarea name="appearanceNotes" rows="2"></textarea></label>
+    <label>{{localize "P2.Text.mean37g"}}<textarea name="gmNotes" rows="2"></textarea></label>
+  </details>
+  <label><input type="checkbox" name="silent"> {{localize "P2.Text.m5ihmo3"}}</label>
+</div>

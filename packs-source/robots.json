@@ -1,0 +1,250 @@
+[
+  {
+    "catalogId": "robodoctor",
+    "name": "Robodoctor",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robodoctor",
+        "description": "Funciones médicas: desde primeros auxilios hasta cirugía y cuidados intensivos."
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "robodoctor-model-i",
+    "name": "Robodoctor I",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robodoctor",
+        "description": "Modelo médico clasificado por su programa de Medicina.",
+        "model": "I"
+      }
+    },
+    "items": [
+      {
+        "name": "Medicina 4",
+        "type": "robotProgram",
+        "system": {
+          "skill": "perception.medicine",
+          "level": 4,
+          "storageMode": "resident",
+          "active": true,
+          "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robodoctor-model-v",
+    "name": "Robodoctor V",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robodoctor",
+        "description": "Robot médico compacto y robusto; farmacia, laboratorio bioquímico, plasticuerda e instrumental de cirugía de emergencia. Puede tratar heridas y hemorragias mediante adjudicación del DJ.",
+        "model": "V"
+      }
+    },
+    "items": [
+      {
+        "name": "Medicina 8",
+        "type": "robotProgram",
+        "system": {
+          "skill": "perception.medicine",
+          "level": 8,
+          "storageMode": "resident",
+          "active": true,
+          "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+        }
+      },
+      {
+        "name": "Instrumental médico",
+        "type": "robotPeripheral",
+        "system": {
+          "category": "medical",
+          "description": "Farmacia, mini-laboratorio y equipo quirúrgico de emergencia; no concede bonificaciones adicionales.",
+          "operational": true
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robodoctor-model-xii",
+    "name": "Robodoctor XII",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robodoctor",
+        "description": "Modelo médico clasificado por su programa de Medicina.",
+        "model": "XII"
+      }
+    },
+    "items": [
+      {
+        "name": "Medicina 15",
+        "type": "robotProgram",
+        "system": {
+          "skill": "perception.medicine",
+          "level": 15,
+          "storageMode": "resident",
+          "active": true,
+          "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robomechanic",
+    "name": "Robomecánico",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robomechanic",
+        "description": "Robot multipropósito de aproximadamente 1,5 m, chasis doble articulado, dos orugas, torreta cilíndrica, UCP inteligente y ranura de tarjetas.",
+        "movement": {
+          "mode": "Orugas",
+          "metersPerTurn": null
+        }
+      }
+    },
+    "items": [
+      {
+        "name": "Brazos articulados",
+        "type": "robotPeripheral",
+        "system": {
+          "category": "manipulator",
+          "description": "Dos brazos con dedos y terminales intercambiables.",
+          "operational": true
+        }
+      },
+      {
+        "name": "Orugas",
+        "type": "robotPeripheral",
+        "system": {
+          "category": "locomotion",
+          "description": "Dos sistemas de tracción plásticos.",
+          "operational": true
+        }
+      },
+      {
+        "name": "Sensores y comunicaciones",
+        "type": "robotPeripheral",
+        "system": {
+          "category": "sensor",
+          "description": "Conjunto aproximado a una cabeza humana.",
+          "operational": true
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robomop",
+    "name": "Robofregona",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robomop",
+        "description": "Robot pequeño de limpieza de sectores, montado sobre un cepillo giratorio."
+      }
+    },
+    "items": [
+      {
+        "name": "Cepillo y útiles de limpieza",
+        "type": "robotPeripheral",
+        "system": {
+          "category": "other",
+          "description": "Equipo de limpieza y cepillo giratorio.",
+          "operational": true
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robosoldier",
+    "name": "Robosoldado",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robosoldier",
+        "description": "Máquina militar de SDF, fuertemente armada. Configurar carga, programas y blindaje; cifras no suministradas.",
+        "asimovStatus": "absent"
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "roboguard",
+    "name": "Roboguardia",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "roboguard",
+        "description": "Robot militarizado de vigilancia rutinaria, menos armado que un Robosoldado."
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "roboteacher",
+    "name": "Roboprofesor",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "roboteacher",
+        "description": "Educación de familias de clones durante la infancia."
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "roboplane",
+    "name": "Roboavión",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "roboplane",
+        "description": "Aeronave inteligente; movimiento y sistemas de vehículo pendientes.",
+        "requiresVehicleSystem": true
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "robopet",
+    "name": "Robomascota",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robopet",
+        "description": "Plantilla descriptiva, sin estadísticas suministradas."
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "roboclown",
+    "name": "Robopayaso",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "roboclown",
+        "description": "Plantilla descriptiva, sin estadísticas suministradas."
+      }
+    },
+    "items": []
+  },
+  {
+    "catalogId": "robocommunicator",
+    "name": "Robocomunicador",
+    "type": "robot",
+    "system": {
+      "robot": {
+        "type": "robocommunicator",
+        "description": "Unidad robotizada de comunicaciones. Algunas unidades autónomas realizan actividades de espionaje que decide el DJ."
+      }
+    },
+    "items": []
+  }
+]

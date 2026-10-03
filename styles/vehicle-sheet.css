@@ -1,0 +1,18 @@
+.paranoia-vehicle .p2-scroll{padding:12px;overflow:auto;background:#f5f3eb;color:#111}
+.paranoia-vehicle .p2-scroll h1{color:#111;font:700 24px monospace;margin:0 0 8px}
+.paranoia-vehicle h2,.paranoia-vehicle summary{background:#111;color:#fff;padding:5px 8px;font-size:14px;margin:10px 0 5px}
+.p2-vehicle-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;padding:8px}
+.p2-vehicle-form label{display:flex;flex-direction:column;gap:4px;min-width:0}
+.p2-vehicle-form input:not([type=checkbox]),.p2-vehicle-form select,.p2-vehicle-form textarea{width:100%;min-width:0}
+.p2-vehicle-form label:has(> select[multiple]){grid-column:1 / -1}
+.p2-vehicle-dialog select[multiple]{height:clamp(240px,30vh,320px);min-height:240px;flex-shrink:0;overflow-y:auto}
+.p2-vehicle-dialog select[multiple] option{padding:4px 8px}
+.p2-vehicle-dialog .dialog-content{max-height:65vh;overflow:auto}
+.p2-vehicle-status{display:flex;flex-wrap:wrap;gap:12px;border:1px solid;padding:8px}
+.paranoia-vehicle .p2-item-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:6px 0;border-bottom:1px solid #aaa}
+.paranoia-vehicle .p2-item-row>span{flex:1 1 260px;overflow-wrap:anywhere}
+.paranoia-vehicle .p2-item-row button,.paranoia-vehicle .p2-health-controls button{flex:0 0 auto;width:auto}
+.p2-vehicle-warning{border:2px solid;padding:8px}
+
+.paranoia-vehicle .window-header .window-title{color:#eee}
+.paranoia-vehicle .p2-section{margin:6px 0;padding:6px}

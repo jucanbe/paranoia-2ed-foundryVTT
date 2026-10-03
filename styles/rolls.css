@@ -1,0 +1,13 @@
+.paranoia-sheet .p2-check { border: 0; background: transparent; color: inherit; box-shadow: none; height: auto; min-height: 24px; padding: 2px; text-align: left; line-height: 1.25; white-space: normal; font: inherit; justify-content: space-between; }
+.paranoia-sheet .p2-check:not(:disabled):hover { text-decoration: underline; background: #e5e5e5; }
+.paranoia-sheet .p2-check i { font-size: 10px; opacity: .6; margin-left: 3px; }
+.paranoia-sheet .p2-value-row .p2-check { flex: 1; }
+.paranoia-sheet .p2-attribute { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+.paranoia-sheet .p2-attribute .p2-check { text-align: center; }
+.paranoia-sheet .p2-duel { width: auto; margin: 4px 0 8px; }
+.p2-roll-dialog label { display: grid; gap: 4px; margin-bottom: 8px; }
+.p2-roll-dialog output { font-weight: bold; }
+.p2-roll-card { border: 1px solid currentColor; padding: 8px; }
+.p2-roll-card header { border-bottom: 1px solid currentColor; padding-bottom: 5px; }
+.p2-roll-card p { margin: 6px 0; }
+.p2-roll-outcome { display: block; border-top: 1px solid currentColor; padding-top: 5px; }

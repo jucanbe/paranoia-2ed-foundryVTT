@@ -1,0 +1,6 @@
+<section class="p2-roll-card">
+  <header><strong>{{p2t labels.duel}}</strong></header>
+  {{#each participants}}<p><strong>{{actorName}}</strong><br>{{name}} {{baseValue}} {{localize "P2.Text.ml0kreo"}} {{healthModifier}}{{#if temporaryModifier}} {{localize "P2.Text.m1dhv7ym"}} {{temporaryModifier}}{{/if}} {{localize "P2.Text.m1jacc5h"}} {{dieResult}} {{localize "P2.Text.m1degdiu"}} {{../labels.total}}: <strong>{{total}}</strong></p>{{/each}}
+  {{#if healthOverride}}<p>{{localize "P2.Text.m5pgrw"}}</p>{{/if}}
+  <strong class="p2-roll-outcome">{{outcome}}</strong>
+</section>

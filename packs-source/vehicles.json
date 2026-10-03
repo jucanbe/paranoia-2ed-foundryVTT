@@ -1,0 +1,464 @@
+[
+  {
+    "catalogId": "buitre-guerrero-920",
+    "name": "Buitre Guerrero 920",
+    "type": "vehicle",
+    "system": {
+      "vehicle": {
+        "category": "roboplane",
+        "model": "BG 920",
+        "requiredClearance": "violet",
+        "capacity": 2,
+        "assigned": true,
+        "purpose": "Cazabombardero: incursiones, apoyo de infantería, combate aéreo y transporte de emergencia.",
+        "description": "Aeronave de despegue vertical, dos motores, tomas de aire en las alas y escapes posteriores; gran cola, cabina delantera y cuatro tubos de misil bajo las alas.",
+        "design": "Perfil aerodinámico; puede mantener giros de 120 grados durante períodos considerables.",
+        "control": {
+          "manualAvailable": true,
+          "autopilotAvailable": false,
+          "electronicBrainAvailable": true,
+          "currentMode": "electronicBrain"
+        },
+        "electronicBrain": {
+          "personality": "Extremadamente arrogante; se considera superior tecnológicamente y desprecia a humanos y soldados clon.",
+          "programmingNotes": "Puede pilotar y combatir por sí mismo. Niveles de programa no suministrados."
+        },
+        "movement": {
+          "currentMode": "air",
+          "description": "Vuelo con despegue vertical.",
+          "modes": [
+            {
+              "key": "air",
+              "label": "Aire",
+              "unit": "km/h",
+              "notes": "Velocidad no suministrada."
+            }
+          ]
+        },
+        "specialRules": "Dos puestos normales: piloto y artillero. La bodega puede recibir asientos temporales para misiones; capacidad adicional no suministrada. Ojiva nuclear solo por decisión de misión/DJ, nunca instalada por defecto.",
+        "systems": [
+          {
+            "name": "Propulsión bimotor",
+            "category": "propulsion",
+            "status": "operational"
+          },
+          {
+            "name": "Cerebro electrónico",
+            "category": "electronicBrain",
+            "status": "operational"
+          }
+        ]
+      }
+    },
+    "items": [
+      {
+        "name": "Cañón Láser Modelo II",
+        "type": "weapon",
+        "system": {
+          "damageNumber": 13,
+          "range": "200 m",
+          "price": null,
+          "integrated": true,
+          "weaponCategory": "laser",
+          "ammunition": {
+            "capacity": 3
+          },
+          "sourceDetails": {
+            "rechargeTurns": 5,
+            "shotsBeforeRecharge": 3,
+            "weaponTypeCode": "L",
+            "normalDamageCode": "L13",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 5,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Tres disparos antes de recargar el acumulador; recarga: 5 turnos.",
+          "skill": "dexterity.artillery",
+          "damageNotation": "L13",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "laser-cannon-model-ii"
+          }
+        }
+      },
+      {
+        "name": "Cañón Láser Modelo II",
+        "type": "weapon",
+        "system": {
+          "damageNumber": 13,
+          "range": "200 m",
+          "price": null,
+          "integrated": true,
+          "weaponCategory": "laser",
+          "ammunition": {
+            "capacity": 3
+          },
+          "sourceDetails": {
+            "rechargeTurns": 5,
+            "shotsBeforeRecharge": 3,
+            "weaponTypeCode": "L",
+            "normalDamageCode": "L13",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 5,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Tres disparos antes de recargar el acumulador; recarga: 5 turnos.",
+          "skill": "dexterity.artillery",
+          "damageNotation": "L13",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "laser-cannon-model-ii"
+          }
+        }
+      },
+      {
+        "name": "Tubo lanzamisiles",
+        "type": "weapon",
+        "system": {
+          "damageNumber": null,
+          "range": "15000 m",
+          "price": null,
+          "integrated": true,
+          "ammunition": {
+            "capacity": 1
+          },
+          "sourceDetails": {
+            "maxFlightTurns": 10,
+            "speedMetersPerSecond": 300,
+            "weaponTypeCode": "?",
+            "normalDamageCode": "?",
+            "areaRadiusMeters": null,
+            "chargeTurns": 1,
+            "tableRecharge": null,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Un misil por tubo. Recarga externa con el vehículo detenido.",
+          "specialRules": "Guiado y carga se eligen por misión. Vuelo máximo de 10 turnos a unos 300 m/s; sin simulación de trayectoria.",
+          "weaponCategory": "",
+          "skill": "dexterity.missileArtillery",
+          "damageNotation": "?",
+          "maxRangeMeters": 15000,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "vehicle-missile-launcher"
+          }
+        }
+      },
+      {
+        "name": "Tubo lanzamisiles",
+        "type": "weapon",
+        "system": {
+          "damageNumber": null,
+          "range": "15000 m",
+          "price": null,
+          "integrated": true,
+          "ammunition": {
+            "capacity": 1
+          },
+          "sourceDetails": {
+            "maxFlightTurns": 10,
+            "speedMetersPerSecond": 300,
+            "weaponTypeCode": "?",
+            "normalDamageCode": "?",
+            "areaRadiusMeters": null,
+            "chargeTurns": 1,
+            "tableRecharge": null,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Un misil por tubo. Recarga externa con el vehículo detenido.",
+          "specialRules": "Guiado y carga se eligen por misión. Vuelo máximo de 10 turnos a unos 300 m/s; sin simulación de trayectoria.",
+          "weaponCategory": "",
+          "skill": "dexterity.missileArtillery",
+          "damageNotation": "?",
+          "maxRangeMeters": 15000,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "vehicle-missile-launcher"
+          }
+        }
+      },
+      {
+        "name": "Tubo lanzamisiles",
+        "type": "weapon",
+        "system": {
+          "damageNumber": null,
+          "range": "15000 m",
+          "price": null,
+          "integrated": true,
+          "ammunition": {
+            "capacity": 1
+          },
+          "sourceDetails": {
+            "maxFlightTurns": 10,
+            "speedMetersPerSecond": 300,
+            "weaponTypeCode": "?",
+            "normalDamageCode": "?",
+            "areaRadiusMeters": null,
+            "chargeTurns": 1,
+            "tableRecharge": null,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Un misil por tubo. Recarga externa con el vehículo detenido.",
+          "specialRules": "Guiado y carga se eligen por misión. Vuelo máximo de 10 turnos a unos 300 m/s; sin simulación de trayectoria.",
+          "weaponCategory": "",
+          "skill": "dexterity.missileArtillery",
+          "damageNotation": "?",
+          "maxRangeMeters": 15000,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "vehicle-missile-launcher"
+          }
+        }
+      },
+      {
+        "name": "Tubo lanzamisiles",
+        "type": "weapon",
+        "system": {
+          "damageNumber": null,
+          "range": "15000 m",
+          "price": null,
+          "integrated": true,
+          "ammunition": {
+            "capacity": 1
+          },
+          "sourceDetails": {
+            "maxFlightTurns": 10,
+            "speedMetersPerSecond": 300,
+            "weaponTypeCode": "?",
+            "normalDamageCode": "?",
+            "areaRadiusMeters": null,
+            "chargeTurns": 1,
+            "tableRecharge": null,
+            "tableNotes": ""
+          },
+          "reloadInfo": "Un misil por tubo. Recarga externa con el vehículo detenido.",
+          "specialRules": "Guiado y carga se eligen por misión. Vuelo máximo de 10 turnos a unos 300 m/s; sin simulación de trayectoria.",
+          "weaponCategory": "",
+          "skill": "dexterity.missileArtillery",
+          "damageNotation": "?",
+          "maxRangeMeters": 15000,
+          "area": false,
+          "burstCapable": false,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "vehicle-missile-launcher"
+          }
+        }
+      },
+      {
+        "name": "Láser antimisil",
+        "type": "weapon",
+        "system": {
+          "damageNumber": 8,
+          "range": "100 m",
+          "price": null,
+          "integrated": true,
+          "weaponCategory": "laser",
+          "sourceDetails": {
+            "countermeasure": "antiMissile",
+            "weaponTypeCode": "L",
+            "normalDamageCode": "L8",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 0,
+            "tableNotes": "r"
+          },
+          "specialRules": "Batería de láseres de baja potencia para interceptar misiles antes del impacto. Puede atacar otros blancos con daño limitado; ND no suministrado.",
+          "skill": "dexterity.artillery",
+          "damageNotation": "L8",
+          "maxRangeMeters": 100,
+          "area": false,
+          "burstCapable": true,
+          "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "anti-missile-laser"
+          }
+        }
+      },
+      {
+        "name": "Lanzahumos de vehículo",
+        "type": "equipment",
+        "system": {
+          "category": "other",
+          "price": null,
+          "sourceDetails": {
+            "countermeasure": "smoke"
+          },
+          "specialRules": "Reduce visibilidad. Mientras la cobertura sea apropiada, +5 a la protección contra láser. Activación y retirada por el DJ."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "vehicle-smoke-launcher"
+          }
+        }
+      },
+      {
+        "name": "Emisor de interferencias A",
+        "type": "equipment",
+        "system": {
+          "category": "other",
+          "price": null,
+          "sourceDetails": {
+            "countermeasure": "interferenceA"
+          },
+          "specialRules": "Desvía misiles guiados o teleguiados con prueba de Artillería. Necesita recarga tras cada emisión; duración no suministrada."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "interference-emitter-a"
+          }
+        }
+      },
+      {
+        "name": "Emisor de interferencias R",
+        "type": "equipment",
+        "system": {
+          "category": "other",
+          "price": null,
+          "sourceDetails": {
+            "countermeasure": "interferenceR",
+            "radiusKm": 10
+          },
+          "specialRules": "Impide comunicaciones de radio en unos 10 km. No simula redes de radio."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "interference-emitter-r"
+          }
+        }
+      },
+      {
+        "name": "Emisor de interferencias Gauss",
+        "type": "equipment",
+        "system": {
+          "category": "other",
+          "price": null,
+          "sourceDetails": {
+            "countermeasure": "interferenceGauss"
+          },
+          "specialRules": "Protección frente a misiles radio-rastreadores; sin bono numérico supuesto."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "interference-emitter-gauss"
+          }
+        }
+      },
+      {
+        "name": "Emisor de interferencias T",
+        "type": "equipment",
+        "system": {
+          "category": "other",
+          "price": null,
+          "sourceDetails": {
+            "countermeasure": "interferenceT"
+          },
+          "specialRules": "Señales térmicas que desvían misiles termo-rastreadores; adjudicación del DJ."
+        },
+        "flags": {
+          "paranoia-2-edition": {
+            "catalogId": "interference-emitter-t"
+          }
+        }
+      },
+      {
+        "name": "Blindaje BG 920",
+        "type": "armor",
+        "system": {
+          "protectionType": "all",
+          "protectionValue": 14,
+          "integrated": true,
+          "equipped": true
+        }
+      }
+    ]
+  },
+  {
+    "catalogId": "robocoche-vtt-17",
+    "name": "Robocoche VTT 17 CS-I",
+    "type": "vehicle",
+    "system": {
+      "vehicle": {
+        "category": "custom",
+        "model": "VTT 17 CS-I",
+        "requiredClearance": "indigo",
+        "assigned": true,
+        "purpose": "Vehículo económico y robusto para misiones en el Exterior.",
+        "description": "Construcción simple y económica. Ruedas compactas y hélice plegable en el techo.",
+        "control": {
+          "manualAvailable": true,
+          "autopilotAvailable": false,
+          "electronicBrainAvailable": false,
+          "currentMode": "manual"
+        },
+        "movement": {
+          "currentMode": "land",
+          "modes": [
+            {
+              "key": "land",
+              "label": "Tierra",
+              "unit": "km/h",
+              "maxSlopeDegrees": 15,
+              "terrain": "Terreno no demasiado abrupto",
+              "notes": "Cuatro ruedas pequeñas; prácticamente sin suspensión. No supera pendientes de unos 15 grados."
+            },
+            {
+              "key": "water",
+              "label": "Agua",
+              "unit": "km/h",
+              "terrain": "Lagos pequeños; no océanos",
+              "notes": "Flota y avanza haciendo girar las ruedas; la corriente fluvial puede arrastrarlo."
+            },
+            {
+              "key": "air",
+              "label": "Aire",
+              "maxSpeed": 50,
+              "unit": "km/h",
+              "capacity": 6,
+              "notes": "Hélice de techo y motor eléctrico: unos seis pasajeros ligeros o equipaje equivalente. Ascenso lento en círculos durante horas para cruzar montañas, salvo viento favorable."
+            }
+          ]
+        },
+        "flaws": [
+          {
+            "name": "Eje de hélice expuesto",
+            "description": "El eje atraviesa el habitáculo sin protección adecuada, muy próximo a los pasajeros.",
+            "hiddenFromPlayers": true,
+            "gmNotes": "Adjudicar riesgos; no daña automáticamente."
+          }
+        ],
+        "airDamageWarning": true,
+        "specialRules": "Sin armas, armadura, piloto automático ni cerebro electrónico. El daño en vuelo, incluso menor, puede romper una pala y causar accidente: requiere confirmación del DJ."
+      }
+    },
+    "items": []
+  }
+]

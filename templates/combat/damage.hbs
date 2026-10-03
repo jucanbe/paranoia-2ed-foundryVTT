@@ -1,0 +1,8 @@
+<div class="standard-form"><strong>{{weapon}}</strong><p>{{status}}</p>
+{{#if area}}<p>{{localize "P2.Text.m7tqqzh"}}</p>
+<label>{{localize "P2.Text.mvtj33x"}}<select name="target">{{#each targets}}<option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>{{/if}}
+<label>{{localize "P2.Text.m41bxw7"}}<input type="number" name="base" value="{{base}}" step="any"></label>
+<label>{{localize "P2.Text.mzy6rlm"}}<select name="result"><option value="">{{localize "P2.Text.m1t2r89s"}}</option>{{#each results}}<option value="{{value}}">{{p2t label}}</option>{{/each}}</select></label>
+<p>{{localize "P2.Text.m1fk97mi"}}</p></div>
+
+{{#if vehicles}}<label>{{localize "P2.Text.mqeaag5"}}<select name="protectionVehicle"><option value="">{{localize "P2.Text.m1yfhhk"}}</option>{{#each vehicles}}<option value="{{uuid}}">{{name}}</option>{{/each}}</select></label><p>{{localize "P2.Text.m1hff2oz"}}</p>{{/if}}

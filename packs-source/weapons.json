@@ -1,0 +1,1704 @@
+[
+  {
+    "catalogId": "laser-pistol",
+    "name": "Pistola Láser",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "laser",
+      "skill": "dexterity.laserWeapons",
+      "damageNumber": 8,
+      "range": "50 m",
+      "price": 100,
+      "experimental": false,
+      "description": "Pistola con cargas láser desmontables y codificadas por color.",
+      "reloadInfo": "Sustituir la carga ocupa un Turno de Combate completo, sin otras acciones.",
+      "specialRules": "Una carga permite seis disparos con seguridad razonable. Desde el séptimo aumenta el riesgo de fallo; un resultado 20 siempre falla en ese procedimiento. Solo se permite usar cargas del propio nivel de seguridad o inferior. La protección Réflex depende también del color; sin automatización.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "L8",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 6,
+        "tableNotes": ""
+      },
+      "securityClearance": "red"
+    }
+  },
+  {
+    "catalogId": "cone-rifle",
+    "name": "Rifle cónico",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 13,
+      "range": "200 m",
+      "price": 1000,
+      "description": "Rifle cónico con perfiles específicos para cada proyectil. Los perfiles no consumen ni crean munición.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "projectile",
+      "damageNotation": "P13",
+      "maxRangeMeters": 200,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P13",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 1,
+        "tableNotes": ""
+      },
+      "securityClearance": "blue",
+      "ammunitionProfile": "bullet",
+      "ammunitionProfiles": [
+        {
+          "id": "bullet",
+          "label": "Bala",
+          "weaponCategory": "projectile",
+          "damageNumber": 13,
+          "damageNotation": "P13",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P13",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "dum-dum",
+          "label": "Bala Dum-Dum",
+          "weaponCategory": "projectile",
+          "damageNumber": 15,
+          "damageNotation": "P15",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P15",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "explosive",
+          "label": "Bala explosiva",
+          "weaponCategory": "projectile",
+          "damageNumber": 10,
+          "damageNotation": "P10",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P10",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "at",
+          "label": "Bala HE",
+          "weaponCategory": "projectile",
+          "damageNumber": 11,
+          "damageNotation": "P11",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P11",
+            "areaRadiusMeters": 5,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "piercing",
+          "label": "Bala perforante",
+          "weaponCategory": "piercingProjectile",
+          "damageNumber": 17,
+          "damageNotation": "PP17",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "PP",
+            "normalDamageCode": "PP17",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "napalm",
+          "label": "Napalm",
+          "weaponCategory": "energy",
+          "damageNumber": 8,
+          "damageNotation": "E8",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "E",
+            "normalDamageCode": "E8",
+            "areaRadiusMeters": 8,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "flare",
+          "label": "Bengala",
+          "weaponCategory": "",
+          "damageNumber": 0,
+          "damageNotation": "O0",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "O",
+            "normalDamageCode": "O0",
+            "areaRadiusMeters": 30,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "anti-electronic",
+          "label": "Antielectrónica",
+          "weaponCategory": "campaign",
+          "damageNumber": 10,
+          "damageNotation": "C10",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C10",
+            "areaRadiusMeters": 30,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "gas",
+          "label": "De gas",
+          "weaponCategory": "",
+          "damageNumber": null,
+          "damageNotation": "Pt",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "Pt",
+            "normalDamageCode": "Pt",
+            "areaRadiusMeters": 20,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "tacnuke",
+          "label": "Tacnuke",
+          "weaponCategory": "campaign",
+          "damageNumber": 30,
+          "damageNotation": "C30",
+          "range": "200 m",
+          "maxRangeMeters": 200,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C30",
+            "areaRadiusMeters": 160,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        }
+      ],
+      "skill": "dexterity.projectileWeapons"
+    }
+  },
+  {
+    "catalogId": "projectile-pistol",
+    "name": "Pistola de proyectiles",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 7,
+      "range": "50 m",
+      "price": null,
+      "description": "Tirabalas con perfil de bala normal de la sección de armas no experimentales; elegir el perfil según la munición utilizada.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "projectile",
+      "damageNotation": "P7",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 6,
+        "tableNotes": ""
+      },
+      "ammunitionProfile": "bullet",
+      "ammunitionProfiles": [
+        {
+          "id": "bullet",
+          "label": "Bala",
+          "weaponCategory": "projectile",
+          "damageNumber": 7,
+          "damageNotation": "P7",
+          "range": "50 m",
+          "maxRangeMeters": 50,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P7",
+            "areaRadiusMeters": 0,
+            "chargeTurns": 1,
+            "tableRecharge": 6,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "dum-dum",
+          "label": "Bala Dum-Dum",
+          "weaponCategory": "projectile",
+          "damageNumber": 8,
+          "damageNotation": "P8",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P8",
+            "areaRadiusMeters": 0,
+            "chargeTurns": 1,
+            "tableRecharge": 6,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "explosive",
+          "label": "Bala explosiva",
+          "weaponCategory": "projectile",
+          "damageNumber": 9,
+          "damageNotation": "P9",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P9",
+            "areaRadiusMeters": 0,
+            "chargeTurns": 1,
+            "tableRecharge": 3,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "at",
+          "label": "Bala AT / HE",
+          "weaponCategory": "projectile",
+          "damageNumber": 11,
+          "damageNotation": "P11",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P11",
+            "areaRadiusMeters": 0,
+            "chargeTurns": 1,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "piercing",
+          "label": "Bala perforante",
+          "weaponCategory": "piercingProjectile",
+          "damageNumber": 9,
+          "damageNotation": "PP9",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "PP",
+            "normalDamageCode": "PP9",
+            "areaRadiusMeters": 0,
+            "chargeTurns": 1,
+            "tableRecharge": 3,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "napalm",
+          "label": "Napalm",
+          "weaponCategory": "campaign",
+          "damageNumber": 7,
+          "damageNotation": "C7",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C7",
+            "areaRadiusMeters": 3,
+            "chargeTurns": 1,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "flare",
+          "label": "Bengala",
+          "weaponCategory": "",
+          "damageNumber": 0,
+          "damageNotation": "O0",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "O",
+            "normalDamageCode": "O0",
+            "areaRadiusMeters": 10,
+            "chargeTurns": 1,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "anti-electronic",
+          "label": "Antielectrónica",
+          "weaponCategory": "campaign",
+          "damageNumber": 7,
+          "damageNotation": "C7",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C7",
+            "areaRadiusMeters": 10,
+            "chargeTurns": 1,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "gas",
+          "label": "De gas",
+          "weaponCategory": "",
+          "damageNumber": null,
+          "damageNotation": "Pt",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "Pt",
+            "normalDamageCode": "Pt",
+            "areaRadiusMeters": 5,
+            "chargeTurns": 1,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        }
+      ],
+      "skill": "dexterity.projectileWeapons"
+    }
+  },
+  {
+    "catalogId": "projectile-rifle",
+    "name": "Tirabalas semiautomático",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 7,
+      "range": "50 m",
+      "price": null,
+      "description": "Tirabalas semiautomático; las estadísticas varían según la munición seleccionada.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "projectile",
+      "damageNotation": "P7",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": true,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 10,
+        "tableNotes": "r"
+      },
+      "ammunitionProfile": "bullet",
+      "ammunitionProfiles": [
+        {
+          "id": "bullet",
+          "label": "Bala",
+          "weaponCategory": "projectile",
+          "damageNumber": 7,
+          "damageNotation": "P7",
+          "range": "50 m",
+          "maxRangeMeters": 50,
+          "area": false,
+          "burstCapable": true,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P7",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 10,
+            "tableNotes": "r"
+          }
+        },
+        {
+          "id": "dum-dum",
+          "label": "Bala Dum-Dum",
+          "weaponCategory": "projectile",
+          "damageNumber": 9,
+          "damageNotation": "P9",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": true,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P9",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 10,
+            "tableNotes": "r"
+          }
+        },
+        {
+          "id": "explosive",
+          "label": "Bala explosiva",
+          "weaponCategory": "projectile",
+          "damageNumber": 10,
+          "damageNotation": "P10",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": true,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P10",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 5,
+            "tableNotes": "r"
+          }
+        },
+        {
+          "id": "at",
+          "label": "Bala AT / HE",
+          "weaponCategory": "projectile",
+          "damageNumber": 12,
+          "damageNotation": "P12",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "P",
+            "normalDamageCode": "P12",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": ""
+          }
+        },
+        {
+          "id": "piercing",
+          "label": "Bala perforante",
+          "weaponCategory": "piercingProjectile",
+          "damageNumber": 10,
+          "damageNotation": "PP10",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": false,
+          "burstCapable": true,
+          "sourceDetails": {
+            "weaponTypeCode": "PP",
+            "normalDamageCode": "PP10",
+            "areaRadiusMeters": 0,
+            "chargeTurns": null,
+            "tableRecharge": 5,
+            "tableNotes": "r"
+          }
+        },
+        {
+          "id": "napalm",
+          "label": "Napalm",
+          "weaponCategory": "campaign",
+          "damageNumber": 8,
+          "damageNotation": "C8",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C8",
+            "areaRadiusMeters": 3,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "flare",
+          "label": "Bengala",
+          "weaponCategory": "",
+          "damageNumber": 0,
+          "damageNotation": "O0",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "O",
+            "normalDamageCode": "O0",
+            "areaRadiusMeters": 10,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "anti-electronic",
+          "label": "Antielectrónica",
+          "weaponCategory": "campaign",
+          "damageNumber": 10,
+          "damageNotation": "C10",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "C",
+            "normalDamageCode": "C10",
+            "areaRadiusMeters": 10,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        },
+        {
+          "id": "gas",
+          "label": "De gas",
+          "weaponCategory": "",
+          "damageNumber": null,
+          "damageNotation": "Pt",
+          "range": "40 m",
+          "maxRangeMeters": 40,
+          "area": true,
+          "burstCapable": false,
+          "sourceDetails": {
+            "weaponTypeCode": "Pt",
+            "normalDamageCode": "Pt",
+            "areaRadiusMeters": 5,
+            "chargeTurns": null,
+            "tableRecharge": 1,
+            "tableNotes": "a"
+          }
+        }
+      ],
+      "skill": "dexterity.projectileWeapons"
+    }
+  },
+  {
+    "catalogId": "sonic-weapon",
+    "name": "Pistola sónica",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 7,
+      "range": "60 m",
+      "price": 150,
+      "experimental": true,
+      "description": "Proyecta un cono letal de vibraciones ultrasónicas.",
+      "specialRules": "Fallo: las vibraciones destruyen el arma y el usuario recibe E4. Sin remedio.",
+      "sourceDetails": {
+        "malfunctionDamageCode": "E4",
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 10,
+        "tableNotes": ""
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "energy",
+      "damageNotation": "E7",
+      "maxRangeMeters": 60,
+      "area": false,
+      "burstCapable": false,
+      "securityClearance": "orange",
+      "skill": "dexterity.energyWeapons"
+    }
+  },
+  {
+    "catalogId": "ice-pistol",
+    "name": "Pistola de Hielo",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 8,
+      "range": "50 m",
+      "price": 500,
+      "description": "Dispara agujas de hielo; se recarga con agua en el depósito superior.",
+      "specialRules": "Fallo con 1d20: 11+ se atasca/congela permanentemente; 10 se rompe y el usuario recibe P8. Una prueba de habilidad pertinente evita el atasco permanente, pero hay que esperar al deshielo.",
+      "sourceDetails": {
+        "malfunctionDamageCode": "P8",
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 25,
+        "tableNotes": "r"
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "projectile",
+      "damageNotation": "P8",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": true,
+      "securityClearance": "green",
+      "skill": "dexterity.projectileWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "energy-ray-weapon",
+    "name": "Lanzarrayos",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "damageNumber": 9,
+      "range": "50 m",
+      "price": 500,
+      "description": "Arma energética de unos 60 cm, de una mano, con aletas refrigeradoras.",
+      "specialRules": "Fallo con 1d20: 11+ deja de funcionar; 10 se pone al rojo y vaporiza, causando E8 al usuario. Una habilidad pertinente puede evitar la vaporización; el arma no vuelve a estar operativa tras el fallo descrito.",
+      "sourceDetails": {
+        "malfunctionDamageCode": "E8",
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E9",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 1,
+        "tableNotes": ""
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E9",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": false,
+      "securityClearance": "orange",
+      "skill": "dexterity.energyWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "energy-pistol",
+    "name": "Pistola energética",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "damageNumber": 8,
+      "range": "50 m",
+      "price": 300,
+      "description": "Arma energética compacta con diseño de antena. Estadísticas y atribución exacta de fallos pendientes.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E8",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 5,
+        "tableNotes": ""
+      },
+      "securityClearance": "yellow",
+      "skill": "dexterity.energyWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "water-gun",
+    "name": "Lanzaagujas",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 8,
+      "range": "20 m",
+      "price": 750,
+      "description": "Pistola de dardos de plástico alimentada por un cilindro reemplazable; disparo individual o ráfagas.",
+      "specialRules": "Avería: 11+ en 1d20 deja de funcionar; 10 o menos provoca explosión P9 en un radio de 1 m. Una prueba de habilidad permite desatascarla y evitar la explosión; después, el umbral de atasco empeora en 1 hasta un máximo de 18.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "piercingProjectile",
+      "damageNotation": "PP8",
+      "maxRangeMeters": 20,
+      "area": false,
+      "burstCapable": true,
+      "sourceDetails": {
+        "weaponTypeCode": "PP",
+        "normalDamageCode": "PP8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 20,
+        "tableNotes": "r",
+        "malfunctionDamageCode": "P9",
+        "malfunctionRadiusMeters": 1
+      },
+      "securityClearance": "blue",
+      "skill": "dexterity.projectileWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "flameador",
+    "name": "Flameador",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 10,
+      "range": "40 m",
+      "price": 1000,
+      "description": "Minilanzallamas de mano que expulsa un chorro estrecho de líquido inflamable a presión.",
+      "specialRules": "Fallo con 1d20: 11+ deja de funcionar; 10 explota y causa F8 al usuario. Una habilidad pertinente restaura el arma detenida, pero no el arma que ha explotado.",
+      "sourceDetails": {
+        "malfunctionDamageCode": "F8",
+        "weaponTypeCode": "C",
+        "normalDamageCode": "C10",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 3,
+        "tableNotes": ""
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "campaign",
+      "damageNotation": "C10",
+      "maxRangeMeters": 40,
+      "area": false,
+      "burstCapable": false,
+      "securityClearance": "violet",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "stunner",
+    "name": "Aturdidor",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 0,
+      "range": "40 m",
+      "price": 250,
+      "description": "Incapacita sin causar heridas directas.",
+      "specialRules": "Aturde durante floor(1d20/2) turnos, sin acciones. Un fallo afecta a todos en 5 m durante el mismo intervalo. Una prueba de habilidad puede impedirlo; si falla, el usuario queda inconsciente y el arma se rompe permanentemente.",
+      "sourceDetails": {
+        "malfunctionRadiusMeters": 5,
+        "durationFormula": "floor(1d20 / 2) turnos",
+        "weaponTypeCode": "C",
+        "normalDamageCode": "C0",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 6,
+        "tableNotes": ""
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "campaign",
+      "damageNotation": "C0",
+      "maxRangeMeters": 40,
+      "area": false,
+      "burstCapable": false,
+      "securityClearance": "orange",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "web-launcher",
+    "name": "Lanzatelarañas",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 0,
+      "range": "50 m",
+      "price": 250,
+      "description": "Lanza unos cuatro metros de cordón adhesivo que envuelve al blanco; longitud del cordón, no alcance del arma.",
+      "specialRules": "La localización determina la zona atrapada. Cabeza: posible estrangulación en 1d20 turnos si no se desprende. Miembro: queda inutilizable. Otra persona puede retirarlo en aproximadamente un turno. Fallo: deja de funcionar; reparación con habilidad pertinente.",
+      "sourceDetails": {
+        "webLengthMeters": 4,
+        "weaponTypeCode": "O",
+        "normalDamageCode": "O0",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 2,
+        "tableRecharge": 3,
+        "tableNotes": ""
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "",
+      "damageNotation": "O0",
+      "maxRangeMeters": 50,
+      "area": false,
+      "burstCapable": false,
+      "securityClearance": "green",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "flamethrower",
+    "name": "Lanzallamas",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "damageNumber": 11,
+      "range": "20 m",
+      "price": 500,
+      "description": "Lanzallamas pesado.",
+      "specialRules": "Fallo: explosión C9 para todos a 5 m. Una prueba de habilidad puede evitarla, pero el arma queda inoperativa.",
+      "sourceDetails": {
+        "malfunctionRadiusMeters": 5,
+        "malfunctionDamageCode": "C9",
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E11",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 3,
+        "tableRecharge": 10,
+        "tableNotes": "r"
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E11",
+      "maxRangeMeters": 20,
+      "area": false,
+      "burstCapable": true,
+      "securityClearance": "yellow",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "gauss-cannon",
+    "name": "Cañón Gauss",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "damageNumber": 9,
+      "range": "20 m",
+      "price": 500,
+      "description": "Proyecta flujo electromagnético devastador contra electrónica e ineficaz contra organismos.",
+      "specialRules": "Fallo: deja de funcionar sin violencia. Reparación mediante Ingeniería Electrónica. Solo daña a robots. No se automatiza la restricción del blanco.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E9",
+      "maxRangeMeters": 20,
+      "area": true,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E9",
+        "areaRadiusMeters": 20,
+        "chargeTurns": 2,
+        "tableRecharge": 100,
+        "tableNotes": "a",
+        "coneDegrees": 60
+      },
+      "securityClearance": "indigo",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "plasma-generator",
+    "name": "Generador de Plasma",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "campaign",
+      "damageNumber": 20,
+      "range": "20 m",
+      "price": 2000,
+      "description": "Botella magnética de plasma de mochila conectada a una boquilla manual.",
+      "specialRules": "La esfera avanza 5 m/turno y puede desviarse por el viento; se expande 5 m/turno en un cono de 60 grados orientado desde el tirador durante unos cuatro turnos. Fallo: explota tras floor(1d20/2) turnos, causando C20 a todos a 10 m. Reparación: primer éxito silencia alarma; segundo evita explosión; tercero restaura funcionamiento. Sin automatización.",
+      "sourceDetails": {
+        "projectileMovementMetersPerTurn": 5,
+        "expansionMetersPerTurn": 5,
+        "coneDegrees": 60,
+        "durationTurns": 4,
+        "malfunctionRadiusMeters": 10,
+        "malfunctionDamageCode": "C20",
+        "weaponTypeCode": "C",
+        "normalDamageCode": "C20",
+        "areaRadiusMeters": 2,
+        "chargeTurns": 10,
+        "tableRecharge": null,
+        "tableNotes": "a"
+      },
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "C20",
+      "maxRangeMeters": 20,
+      "area": true,
+      "burstCapable": false,
+      "securityClearance": "violet",
+      "skill": "dexterity.fieldWeapons",
+      "experimental": true
+    }
+  },
+  {
+    "catalogId": "grenade",
+    "name": "Granada",
+    "type": "weapon",
+    "system": {
+      "skill": "agility.grenade",
+      "damageNumber": 8,
+      "range": "20 m",
+      "price": 50,
+      "description": "Arma arrojadiza; usa modificadores de armas a distancia, no los de cuerpo a cuerpo.",
+      "specialRules": "Fallo: cae sin explotar. Sin remedio. Categoría P, ND 8 y radio 5 m según Anexo B.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "projectile",
+      "damageNotation": "P8",
+      "maxRangeMeters": 20,
+      "area": true,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P8",
+        "areaRadiusMeters": 5,
+        "chargeTurns": 0,
+        "tableRecharge": 1,
+        "tableNotes": "a"
+      },
+      "securityClearance": "red"
+    }
+  },
+  {
+    "catalogId": "unarmed",
+    "name": "Puños, Pies y Cabeza",
+    "type": "weapon",
+    "system": {
+      "skill": "agility.brawling",
+      "damageNumber": 5,
+      "range": "0 m",
+      "price": null,
+      "description": "Representación opcional de ataques naturales; no se entrega como equipo inicial.",
+      "specialRules": "No sufre fallos de funcionamiento.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "melee",
+      "damageNotation": "B5",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B5",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      }
+    }
+  },
+  {
+    "catalogId": "brass-knuckles",
+    "name": "Nudilleras",
+    "type": "weapon",
+    "system": {
+      "skill": "agility.brawling",
+      "damageNumber": 6,
+      "range": "0 m",
+      "price": 10,
+      "description": "Arma para los nudillos de acero o bronce.",
+      "specialRules": "Normalmente no se rompe ni falla.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "melee",
+      "damageNotation": "B6",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B6",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "securityClearance": "red"
+    }
+  },
+  {
+    "catalogId": "knife",
+    "name": "Cuchillo",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "melee",
+      "skill": "agility.ancientMeleeWeapons",
+      "damageNumber": 7,
+      "range": "0 m",
+      "price": null,
+      "specialRules": "Fallo: se rompe. La fuente permite reparación con superpegamento.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "B7",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      }
+    }
+  },
+  {
+    "catalogId": "mace",
+    "name": "Maza",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "melee",
+      "skill": "agility.ancientMeleeWeapons",
+      "damageNumber": 8,
+      "range": "0 m",
+      "price": null,
+      "specialRules": "Fallo: se rompe.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "B8",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      }
+    }
+  },
+  {
+    "catalogId": "sword",
+    "name": "Espada",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "melee",
+      "skill": "agility.ancientMeleeWeapons",
+      "damageNumber": 9,
+      "range": "0 m",
+      "price": null,
+      "specialRules": "Fallo: se rompe.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "B9",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B9",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      }
+    }
+  },
+  {
+    "catalogId": "club",
+    "name": "Porra",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "melee",
+      "skill": "agility.club",
+      "damageNumber": 8,
+      "range": "0 m",
+      "price": 10,
+      "specialRules": "Fallo: se rompe.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "B8",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B",
+        "normalDamageCode": "B8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "securityClearance": "red"
+    }
+  },
+  {
+    "catalogId": "axe",
+    "name": "Hacha",
+    "type": "weapon",
+    "system": {
+      "damageNumber": null,
+      "range": "",
+      "price": null,
+      "description": "Identificada en la lista de armas; estadísticas y habilidad pendientes.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162)."
+    }
+  },
+  {
+    "catalogId": "neural-whip",
+    "name": "Neurolátigo",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "skill": "agility.neuralWhip",
+      "damageNumber": 10,
+      "range": "0 m",
+      "price": null,
+      "description": "Látigo que provoca una fuerte descarga sobre el sistema nervioso.",
+      "specialRules": "Fallo: el usuario se azota a sí mismo sin poder evitarlo. Sin remedio.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E10",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E10",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      }
+    }
+  },
+  {
+    "catalogId": "energy-sword",
+    "name": "Espada Energética",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "skill": "agility.energySword",
+      "damageNumber": 12,
+      "range": "0 m",
+      "price": 400,
+      "description": "Hoja energética capaz de cortar casi cualquier objeto.",
+      "specialRules": "Fallo: desaparece el campo. Un movimiento de corte ya iniciado puede terminar golpeando el blanco con la empuñadura inactiva. Existe reparación en la fuente; modificador no verificado.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "E12",
+      "maxRangeMeters": 0,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E12",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "securityClearance": "blue"
+    }
+  },
+  {
+    "catalogId": "laser-cannon-model-i",
+    "name": "Cañón Láser Modelo I",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 13,
+      "range": "200 m",
+      "price": null,
+      "integrated": true,
+      "weaponCategory": "laser",
+      "ammunition": {
+        "capacity": 1
+      },
+      "sourceDetails": {
+        "rechargeTurns": 10,
+        "shotsBeforeRecharge": 1,
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L13",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 10,
+        "tableNotes": ""
+      },
+      "reloadInfo": "Recargar el acumulador después de cada disparo: 10 turnos.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "L13",
+      "maxRangeMeters": 200,
+      "area": false,
+      "burstCapable": false,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "laser-cannon-model-ii",
+    "name": "Cañón Láser Modelo II",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 13,
+      "range": "200 m",
+      "price": null,
+      "integrated": true,
+      "weaponCategory": "laser",
+      "ammunition": {
+        "capacity": 3
+      },
+      "sourceDetails": {
+        "rechargeTurns": 5,
+        "shotsBeforeRecharge": 3,
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L13",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 5,
+        "tableNotes": ""
+      },
+      "reloadInfo": "Tres disparos antes de recargar el acumulador; recarga: 5 turnos.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "L13",
+      "maxRangeMeters": 200,
+      "area": false,
+      "burstCapable": false,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "laser-cannon-model-iii",
+    "name": "Cañón Láser Modelo III",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 13,
+      "range": "200 m",
+      "price": null,
+      "integrated": true,
+      "weaponCategory": "laser",
+      "sourceDetails": {
+        "fireRatePerTurn": 1,
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L13",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "specialRules": "Un disparo por turno sin recarga ordinaria. Sistema energético enorme, reservado a vehículos gigantes o de gran potencia.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "L13",
+      "maxRangeMeters": 200,
+      "area": false,
+      "burstCapable": false,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "vehicle-sonic-projector",
+    "name": "Lanzarrayos sónico",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 14,
+      "range": "50 m",
+      "price": null,
+      "integrated": true,
+      "area": true,
+      "sourceDetails": {
+        "coneDegrees": 60,
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E14",
+        "areaRadiusMeters": 50,
+        "chargeTurns": null,
+        "tableRecharge": 0,
+        "tableNotes": "cf"
+      },
+      "specialRules": "Cono frontal de 60 grados: E14, alcance 50 m y RAc 50 m según la tabla. La geometría del cono la resuelve el DJ.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "energy",
+      "damageNotation": "E14",
+      "maxRangeMeters": 50,
+      "burstCapable": false,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "tubular-cannon-model-i",
+    "name": "Cañón tubular Modelo I",
+    "type": "weapon",
+    "system": {
+      "damageNumber": null,
+      "range": "200 m",
+      "price": null,
+      "integrated": true,
+      "reloadInfo": "Sin recarga automática; requiere cargador dedicado.",
+      "description": "Versión de mayor calibre del rifle cónico.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "",
+      "damageNotation": "?",
+      "maxRangeMeters": 200,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "?",
+        "normalDamageCode": "?",
+        "areaRadiusMeters": null,
+        "chargeTurns": 1,
+        "tableRecharge": null,
+        "tableNotes": "cg"
+      },
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "tubular-cannon-model-ii",
+    "name": "Cañón tubular Modelo II",
+    "type": "weapon",
+    "system": {
+      "damageNumber": null,
+      "range": "200 m",
+      "price": null,
+      "integrated": true,
+      "sourceDetails": {
+        "fireRatePerTurn": 2,
+        "weaponTypeCode": "?",
+        "normalDamageCode": "?",
+        "areaRadiusMeters": 1,
+        "chargeTurns": 0.5,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "reloadInfo": "Cargador automático rápido: permite dos disparos por turno según la fuente. Cadencia descriptiva; adjudicación del DJ.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "",
+      "damageNotation": "?",
+      "maxRangeMeters": 200,
+      "area": true,
+      "burstCapable": false,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "vehicle-flamethrower",
+    "name": "Lanzallamas de vehículo",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 15,
+      "range": "40 m",
+      "price": null,
+      "integrated": true,
+      "ammunition": {
+        "capacity": 10
+      },
+      "reloadInfo": "Diez disparos antes de recargar.",
+      "description": "Lanzallamas de vehículo: C15 y alcance 40 m.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "campaign",
+      "damageNotation": "C15",
+      "maxRangeMeters": 40,
+      "area": false,
+      "burstCapable": true,
+      "sourceDetails": {
+        "weaponTypeCode": "C",
+        "normalDamageCode": "C15",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 10,
+        "tableRecharge": null,
+        "tableNotes": "r"
+      },
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "vehicle-missile-launcher",
+    "name": "Tubo lanzamisiles",
+    "type": "weapon",
+    "system": {
+      "damageNumber": null,
+      "range": "15000 m",
+      "price": null,
+      "integrated": true,
+      "ammunition": {
+        "capacity": 1
+      },
+      "sourceDetails": {
+        "maxFlightTurns": 10,
+        "speedMetersPerSecond": 300,
+        "weaponTypeCode": "?",
+        "normalDamageCode": "?",
+        "areaRadiusMeters": null,
+        "chargeTurns": 1,
+        "tableRecharge": null,
+        "tableNotes": ""
+      },
+      "reloadInfo": "Un misil por tubo. Recarga externa con el vehículo detenido.",
+      "specialRules": "Guiado y carga se eligen por misión. Vuelo máximo de 10 turnos a unos 300 m/s; sin simulación de trayectoria.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "",
+      "damageNotation": "?",
+      "maxRangeMeters": 15000,
+      "area": false,
+      "burstCapable": false,
+      "skill": "dexterity.missileArtillery"
+    }
+  },
+  {
+    "catalogId": "anti-missile-laser",
+    "name": "Láser antimisil",
+    "type": "weapon",
+    "system": {
+      "damageNumber": 8,
+      "range": "100 m",
+      "price": null,
+      "integrated": true,
+      "weaponCategory": "laser",
+      "sourceDetails": {
+        "countermeasure": "antiMissile",
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": null,
+        "tableRecharge": 0,
+        "tableNotes": "r"
+      },
+      "specialRules": "Batería antimisiles; L8 y alcance 100 m. Admite ráfagas según la tabla.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "damageNotation": "L8",
+      "maxRangeMeters": 100,
+      "area": false,
+      "burstCapable": true,
+      "skill": "dexterity.artillery"
+    }
+  },
+  {
+    "catalogId": "vehicle-gas-launcher",
+    "name": "Lanzagases de vehículo",
+    "type": "weapon",
+    "system": {
+      "damageNumber": null,
+      "range": "20 m",
+      "price": null,
+      "integrated": true,
+      "area": true,
+      "sourceDetails": {
+        "radiusMeters": 20,
+        "weaponTypeCode": "?",
+        "normalDamageCode": "?",
+        "areaRadiusMeters": 20,
+        "chargeTurns": 10,
+        "tableRecharge": null,
+        "tableNotes": ""
+      },
+      "specialRules": "Dispersa gas en un radio aproximado de 20 m. Usar los gases del catálogo existente; no se duplica su definición.",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "weaponCategory": "",
+      "damageNotation": "?",
+      "maxRangeMeters": 20,
+      "burstCapable": false,
+      "skill": "dexterity.fieldArtillery"
+    }
+  },
+  {
+    "catalogId": "laser-rifle",
+    "name": "Rifleláser",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "laser",
+      "damageNumber": 9,
+      "damageNotation": "L9",
+      "range": "100 m",
+      "maxRangeMeters": 100,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "L",
+        "normalDamageCode": "L9",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 6,
+        "tableNotes": ""
+      },
+      "price": 300,
+      "securityClearance": "orange",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "skill": "dexterity.laserWeapons"
+    }
+  },
+  {
+    "catalogId": "sonic-rifle",
+    "name": "Rifle sónico",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "energy",
+      "damageNumber": 8,
+      "damageNotation": "E8",
+      "range": "100 m",
+      "maxRangeMeters": 100,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "E",
+        "normalDamageCode": "E8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 1,
+        "tableRecharge": 10,
+        "tableNotes": ""
+      },
+      "price": 300,
+      "securityClearance": "orange",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "experimental": true,
+      "specialRules": "Fallo: las vibraciones destruyen el arma y el usuario recibe E4. Sin remedio.",
+      "skill": "dexterity.energyWeapons"
+    }
+  },
+  {
+    "catalogId": "throwing-knife",
+    "name": "Cuchillo arrojadizo",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "projectile",
+      "damageNumber": 7,
+      "damageNotation": "P7",
+      "range": "20 m",
+      "maxRangeMeters": 20,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 1,
+        "tableNotes": ""
+      },
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "skill": "dexterity.ancientFirearms"
+    }
+  },
+  {
+    "catalogId": "bow",
+    "name": "Arco",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "projectile",
+      "damageNumber": 7,
+      "damageNotation": "P7",
+      "range": "40 m",
+      "maxRangeMeters": 40,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P7",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 20,
+        "tableNotes": ""
+      },
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "skill": "dexterity.ancientFirearms"
+    }
+  },
+  {
+    "catalogId": "thrown-rock",
+    "name": "Roca",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "projectile",
+      "damageNumber": 5,
+      "damageNotation": "P5",
+      "range": "20 m",
+      "maxRangeMeters": 20,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "P",
+        "normalDamageCode": "P5",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 1,
+        "tableNotes": ""
+      },
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "skill": "dexterity.ancientFirearms"
+    }
+  },
+  {
+    "catalogId": "spear",
+    "name": "Lanza",
+    "type": "weapon",
+    "system": {
+      "weaponCategory": "melee",
+      "damageNumber": 8,
+      "damageNotation": "B/P8",
+      "range": "30 m",
+      "maxRangeMeters": 30,
+      "area": false,
+      "burstCapable": false,
+      "sourceDetails": {
+        "weaponTypeCode": "B/P",
+        "normalDamageCode": "B/P8",
+        "areaRadiusMeters": 0,
+        "chargeTurns": 0,
+        "tableRecharge": 0,
+        "tableNotes": ""
+      },
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armamento (página PDF 165); precios y CS: Tabla general de equipo (página PDF 162).",
+      "description": "Datos verificados en la Tabla de armamento del Anexo B.",
+      "specialRules": "Tipo B/P en la tabla: B en cuerpo a cuerpo y P al arrojarla. El DJ debe seleccionar la categoría adecuada al ataque.",
+      "skill": "agility.ancientMeleeWeapons"
+    }
+  }
+]

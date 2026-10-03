@@ -1,0 +1,12 @@
+<section class="p2-roll-card">
+  <header><strong>{{localize "P2.Text.mq20ghj"}} {{targetName}}</strong><br>{{weaponName}}{{#if attackerName}} {{localize "P2.Text.m1degdiu"}} {{attackerName}}{{/if}}</header>
+  {{#unless manualOnly}}<dl><dt>{{localize "P2.Text.m1y1xj68"}}</dt><dd>{{baseDamageNumber}}</dd><dt>{{localize "P2.Text.m1f1gukq"}}</dt><dd>{{strengthBonus}}</dd>
+  <dt>{{localize "P2.Text.me6oh99"}}</dt><dd>{{stamina}}</dd><dt>{{localize "P2.Text.m122f3f4"}}{{armorProtection}})</dt><dd>{{p2t armorLabel}}</dd></dl>
+  {{#each warnings}}<p>{{this}}</p>{{/each}}
+  <p>{{localize "P2.Text.m68rmlr"}} <strong>{{finalDamageNumber}}</strong> {{localize "P2.Text.m1jacc5h"}} <strong>{{dieResult}}</strong></p>
+  {{#if unavailable}}<p>{{localize "P2.Text.mli15o2"}}</p>{{/if}}{{/unless}}
+  {{#if manual}}<p>{{localize "P2.Text.m1cgphpu"}}</p>{{/if}}
+  <strong>{{p2t resultLabel}}</strong>
+  {{#if resolved}}<p>{{localize "P2.Text.mkzwel3"}} {{p2t stateLabel}}{{#if stunned}} {{localize "P2.Text.mndtwtr"}}{{/if}}</p>{{#if wounded}}<p>{{localize "P2.Text.m14xyd4i"}}</p>{{/if}}
+  {{else}}<button type="button" data-action="resolveDamage">{{localize "P2.Text.m18wvj2n"}}</button>{{/if}}
+</section>

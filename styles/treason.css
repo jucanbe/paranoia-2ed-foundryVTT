@@ -1,0 +1,9 @@
+.p2-treason-actions {display:flex;flex-wrap:wrap;gap:.3rem;margin:.35rem 0;}
+.p2-treason-actions button {width:auto;flex:0 1 auto;}
+.p2-treason-field {display:grid;gap:.2rem;margin:.5rem 0;}
+.p2-treason-dashboard,.p2-treason-history,.p2-treason-dialog {overflow:auto;max-height:70vh;padding:.4rem;}
+.p2-treason-dialog table input[type=number] {min-width:4rem;width:4rem;}
+.p2-treason-dashboard td,.p2-treason-history td {padding:.4rem;vertical-align:top;}
+.p2-development-increment {display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.p2-development-increment button {flex:0 0 28px;width:28px;min-width:28px;padding:0;}
+.p2-development-increment input {flex:0 0 64px;width:64px;text-align:center;}

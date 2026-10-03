@@ -1,0 +1,130 @@
+{
+  "id": "paranoia-2-edition",
+  "title": "Paranoia 2nd Edition",
+  "description": "Paranoia 2nd Edition with character creation and bundled Item catalogues.",
+  "version": "0.2.0-rc.1",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.368",
+    "maximum": "14"
+  },
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {},
+      "robot": {},
+      "vehicle": {}
+    },
+    "Item": {
+      "equipment": {},
+      "weapon": {},
+      "armor": {},
+      "robotProgram": {},
+      "robotPeripheral": {}
+    }
+  },
+  "esmodules": [
+    "module/paranoia-2-edition.mjs"
+  ],
+  "languages": [
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "styles": [
+    "styles/paranoia-2-edition.css",
+    "styles/character-sheet.css",
+    "styles/npc.css",
+    "styles/robot-sheet.css",
+    "styles/vehicle-sheet.css",
+    "styles/treason.css",
+    "styles/societies.css"
+  ],
+  "packs": [
+    {
+      "name": "societies",
+      "label": "Paranoia 2ª Edición - Sociedades Secretas",
+      "path": "packs/societies",
+      "type": "JournalEntry",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "TRUSTED": "NONE",
+        "ASSISTANT": "NONE"
+      }
+    },
+    {
+      "name": "robots",
+      "label": "Paranoia 2ª Edición - Robots",
+      "path": "packs/robots",
+      "type": "Actor",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "robot-programs",
+      "label": "Paranoia 2ª Edición - Programas de Robot",
+      "path": "packs/robot-programs",
+      "type": "Item",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "weapons",
+      "label": "Paranoia 2ª Edición - Armas",
+      "path": "packs/weapons",
+      "type": "Item",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "armor",
+      "label": "Paranoia 2ª Edición - Armaduras",
+      "path": "packs/armor",
+      "type": "Item",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "equipment",
+      "label": "Paranoia 2ª Edición - Equipo",
+      "path": "packs/equipment",
+      "type": "Item",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "vehicles",
+      "label": "Paranoia 2ª Edición - Vehículos",
+      "path": "packs/vehicles",
+      "type": "Actor",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<strong>{{name}}</strong>
+<label>{{localize "P2.Text.mb3w8cg"}}<select name="action">{{#each actions}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.m30t31g"}}<textarea name="text" maxlength="500" rows="2">{{text}}</textarea></label>
+<label>{{localize "P2.Text.m17x6g1k"}}<select name="movement">{{#each movements}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<p class="p2-combat-help">{{#if isVehicle}}{{localize "P2.Text.m1e6e0c"}}{{else}}{{localize "P2.Text.m1h3czig"}}{{/if}}</p>
+<label><input type="checkbox" name="defending" {{#if defending}}checked{{/if}}> {{localize "P2.Text.m2vvnfr"}}</label>
+<label>{{localize "P2.Text.mcntuqk"}}<select name="weaponId"><option value="">{{localize "P2.Text.mlj4gky"}}</option>{{#each weapons}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+{{#if integratedWeapons}}<fieldset><legend>{{localize "P2.Text.m18dzov3"}}</legend>{{#each integratedWeapons}}<label><input type="checkbox" name="integratedWeaponIds" value="{{id}}" {{#if selected}}checked{{/if}}> {{name}}</label>{{#if operators}}<label>{{localize "P2.Text.m1ui9qr1"}}<select data-weapon-operator="{{id}}"><option value="">{{localize "P2.Text.m1ouvwtp"}}</option>{{#each operators}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>{{/if}}{{/each}}<p>{{localize "P2.Text.mrw2ofu"}}</p></fieldset>{{/if}}
+<label>{{localize "P2.Text.mvtj33x"}}<select name="targetId"><option value="">{{localize "P2.Text.m1sl6d43"}}</option>{{#each targets}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+{{#if isGM}}<label>{{localize "P2.Text.mtviprx"}}<input type="number" name="gmModifier" value="{{gmModifier}}" step="1"></label>{{/if}}
+{{#if isGM}}<label><input type="checkbox" name="healthOverride"> {{localize "P2.Text.m1l36fc8"}}</label>{{/if}}
+
+{{#if burstEnabled}}<details><summary>{{localize "P2.Text.mrdb8f2"}}</summary>{{#each burstTargets}}<label><input name="targetIds" type="checkbox" value="{{id}}" {{#if selected}}checked{{/if}}>{{name}}</label>{{/each}}<p>{{localize "P2.Text.m1a63x6h"}}</p></details>{{/if}}

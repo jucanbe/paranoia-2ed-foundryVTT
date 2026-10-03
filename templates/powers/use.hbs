@@ -1,0 +1,17 @@
+<div class="p2-power-form"><h3>{{actorName}} — {{p2t power.label}}</h3>
+<p>{{localize "P2.Text.m2770es"}} {{points.value}} {{localize "P2.Text.mbo0mse"}} {{points.max}} {{localize "P2.Text.m1vv68c0"}} {{attribute}}</p>
+<p>{{power.specialRules}}</p><p>{{localize "P2.Text.m16ky9js"}} {{range}}{{#if power.areaDiameterMeters}} {{localize "P2.Text.m42031p"}} {{power.areaDiameterMeters}} {{localize "P2.Text.mto73ke"}}{{/if}}. {{power.durationNotes}}</p>
+<label>{{localize "P2.Text.m1a9a8mw"}}<textarea name="intent" required rows="2">{{options.intent}}</textarea></label>
+<label>{{localize "P2.Text.moc5317"}}<input name="target" type="text" value="{{options.target}}"></label>
+<div class="p2-power-grid">
+<label>{{localize "P2.Text.mfiwxg2"}}<select name="difficulty">{{#each difficulties}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.msxik4k"}} {{#if isGM}}{{localize "P2.Text.m16u5r58"}}{{else}}{{localize "P2.Text.m1w3j5uf"}}{{/if}}<input name="modifier" type="number" step="1" value="{{options.modifier}}" required></label>
+<label>{{localize "P2.Text.mbuibst"}} {{#unless isGM}}{{localize "P2.Text.mgjn5ju"}}{{/unless}}<input name="cost" type="number" min="1" max="5" step="1" value="{{options.cost}}" required></label>
+</div><p>{{localize "P2.Text.mxlkgyv"}}</p>
+{{#if telekinesis}}<p>{{localize "P2.Text.m1ayn78c"}}</p>
+<div class="p2-power-grid"><label>{{localize "P2.Text.m1m1wgmr"}}<input name="approxWeightKg" type="number" min="0" step="any" value="{{options.approxWeightKg}}"></label><label>{{localize "P2.Text.m7o4im3"}}<input name="distanceMeters" type="number" min="0" step="any" value="{{options.distanceMeters}}"></label></div>{{/if}}
+<label>{{localize "P2.Text.mijvtrs"}}<textarea name="notes" rows="2">{{options.notes}}</textarea></label>
+{{#if isGM}}<label>{{localize "P2.Text.m1f5q8oa"}}<select name="resultOverride"><option value="">{{localize "P2.Text.m1xu0ibk"}}</option>{{#each results}}<option value="{{key}}">{{p2t label}}</option>{{/each}}</select></label>
+<label><input type="checkbox" name="override"> {{localize "P2.Text.myhyrcl"}}</label>{{/if}}
+<p>{{localize "P2.Text.ms45n0c"}}</p></div>
+<input type="hidden" name="powerKey" value="{{power.key}}">

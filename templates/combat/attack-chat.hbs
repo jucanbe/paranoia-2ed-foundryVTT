@@ -1,0 +1,11 @@
+<section class="p2-roll-card">
+<header><strong>{{attackerName}}</strong><br>{{weaponName}} {{localize "P2.Text.m1degdiu"}} {{skillName}}{{#if area}}<br>{{localize "P2.Text.m1uz73g5"}}{{/if}}</header>
+{{#if experimental}}<p>{{localize "P2.Text.m130yitb"}}</p>{{/if}}{{#if range}}<p>{{localize "P2.Text.m1e2nq9x"}} {{range}}</p>{{/if}}
+<p>{{#if area}}{{localize "P2.Text.m5r9edb"}}{{else}}{{localize "P2.Text.mvtj33x"}}{{/if}}: {{targetName}}</p>
+<p>{{localize "P2.Text.muruyag"}} {{baseValue}}<br>{{localize "P2.Text.m1egw0yo"}} {{modifiers.pointBlank}} {{localize "P2.Text.m1dm37n1"}} {{modifiers.wounded}}<br>{{localize "P2.Text.mc7mlen"}} {{modifiers.defenderEvading}} {{localize "P2.Text.m1vlxrhy"}} {{modifiers.gmModifier}}</p>
+<p>{{localize "P2.Text.mtoglwu"}} <strong>{{attackRoll}}</strong> {{localize "P2.Text.m3wdih5"}} <strong>{{attackTarget}}</strong></p>
+<strong class="p2-roll-outcome">{{outcome}}{{#if specialLabel}} {{localize "P2.Text.m1degdiu"}} {{p2t specialLabel}}{{/if}}</strong>
+{{#if hit}}<p><strong>{{localize "P2.Text.m12us37j"}} {{damageStatus}}</strong></p>{{#if damagePending}}<button type="button" data-action="resolveAttackDamage">{{localize "P2.Text.mxr756z"}}</button>{{/if}}{{/if}}
+{{#if optional}}<p>{{localize "P2.Text.m16ky9js"}} {{modifiers.range}} {{localize "P2.Text.m1twwgp7"}} {{modifiers.cover}} {{localize "P2.Text.my50m1f"}} {{modifiers.movement}}</p>{{/if}}
+{{#if malfunction}}<p><strong>{{localize "P2.Text.mvmv69z"}}</strong></p><button type="button" data-action="preventMalfunction" data-weapon="{{weapon}}">{{localize "P2.Text.m2z9m5h"}}</button><button type="button" data-action="repairWeapon" data-weapon="{{weapon}}">{{localize "P2.Text.m99chr1"}}</button>{{/if}}{{#if optionalNotes}}<p>{{optionalNotes}}</p>{{/if}}
+</section>

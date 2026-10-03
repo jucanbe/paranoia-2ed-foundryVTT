@@ -1,0 +1,14 @@
+<div class="p2-combat-footer">
+{{#if hasCombat}}
+  <strong>{{localize "P2.Text.mpgxmzz"}} {{round}} {{localize "P2.Text.mzir4wg"}}</strong><span>{{localize "P2.Text.mcu6xaa"}} {{p2t phaseLabel}}</span>
+  {{#if user.isGM}}<div class="p2-combat-buttons">
+  {{#if round}}
+    <button type="button" data-action="phaseAction" data-operation="previous">{{localize "P2.Text.m17d4coc"}}</button>
+    <button type="button" data-action="phaseAction" data-operation="next">{{localize "P2.Text.md6aaot"}}</button>
+    <button type="button" data-action="phaseAction" data-operation="reset">{{localize "P2.Text.m1g2j1aa"}}</button>
+    <button type="button" data-action="phaseAction" data-operation="unlock">{{#if unlocked}}{{localize "P2.Text.m1n8qakl"}}{{else}}{{localize "P2.Text.m75djdr"}}{{/if}}</button>
+    <button type="button" class="combat-control" data-action="endCombat">{{localize "P2.Text.mtwyb84"}}</button>
+  {{else}}{{#if canSurprise}}<button type="button" data-action="phaseAction" data-operation="surprise">{{localize "P2.Text.m12s2a8n"}}</button>{{/if}}<button type="button" data-action="phaseAction" data-operation="start">{{localize "P2.Text.mwnnd6d"}}</button>{{/if}}
+  </div>{{/if}}
+{{/if}}
+</div>

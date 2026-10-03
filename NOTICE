@@ -1,0 +1,25 @@
+Licensing scope and third-party material
+
+The MIT license in LICENSE applies to original software and original
+documentation in this project for which Juan Cano has the necessary rights.
+It does not grant rights to third-party trademarks, copyrighted game text,
+artwork, or other third-party material.
+
+This is an unofficial Foundry VTT system for Paranoia 2nd Edition. It is not
+an official product and does not claim endorsement by the game's rights
+holders or by Foundry Virtual Tabletop.
+
+The catalogue sources, Compendiums and some rule-reference modules contain
+material derived from supplied Paranoia source extracts. Those materials
+must be reviewed separately before public distribution. Their presence in
+this project is not evidence of permission to redistribute or relicense
+them. Relevant files include packs-source/, packs/, module/societies/
+definitions.mjs and module/powers/registry.mjs; this list is not exhaustive.
+
+Paranoia names, setting material and third-party intellectual property
+remain subject to the rights of their respective owners. Attribution and
+this notice do not replace a required permission.
+
+Foundry software, its license credentials, core assets and build dependencies
+are not included in this project. References to icons/svg paths resolve to
+assets provided by the user's own Foundry installation.

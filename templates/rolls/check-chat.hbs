@@ -1,0 +1,8 @@
+<section class="p2-roll-card">
+  <header><strong>{{actorName}}</strong><br>{{p2t typeLabel}} {{localize "P2.Text.m1degdiu"}} {{checkName}}</header>
+  <p>{{p2t labels.base}}: {{baseValue}} {{localize "P2.Text.m1degdiu"}} {{p2t labels.difficulty}}: {{p2t difficultyLabel}}<br>{{p2t labels.modifier}}: {{situationalModifier}}</p>
+  <p>{{p2t labels.result}} {{localize "P2.Text.mneygoz"}} <strong>{{dieResult}}</strong> {{localize "P2.Text.m1degdiu"}} {{p2t labels.target}}: <strong>{{finalTarget}}</strong></p>
+  <strong class="p2-roll-outcome">{{outcome}}</strong>
+  {{#if healthModifier}}<p>{{localize "P2.Text.mn8qhkr"}} {{healthModifier}}</p>{{/if}}
+  {{#if healthOverride}}<p>{{localize "P2.Text.m5pgrw"}} {{healthReason}}</p>{{/if}}
+</section>

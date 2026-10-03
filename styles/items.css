@@ -1,0 +1,15 @@
+.paranoia-item .p2-item-header { display:flex; gap:12px; align-items:center; }
+.paranoia-item .p2-item-header img { width:64px; height:64px; object-fit:contain; cursor:pointer; border:1px solid var(--p2-ink); }
+.paranoia-item .p2-item-header > div { flex:1; min-width:0; }
+.paranoia-item .p2-item-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; }
+.paranoia-item .p2-item-wide { grid-column:1 / -1; }
+.paranoia-item .p2-item-grid .p2-checkbox { flex-direction:row; justify-content:space-between; align-items:center; }
+.paranoia-item .p2-item-optional summary { cursor:pointer; font-weight:bold; padding:8px; border:1px solid var(--p2-line); }
+.paranoia-item .p2-item-optional .p2-item-grid { padding:10px 0; }
+.paranoia-item .p2-armor-code { border-left:3px solid var(--p2-ink); background:#eeede7; padding:8px; margin-top:10px; }
+.paranoia-item .p2-armor-code output { font-size:20px; font-weight:bold; }
+.paranoia-sheet .p2-item-badge { display:inline-block; font-size:11px; border:1px solid currentColor; padding:2px 4px; margin:3px; }
+.paranoia-sheet .p2-quantity { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.paranoia-sheet .p2-quantity button { width:23px; min-height:23px; height:23px; padding:0; }
+.paranoia-sheet .draggable { cursor:grab; }
+@container (max-width:420px) { .paranoia-item .p2-item-grid { grid-template-columns:1fr; } }

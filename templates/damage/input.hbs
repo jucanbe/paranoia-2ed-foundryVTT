@@ -1,0 +1,9 @@
+<p><strong>{{targetName}}</strong> {{localize "P2.Text.m1atwxw4"}}</p>
+<label>{{localize "P2.Text.mps2bea"}}<select name="weapon"><option value="">{{localize "P2.Text.mbzqq24"}}</option>{{#each weapons}}<option value="{{uuid}}">{{p2t label}}</option>{{/each}}</select></label>
+<label>{{localize "P2.Text.mtjz7la"}}<input type="number" name="base" step="any" placeholder="{{localize "P2.Text.mubv7yv"}}"></label>
+<label>{{localize "P2.Text.mevxulb"}}<select name="category"><option value="">{{localize "P2.Text.m69x0h4"}}</option>{{#each categories}}<option value="{{value}}">{{p2t label}}</option>{{/each}}</select></label>
+<label><input type="checkbox" name="stamina" checked> {{localize "P2.Text.m1ya8fdq"}}</label>
+<label><input type="checkbox" name="strength" checked> {{localize "P2.Text.mp77gz6"}}</label>
+<label><input type="checkbox" name="armor" checked> {{localize "P2.Text.m180ytqi"}}</label>
+{{#if vehicles}}<label>{{localize "P2.Text.m1sf83zy"}}<select name="protectionVehicle"><option value="">{{localize "P2.Text.mhyw1hg"}}</option>{{#each vehicles}}<option value="{{uuid}}">{{name}}</option>{{/each}}</select></label><p>{{localize "P2.Text.m1ewvs8b"}}</p>{{/if}}
+<p>{{localize "P2.Text.m63bzl5"}}</p>

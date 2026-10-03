@@ -1,0 +1,4 @@
+/* Keep long notes and custom names inside the existing bureaucratic layout. */
+.paranoia-sheet p,.paranoia-sheet dd,.paranoia-sheet details {overflow-wrap:anywhere;}
+.paranoia-sheet button:focus-visible,.paranoia-sheet a:focus-visible {outline:2px solid currentColor;outline-offset:2px;}
+.paranoia-sheet textarea {resize:vertical;}

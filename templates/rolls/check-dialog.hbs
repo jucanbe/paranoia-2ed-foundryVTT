@@ -1,0 +1,8 @@
+<p><strong>{{actorName}}</strong><br>{{checkName}}</p>
+<p>{{p2t labels.base}}: <strong>{{baseValue}}</strong></p>
+<label>{{p2t labels.difficulty}}<select name="difficulty">{{#each difficulties}}<option value="{{key}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>
+<label>{{p2t labels.modifier}}<input name="modifier" type="number" step="1" value="0" required></label>
+<p>{{p2t labels.target}}: <output>{{baseValue}}</output></p>
+{{#if healthModifier}}<p>{{localize "P2.Text.m29gcu"}} {{healthModifier}} {{localize "P2.Text.mr2tf7a"}}</p>{{/if}}
+{{#if blocked}}<p>{{blocked}}</p>{{/if}}
+{{#if isGM}}<label><input type="checkbox" name="healthOverride"> {{localize "P2.Text.m1mszyyy"}}</label>{{/if}}

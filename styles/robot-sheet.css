@@ -1,0 +1,10 @@
+.p2-robot-dialog .dialog-content {max-height:65vh;overflow-y:auto}
+.p2-robot-dialog label {display:flex;flex-direction:column;margin:6px 0}
+/* Foundry's single-select height otherwise collapses the catalogue list. */
+.p2-robot-dialog select[multiple] {width:100%;height:clamp(240px,30vh,320px);min-height:240px;flex-shrink:0;overflow-y:auto}
+.p2-robot-dialog select[multiple] option {padding:4px 8px}
+.paranoia-robot .p2-item-row {flex-wrap:wrap;gap:6px}
+.paranoia-robot .p2-item-row button {flex:0 0 auto;font-size:12px}
+.paranoia-robot summary {cursor:pointer;font-weight:bold;padding:8px;background:#171717;color:white}
+.paranoia-robot .p2-section {margin-top:10px}
+.paranoia-robot .p2-scroll>header h1 {color:#171717;font:bold 24px monospace;margin:0 0 8px}

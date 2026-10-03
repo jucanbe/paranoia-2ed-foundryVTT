@@ -1,0 +1,206 @@
+[
+  {
+    "catalogId": "standard-troubleshooter-uniform",
+    "name": "Uniforme estándar de Esclarecedor",
+    "type": "armor",
+    "system": {
+      "protectionType": "",
+      "protectionValue": null,
+      "price": null,
+      "assigned": true,
+      "description": "Mono de trabajo con armadura, conjunto rojo reflectante y cinturón utilitario con fundas y cartucheras.",
+      "specialRules": "Equipo inicial asignado por El Ordenador. El texto de creación no especifica su código de protección; no se presume L4."
+    }
+  },
+  {
+    "catalogId": "reflect-armor",
+    "name": "Armadura Réflex",
+    "type": "armor",
+    "system": {
+      "protectionType": "laser",
+      "protectionValue": 4,
+      "price": 100,
+      "description": "Armadura reflectora de luz láser; ejemplo verificado L4.",
+      "specialRules": "El color Réflex refleja completamente láseres de su propio color y de los niveles inferiores: amarillo protege contra amarillo, naranja y rojo, pero no verde o superiores. Esta interacción de colores no se automatiza; se aplica por ahora la protección numérica L4 contra láser y el DJ resuelve la excepción de color.",
+      "securityClearance": "red",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "protections": [
+        {
+          "type": "laser",
+          "value": 4
+        }
+      ]
+    }
+  },
+  {
+    "catalogId": "insulating-suit",
+    "name": "Traje aislante",
+    "type": "armor",
+    "system": {
+      "protectionType": "all",
+      "protectionValue": 1,
+      "protections": [
+        {
+          "type": "all",
+          "value": 1
+        }
+      ],
+      "price": 100,
+      "securityClearance": "yellow",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "asbestos-suit",
+    "name": "Traje de amianto",
+    "type": "armor",
+    "system": {
+      "protectionType": "campaign",
+      "protectionValue": 4,
+      "protections": [
+        {
+          "type": "campaign",
+          "value": 4
+        }
+      ],
+      "price": 100,
+      "securityClearance": "green",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "combat-armor",
+    "name": "Armadura de combate",
+    "type": "armor",
+    "system": {
+      "protectionType": "all",
+      "protectionValue": 7,
+      "protections": [
+        {
+          "type": "all",
+          "value": 7
+        }
+      ],
+      "price": 100000,
+      "securityClearance": "ultraviolet",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "plate-armor",
+    "name": "Armadura de placas",
+    "type": "armor",
+    "system": {
+      "protectionType": "projectile",
+      "protectionValue": 3,
+      "protections": [
+        {
+          "type": "projectile",
+          "value": 3
+        }
+      ],
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "chainmail-armor",
+    "name": "Cota de malla",
+    "type": "armor",
+    "system": {
+      "protectionType": "projectile",
+      "protectionValue": 2,
+      "protections": [
+        {
+          "type": "projectile",
+          "value": 2
+        }
+      ],
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "leather-armor",
+    "name": "Armadura de cuero",
+    "type": "armor",
+    "system": {
+      "protectionType": "projectile",
+      "protectionValue": 1,
+      "protections": [
+        {
+          "type": "projectile",
+          "value": 1
+        }
+      ],
+      "price": null,
+      "securityClearance": "",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "faraday-suit",
+    "name": "Traje Faraday",
+    "type": "armor",
+    "system": {
+      "protectionType": "energy",
+      "protectionValue": 4,
+      "protections": [
+        {
+          "type": "energy",
+          "value": 4
+        }
+      ],
+      "price": 5000,
+      "securityClearance": "blue",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "kevlar-armor",
+    "name": "Armadura de Kevlar",
+    "type": "armor",
+    "system": {
+      "protectionType": "projectile",
+      "protectionValue": 3,
+      "protections": [
+        {
+          "type": "projectile",
+          "value": 3
+        }
+      ],
+      "price": 200,
+      "securityClearance": "red",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  },
+  {
+    "catalogId": "battle-suit",
+    "name": "Traje de batalla",
+    "type": "armor",
+    "system": {
+      "protectionType": "all",
+      "protectionValue": 4,
+      "protections": [
+        {
+          "type": "all",
+          "value": 4
+        }
+      ],
+      "price": 10000,
+      "securityClearance": "indigo",
+      "sourceReference": "JOC-Paranoia-Manual Básico.ROLes.pdf, Anexo B: Tabla de armaduras (página PDF 163); precios y CS (página PDF 162).",
+      "description": "Protección verificada en la Tabla de armaduras del Anexo B."
+    }
+  }
+]

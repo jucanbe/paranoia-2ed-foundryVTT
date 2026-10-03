@@ -1,0 +1,145 @@
+{{#*inline "itemQuantity"}}
+<span class="p2-quantity" title="{{p2t @root.labels.quantity}}">
+{{#if @root.editable}}<button type="button" data-action="changeQuantity" data-delta="-1" aria-label="{{p2t @root.labels.decrease}}: {{name}}" {{#unless canDecrease}}disabled{{/unless}}>−</button>{{/if}}
+<span>{{quantity}}</span>{{#if unauthorized}}<span class="p2-item-badge">{{localize "P2.Text.m1mhih6z"}}</span>{{/if}}
+{{#if @root.editable}}<button type="button" data-action="changeQuantity" data-delta="1" aria-label="{{p2t @root.labels.increase}}: {{name}}">+</button>{{/if}}
+</span>
+{{/inline}}
+<div class="p2-body">
+  <nav class="tabs p2-tabs" aria-label="{{p2t labels.sheet}}">
+    {{#each tabs}}
+    <button type="button" class="{{cssClass}}" data-action="tab" data-group="{{group}}" data-tab="{{id}}">{{p2t label}}</button>
+    {{/each}}
+  </nav>
+  <div class="p2-scroll">
+    <section class="tab {{tabs.character.cssClass}}" data-group="primary" data-tab="character">
+      <header class="p2-citizen-header">
+        {{#if editable}}<button type="button" class="p2-create-character" data-action="createCharacter">{{p2t labels.createCharacter}}</button>{{/if}}
+        <span class="p2-eyebrow">{{p2t labels.citizenId}}</span>
+        <div class="p2-citizen-id" aria-live="polite">{{name}}</div>
+        {{#if editable}}<div class="p2-treason-actions"><button type="button" data-action="treasonAction" data-treason-operation="trust">{{localize "P2.Text.m1a0jm9s"}}</button><button type="button" data-action="treasonAction" data-treason-operation="accuse">{{localize "P2.Text.m1fay20y"}}</button></div>{{/if}}
+        <div class="p2-identity">
+        <label class="p2-name">{{p2t labels.name}}<input type="text" name="system.identity.name" value="{{identity.name}}" placeholder="{{#if legacyIdentity}}{{name}}{{/if}}"></label>
+        <label>{{p2t labels.clearance}}<output>{{p2t clearanceLabel}}</output></label>
+        <label>{{p2t labels.sector}}<input type="text" name="system.identity.sector" value="{{identity.sector}}"></label>
+        <label>{{p2t labels.clone}}<input type="number" name="system.cloneNumber" value="{{identity.cloneNumber}}" min="1" step="1" data-dtype="Number"></label>
+        <label class="p2-service">{{p2t labels.service}}<input type="text" name="system.service" value="{{identity.service}}"></label>
+        </div>
+        <p class="p2-help">{{#if legacyIdentity}}{{p2t labels.legacyIdentity}}{{else}}{{p2t labels.identityHint}}{{/if}}</p>
+      </header>
+      {{{clearancePanel}}}
+      {{{developmentPanel}}}
+      <section class="p2-section">
+        <h2>{{p2t labels.attributes}}</h2>
+        {{#if isGM}}<button type="button" class="p2-duel" data-action="attributeDuel">{{rollLabels.duel}}</button>{{/if}}
+        <div class="p2-attributes">
+          {{#each attributes}}<div class="p2-attribute"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="attribute" data-check-key="{{key}}" title="Tirar {{p2t label}}. {{../rollLabels.tooltip}}" {{#unless ../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number"></div>{{/each}}
+        </div>
+      </section>
+      <section class="p2-section">
+        <h2>{{p2t labels.capabilities}}</h2>
+        <div class="p2-capabilities">
+          {{#each capabilities}}<div class="p2-capability {{#if pending}}pending{{/if}}"><span>{{p2t label}}</span><output aria-label="{{p2t label}}" {{#if pending}}title="{{../labels.pending}}"{{/if}}>{{value}}</output></div>{{/each}}
+        </div>
+        <p class="p2-help">{{p2t labels.basicSkillLegend}}</p>
+      </section>
+      <section class="p2-section">
+        <h2>{{p2t labels.skills}}</h2>
+        <div class="p2-skills">
+          {{#each skillGroups}}
+          <section class="p2-skill-group">
+            <h3>{{p2t label}}</h3>
+            {{#each skills}}<div class="p2-value-row"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="skill" data-check-key="{{key}}" title="Tirar {{p2t label}}. {{../../rollLabels.tooltip}}" {{#unless ../../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number" {{#unless ../../canEditSkills}}readonly{{/unless}}></div>{{/each}}
+          </section>
+          {{/each}}
+        </div>
+      </section>
+      <section class="p2-section">
+        <h2>{{p2t labels.weapons}}</h2>
+        {{#if editable}}<p class="p2-help">{{p2t labels.inventoryHint}}</p>{{/if}}
+        {{#if editable}}<button class="p2-add" type="button" data-action="createItem" data-item-type="weapon">{{p2t labels.create}}: {{p2t labels.weapon}}</button>{{/if}}
+        <div class="p2-table-scroll"><table class="p2-weapons">
+          <thead><tr><th>{{p2t labels.weapon}}</th><th>{{p2t labels.weaponType}}</th><th>{{p2t labels.skill}}</th><th>{{p2t labels.damageNumber}}</th><th>{{p2t labels.range}}</th><th>{{p2t labels.experimental}}</th>{{#if editable}}<th>{{p2t labels.actions}}</th>{{/if}}</tr></thead>
+          <tbody>{{#each inventory.weapon}}
+            <tr class="draggable" data-item-id="{{id}}"><td>{{name}}<br>{{> itemQuantity}}</td><td>{{p2t categoryLabel}}</td><td>{{p2t skillLabel}}</td><td>{{damageDisplay}}</td><td>{{range}}</td><td>{{p2t experimentalLabel}}</td>
+              {{#if ../editable}}<td class="p2-actions"><button type="button" data-action="editItem" aria-label="{{../labels.edit}}: {{name}}">{{../labels.edit}}</button><button type="button" data-action="deleteItem" aria-label="{{../labels.delete}}: {{name}}">{{../labels.delete}}</button></td>{{/if}}
+            </tr>
+          {{else}}<tr><td colspan="7">{{p2t labels.empty}}</td></tr>{{/each}}</tbody>
+        </table></div>
+      </section>
+      <section class="p2-section">
+        <h2>{{p2t labels.armor}}</h2>
+        {{#if editable}}<button class="p2-add" type="button" data-action="createItem" data-item-type="armor">{{p2t labels.create}}: {{p2t labels.armor}}</button>{{/if}}
+        {{#each inventory.armor}}<div class="p2-item-row draggable" data-item-id="{{id}}">
+          <div><strong>{{name}}</strong> <span>{{protectionSummary}}</span>{{#if equipped}}<span class="p2-item-badge">{{localize "P2.Text.m1t6cvg5"}}</span>{{/if}}{{#if ../editable}}<button type="button" data-action="toggleArmor" aria-pressed="{{equipped}}">{{#if equipped}}{{localize "P2.Text.mj5c8je"}}{{else}}{{localize "P2.Text.m1e0ouwc"}}{{/if}}</button>{{/if}}{{#if experimental}}<span class="p2-item-badge">{{../labels.experimental}}</span>{{/if}} {{> itemQuantity}}</div>
+          {{#if ../editable}}<div class="p2-actions"><button type="button" data-action="editItem" aria-label="{{../labels.edit}}: {{name}}">{{../labels.edit}}</button><button type="button" data-action="deleteItem" aria-label="{{../labels.delete}}: {{name}}">{{../labels.delete}}</button></div>{{/if}}
+        </div>{{else}}<p>{{p2t labels.empty}}</p>{{/each}}
+      </section>
+      <section class="p2-section"><h2>{{p2t labels.publicNotes}}</h2><label class="p2-note"><span class="p2-sr-only">{{p2t labels.publicNotes}}</span><textarea name="system.publicNotes" rows="3">{{publicNotes}}</textarea></label></section>
+    </section>
+    {{#if canViewSecret}}
+    <section class="tab {{tabs.secret.cssClass}}" data-group="primary" data-tab="secret">
+      <header class="p2-secret-banner"><strong>{{p2t labels.secretNotice}}</strong><p>{{p2t labels.name}}: {{name}}</p></header>
+      {{#if isGM}}{{{treasonPanel}}}{{/if}}
+      <section class="p2-section"><h2>{{localize "P2.Text.m1gx788z"}}</h2>
+        <p>{{localize "P2.Text.m7yxzqz"}} <strong>{{secret.cloneNumber}}</strong></p>
+        {{#if isGM}}<button type="button" data-action="activateClone">{{#if secret.terminal}}{{localize "P2.Text.m1t6e0y2"}}{{else}}{{localize "P2.Text.m1773wdc"}}{{/if}}</button>{{else}}{{#if secret.terminal}}<p>{{localize "P2.Text.m1j9h1kc"}}</p>{{/if}}{{/if}}
+        {{#each secret.cloneHistory}}<details class="p2-clone-record">
+          <summary>#{{number}} {{citizenId}} {{localize "P2.Text.m1degdiu"}} {{p2t healthLabel}}</summary>
+          <p>{{p2t dateLabel}} {{localize "P2.Text.msu9yoj"}} {{worldTime}} {{localize "P2.Text.m1w9pcoy"}}</p>
+          <p>{{localize "P2.Text.mg3l1j6"}} {{causeOfDeath}}</p><p>{{notes}}</p>
+          {{#if appearanceNotes}}<p>{{localize "P2.Text.mcayv2q"}} {{appearanceNotes}}</p>{{/if}}
+          {{#if gmNotes}}<p>{{localize "P2.Text.m1dlz3r3"}} {{gmNotes}}</p>{{/if}}
+          <p>{{localize "P2.Text.m1ir0efo"}} {{credits}} {{localize "P2.Text.m1degdiu"}} {{p2t dispositionLabel}}</p>
+          <ul>{{#each inventorySnapshot}}<li>{{quantity}} {{localize "P2.Text.mmriixi"}} {{name}} ({{type}}){{#if assigned}} {{localize "P2.Text.m4mrpna"}}{{/if}}{{#if length}} {{localize "P2.Text.m1degdiu"}} {{length}} {{localize "P2.Text.m1sduwzc"}}{{/if}}</li>{{else}}<li>{{localize "P2.Text.m1biem2"}}</li>{{/each}}</ul>
+        </details>{{else}}<p>{{localize "P2.Text.mze6m7v"}}</p>{{/each}}
+      </section>
+      <section class="p2-section"><h2>{{p2t labels.coverService}}</h2><label>{{p2t labels.coverService}}<input type="text" name="system.coverService" value="{{secret.coverService}}"></label></section>
+      <div class="p2-secret-grid">
+        {{{societyPanel}}}
+        <section class="p2-section"><h2>{{p2t labels.mutantPower}}</h2>
+          <label class="p2-checkbox"><input type="checkbox" name="system.mutantPower.registered" {{#if secret.mutantPower.registered}}checked{{/if}}> {{p2t labels.registeredMutation}}</label>
+          <label>{{p2t labels.name}}<input type="text" name="system.mutantPower.name" value="{{secret.mutantPower.name}}" list="powers-{{rootId}}"></label>
+          <datalist id="powers-{{rootId}}">{{#each secret.powerView.choices}}<option value="{{p2t label}}"></option>{{/each}}</datalist>
+          <p><strong>{{localize "P2.Text.m2770es"}} {{secret.powerView.points.value}} {{localize "P2.Text.mbo0mse"}} {{secret.powerView.points.max}}</strong></p>
+          {{#if isGM}}<div class="p2-power-grid"><label>{{localize "P2.Text.m1w31yc0"}}<input name="system.mutantPower.points.value" type="number" min="0" step="1" value="{{secret.powerView.points.value}}"></label><label>{{localize "P2.Text.m197tgls"}}<input name="system.mutantPower.points.max" type="number" min="0" step="1" value="{{secret.powerView.points.max}}"></label></div>{{/if}}
+          {{#if editable}}<div class="p2-power-grid"><button type="button" data-action="powerAction" data-power-action="use">{{localize "P2.Text.m1apy4m8"}}</button><button type="button" data-action="powerAction" data-power-action="recover">{{localize "P2.Text.ms18kr"}}</button></div>{{/if}}
+          {{#each secret.powerView.learned}}<p>{{localize "P2.Text.m1n21qwb"}} <strong>{{p2t label}}</strong>{{#if @root.editable}} <button type="button" data-action="powerAction" data-power-action="use" data-power-key="{{key}}">{{localize "P2.Text.m1sjgk7i"}}</button>{{/if}}</p>{{/each}}
+          <p>{{localize "P2.Text.m15li8fd"}}</p>
+          {{#each secret.powerView.effects}}<p><strong>{{p2t label}}</strong> {{localize "P2.Text.m1degdiu"}} {{duration}}<br>{{modifiers}}<br>{{notes}}{{#if ../isGM}}<button type="button" data-action="powerAction" data-power-action="end" data-effect-id="{{id}}" data-fatigue="{{fatigue}}">{{#if fatigue}}{{localize "P2.Text.m1oia2a5"}}{{else}}{{localize "P2.Text.m1vhvjkv"}}{{/if}}</button>{{/if}}</p>{{/each}}
+          <label>{{p2t labels.notes}}<textarea name="system.mutantPower.notes" rows="5">{{secret.mutantPower.notes}}</textarea></label>
+        </section>
+      </div>
+      <section class="p2-section"><h2>{{p2t labels.health}}</h2>
+        {{#each healthView.localizedWounds}}<p>{{localize "P2.Text.m1ga7oge"}} {{p2t label}} {{localize "P2.Text.m1degdiu"}} {{p2t sideLabel}} {{localize "P2.Text.m1degdiu"}} {{p2t consequenceLabel}} {{localize "P2.Text.m1degdiu"}} {{restriction}} {{localize "P2.Text.m1degdiu"}} {{#if active}}{{localize "P2.Text.m7n1jpf"}}{{else}}{{localize "P2.Text.mfzibda"}}{{/if}}{{#if permanent}} {{localize "P2.Text.m1emv8hr"}}{{/if}} {{localize "P2.Text.m1degdiu"}} {{notes}}</p>{{/each}}
+        <p><strong>{{localize "P2.Text.mkzwel3"}} {{p2t healthView.label}}</strong>{{#if healthView.stunned}} {{localize "P2.Text.mndtwtr"}}{{/if}}</p>
+        {{#if healthView.stunned}}<p>{{healthView.stunText}}</p>{{/if}}
+        {{#if healthView.woundText}}<p>{{healthView.woundText}} {{localize "P2.Text.m5rd21r"}}</p>{{/if}}
+        {{#if healthView.hourlyText}}<p>{{healthView.hourlyText}}</p>{{/if}}
+        {{#if secret.health.equipmentDestroyed}}<p>{{localize "P2.Text.mrnbjkc"}}</p>{{/if}}
+        {{#if isGM}}<div class="p2-health-controls">
+          {{#if healthView.localizationEnabled}}<button type="button" data-action="healthAction" data-health-action="location">{{localize "P2.Text.m10hi1p2"}}</button>{{/if}}
+          <button type="button" data-action="healthAction" data-health-action="damage">{{localize "P2.Text.medpxk2"}}</button>
+          <button type="button" data-action="healthAction" data-health-action="result">{{localize "P2.Text.m1yxws6e"}}</button>
+          <button type="button" data-action="healthAction" data-health-action="state">{{localize "P2.Text.m1tdryur"}}</button>
+          {{#if healthView.stunned}}<button type="button" data-action="healthAction" data-health-action="stun">{{localize "P2.Text.mhn3t5t"}}</button>{{/if}}
+          {{#if healthView.canTreat}}<button type="button" data-action="healthAction" data-health-action="treat">{{localize "P2.Text.mn9v969"}}</button><button type="button" data-action="healthAction" data-health-action="mark">{{localize "P2.Text.mhp8t8"}}</button>{{/if}}
+          {{#if healthView.woundText}}<button type="button" data-action="healthAction" data-health-action="day">{{localize "P2.Text.mv2xvif"}}</button>{{/if}}
+          {{#if healthView.incapacitated}}<button type="button" data-action="healthAction" data-health-action="hour">{{localize "P2.Text.m1esu5h"}}</button>{{/if}}
+        </div>{{/if}}
+        {{#if secret.health.treatmentNotes}}<p>{{localize "P2.Text.m1ljp1th"}} {{secret.health.treatmentNotes}}</p>{{/if}}
+        <label>{{p2t labels.notes}}<textarea name="system.health.notes" rows="3">{{secret.health.notes}}</textarea></label>
+      </section>
+      {{{secret.creditPanel}}}
+      <section class="p2-section"><h2>{{p2t labels.equipment}}</h2>
+        {{#if editable}}<button class="p2-add" type="button" data-action="createItem" data-item-type="equipment">{{p2t labels.create}}: {{p2t labels.equipment}}</button>{{/if}}
+        {{#each inventory.equipment}}<div class="p2-item-row draggable" data-item-id="{{id}}">
+          <div><strong>{{name}}</strong> <span>{{p2t categoryLabel}}</span>{{#if lengthLabel}}<span>{{p2t lengthLabel}}</span>{{/if}}{{#if assigned}}<span class="p2-item-badge">{{../labels.assigned}}</span>{{/if}}{{#if experimental}}<span class="p2-item-badge">{{../labels.experimental}}</span>{{/if}}</div>{{> itemQuantity}}
+          {{#if ../editable}}<div class="p2-actions"><button type="button" data-action="editItem" aria-label="{{../labels.edit}}: {{name}}">{{../labels.edit}}</button><button type="button" data-action="deleteItem" aria-label="{{../labels.delete}}: {{name}}">{{../labels.delete}}</button></div>{{/if}}
+        </div>{{else}}<p>{{p2t labels.empty}}</p>{{/each}}
+      </section>
+      <section class="p2-section"><h2>{{p2t labels.notes}}</h2><label class="p2-note">{{p2t labels.privateNotes}}<textarea name="system.privateNotes" rows="9">{{secret.privateNotes}}</textarea></label></section>
+    </section>
+    {{/if}}
+  </div>
+</div>

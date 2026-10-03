@@ -1,0 +1,7 @@
+<div class="p2-npc-preview"><p>{{localize "P2.Text.m1sbg3xf"}}</p>
+{{#each npcs}}<section><h3>{{name}}</h3><p>{{clearance}} {{localize "P2.Text.m1degdiu"}} {{service}}</p>
+<p>{{#each attributes}}{{p2t label}}: <strong>{{value}}</strong> {{localize "P2.Text.m1degdiu"}} {{/each}}</p>
+<details><summary>{{localize "P2.Text.m1w3lz6n"}}</summary><p>{{#each skills}}{{p2t label}} {{value}} {{localize "P2.Text.m1degdiu"}} {{/each}}</p></details>
+<p>{{localize "P2.Text.m1y0tzfu"}} {{#each items}}{{this}} {{localize "P2.Text.m1degdiu"}} {{else}}{{localize "P2.Text.m1ef27bx"}}{{/each}}</p>
+{{#if power}}<p>{{localize "P2.Text.m1rjmv5l"}} {{power}}</p>{{/if}}{{#if society}}<p>{{localize "P2.Text.m12o492r"}} {{society}} {{localize "P2.Text.me5e6v7"}}</p>{{/if}}
+</section>{{/each}}</div>

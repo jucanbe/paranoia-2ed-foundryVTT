@@ -1,0 +1,21 @@
+<div class="p2-power-form"><h3>{{p2t power.label}} — {{outcome}}</h3><p>{{power.specialRules}}</p>
+<label>{{localize "P2.Text.m1ss47yn"}}<select name="action"><option value="effect">{{localize "P2.Text.mxymvwr"}}</option>
+<option value="manualEffect">{{localize "P2.Text.mvrxdj4"}}</option><option value="result">{{localize "P2.Text.m8jj19p"}}</option>
+{{#if regeneration}}<option value="heal">{{localize "P2.Text.m5bjp6"}}</option>{{/if}}
+{{#if resistance}}<option value="resist">{{localize "P2.Text.m11bmz66"}}</option>{{/if}}
+{{#if stun}}<option value="stun">{{localize "P2.Text.m1oy75i"}}</option>{{/if}}
+<option value="health">{{localize "P2.Text.mw38hs4"}}</option>
+{{#if teleportation}}<option value="teleport">{{localize "P2.Text.mzejd2j"}}</option>{{/if}}
+<option value="public">{{localize "P2.Text.mff9feh"}}</option></select></label>
+<label>{{localize "P2.Text.m1rz5jra"}}<select name="targetUuid"><option value="">{{localize "P2.Text.mw58vcb"}}</option>{{#each actors}}<option value="{{uuid}}">{{name}}</option>{{/each}}</select></label>
+<label data-power-field="resist">{{localize "P2.Text.m5qzzef"}}<input name="modifier" type="number" step="1" value="0"></label>
+<div data-power-field="effect manualEffect"><label>{{localize "P2.Text.m1rux5tu"}}<select name="durationType"><option value="gm">{{localize "P2.Text.mo3c75z"}}</option><option value="turns">{{localize "P2.Text.mq4rkgk"}}</option><option value="minutes" {{#if minute}}selected{{/if}}>{{localize "P2.Text.mf8emmw"}}</option><option value="permanent">{{localize "P2.Text.m907g3x"}}</option></select></label>
+<label>{{localize "P2.Text.m10azzgc"}}<input name="duration" type="number" step="1" min="0" value="{{duration}}"></label>
+{{#if adrenaline}}<p>{{localize "P2.Text.m1qr3xjr"}}</p><label>{{localize "P2.Text.m1ems6wz"}}<input name="strength" type="number" step="1" min="0" value="0"></label><label>{{localize "P2.Text.mtdpu3h"}}<input name="agility" type="number" step="1" min="0" value="0"></label><label>{{localize "P2.Text.m9vvsvs"}}<input name="agilitySkills" type="number" step="1" min="0" value="0"></label>{{/if}}
+{{#if empathy}}<p>{{localize "P2.Text.mf4mv9o"}}</p>{{/if}}
+<label>{{localize "P2.Text.m1nfz53f"}}<textarea name="notes" rows="2"></textarea></label></div>
+<label data-power-field="health">{{localize "P2.Text.mhh7owk"}}<select name="healthResult">{{#each healthResults}}<option value="{{key}}">{{p2t label}}</option>{{/each}}</select></label>
+<label data-power-field="result">{{localize "P2.Text.mxwalmi"}}<select name="resultClass">{{#each results}}<option value="{{key}}">{{p2t label}}</option>{{/each}}</select></label>
+<div data-power-field="teleport"><label>Token<select name="tokenUuid">{{#each tokens}}<option value="{{uuid}}">{{name}}</option>{{/each}}</select></label><label>{{localize "P2.Text.m1rf7gse"}}<input name="x" type="number" step="any" min="0"></label><label>{{localize "P2.Text.m17iaby3"}}<input name="y" type="number" step="any" min="0"></label><label><input name="confirmed" type="checkbox"> {{localize "P2.Text.m1oq6b65"}}</label></div>
+<label data-power-field="public">{{localize "P2.Text.mi765q6"}}<textarea name="observable" rows="3"></textarea></label>
+<p>{{localize "P2.Text.mfxraic"}}</p></div>

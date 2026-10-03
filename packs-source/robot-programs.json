@@ -1,0 +1,38 @@
+[
+  {
+    "catalogId": "medicine-program-4",
+    "name": "Medicina 4",
+    "type": "robotProgram",
+    "system": {
+      "skill": "perception.medicine",
+      "level": 4,
+      "storageMode": "resident",
+      "active": false,
+      "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+    }
+  },
+  {
+    "catalogId": "medicine-program-8",
+    "name": "Medicina 8",
+    "type": "robotProgram",
+    "system": {
+      "skill": "perception.medicine",
+      "level": 8,
+      "storageMode": "resident",
+      "active": false,
+      "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+    }
+  },
+  {
+    "catalogId": "medicine-program-15",
+    "name": "Medicina 15",
+    "type": "robotProgram",
+    "system": {
+      "skill": "perception.medicine",
+      "level": 15,
+      "storageMode": "resident",
+      "active": false,
+      "source": "Modelos de Robodoctor; extracto verificado por el usuario."
+    }
+  }
+]

@@ -1,0 +1,132 @@
+<div class="p2-creation-body">
+{{#if denied}}
+  <p role="alert">{{localize "P2.Text.mhesrr7"}}</p>
+  <button type="button" data-action="cancel">{{localize "P2.Text.m1sg0ox6"}}</button>
+{{else}}
+  <header><div class="p2-eyebrow">{{localize "P2.Text.mjpwcgt"}} {{stepNumber}} {{localize "P2.Text.mc0yhg9"}}</div><h1>{{stepTitle}}</h1>
+    <ol class="p2-steps">{{#each steps}}<li class="{{#if active}}active{{/if}}" {{#if active}}aria-current="step"{{/if}}>{{number}}. {{p2t label}}</li>{{/each}}</ol>
+    <p class="p2-help">{{localize "P2.Text.mtrsp35"}}</p>
+  </header>
+  {{#if error}}<p class="p2-creation-error" role="alert">{{error}}</p>{{/if}}
+  <div class="p2-creation-scroll">
+  {{#if views.identity}}
+    <div class="p2-citizen-id">{{citizenId}}</div>
+    <div class="p2-creation-fields">
+      <label>{{p2t labels.name}}<input name="personalName" type="text" value="{{data.identity.name}}" autocomplete="off"></label>
+      <label>{{p2t labels.clearance}}<select name="clearance" {{#if clearanceLocked}}disabled{{/if}}>{{#each clearances}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select>{{#if clearanceLocked}}<input type="hidden" name="clearance" value="{{data.securityClearance}}">{{/if}}</label>
+      <label>{{p2t labels.sector}}<input name="sector" type="text" value="{{data.identity.sector}}" autocomplete="off"></label>
+      <label>{{p2t labels.clone}}<input name="cloneNumber" type="number" value="{{data.cloneNumber}}" min="1" step="1" data-dtype="Number" {{#unless isGM}}readonly{{/unless}}></label>
+    </div>
+    <p>{{localize "P2.Text.mh7aj2l"}}</p>
+  {{/if}}
+
+  {{#if views.attributes}}
+    <button type="button" data-action="generateAttributes" {{#unless canGenerate}}disabled{{/unless}}>{{localize "P2.Text.mq9gtus"}}</button>
+    <p><strong>{{localize "P2.Text.m1jm1hy3"}} {{rerollsAvailable}} {{localize "P2.Text.m1d3j8de"}}</strong> {{localize "P2.Text.m15kzr06"}}</p>
+    <p class="p2-help">{{localize "P2.Text.mmjc7wf"}}</p>
+    <div class="p2-creation-attributes">
+    {{#each attributes}}<section><label>{{p2t label}}
+      {{#if ../isGM}}<input name="attribute.{{key}}" type="number" min="1" max="20" step="1" value="{{value}}" data-dtype="Number">{{else}}<output>{{value}}</output>{{/if}}
+      </label><small>{{localize "P2.Text.m1sm0a6l"}} {{original}}</small><button type="button" data-action="rerollAttribute" data-attribute="{{key}}" {{#unless canReroll}}disabled{{/unless}}>{{localize "P2.Text.md5cpwu"}} {{p2t label}}</button></section>{{/each}}
+    </div>
+    {{#each rerolls}}<p>{{p2t label}}{{localize "P2.Text.mmoi4os"}} {{original}} {{localize "P2.Text.mc3qr95"}} {{rolled}} {{localize "P2.Text.mfqk2gc"}} <strong>{{result}}</strong></p>{{/each}}
+  {{/if}}
+
+  {{#if views.derived}}
+    <p>{{localize "P2.Text.mqg8qka"}}</p>
+    <div class="p2-capabilities">{{#each capabilities}}<div class="p2-capability"><span>{{p2t label}}</span><output>{{value}}</output></div>{{/each}}</div>
+  {{/if}}
+
+  {{#if views.service}}
+    <div class="p2-creation-fields">
+      <section class="p2-section"><h2>{{localize "P2.Text.mc91w6r"}}</h2>
+        <button type="button" data-action="rollTable" data-table="service" {{#if rolls.service}}disabled{{/if}}>{{localize "P2.Text.m16dzldc"}}</button>
+        <p>{{localize "P2.Text.mtoglwu"}} {{rolls.service.rolled}} {{localize "P2.Text.m15ynnjp"}} {{rolls.service.result}} {{localize "P2.Text.m1pu2k4a"}} <strong>{{p2t serviceLabel}}</strong></p>
+        {{#if isGM}}<label>{{localize "P2.Text.m7avs1b"}}<select name="service"><option value="">{{localize "P2.Text.mg3cg23"}}</option>{{#each serviceOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>{{/if}}
+      </section>
+      <section class="p2-section p2-secret-creation"><h2>{{localize "P2.Text.mlih2mx"}}</h2>
+        <button type="button" data-action="rollTable" data-table="coverService" {{#if rolls.coverService}}disabled{{/if}}>{{localize "P2.Text.mudf99v"}}</button>
+        <p>{{localize "P2.Text.m1svb4u"}} {{rolls.coverService.rolled}} {{localize "P2.Text.m15ynnjp"}} {{rolls.coverService.result}} {{localize "P2.Text.m1pu2k4a"}} <strong>{{p2t coverLabel}}</strong></p>
+        {{#if isGM}}<label>{{localize "P2.Text.m7avs1b"}}<select name="coverService"><option value="">{{localize "P2.Text.mg3cg23"}}</option>{{#each coverOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>{{/if}}
+      </section>
+    </div>
+    <p class="p2-help">{{localize "P2.Text.m14c9dw2"}}</p>
+  {{/if}}
+
+  {{#if views.mutation}}
+    <section class="p2-section p2-secret-creation"><h2>{{localize "P2.Text.mh0ssb1"}}</h2>
+      <p>{{localize "P2.Text.m1frdhh4"}}</p>
+      <button type="button" data-action="rollTable" data-table="mutation" {{#if rolls.mutation}}disabled{{/if}}>{{localize "P2.Text.m18fxl80"}}</button>
+      <p>{{localize "P2.Text.mtoglwu"}} {{rolls.mutation.rolled}} {{localize "P2.Text.m15ynnjp"}} {{rolls.mutation.result}} {{localize "P2.Text.m1pu2k4a"}} <strong>{{data.mutantPower.name}}</strong></p>
+      {{#if isGM}}<label>{{localize "P2.Text.m7avs1b"}}<select name="powerName"><option value="">{{localize "P2.Text.mg3cg23"}}</option>{{#each powerOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>{{/if}}
+      <label class="p2-checkbox"><input name="registered" type="checkbox" {{#if data.mutantPower.registered}}checked{{/if}}> {{localize "P2.Text.mdu7man"}}</label>
+      <p class="p2-help">{{localize "P2.Text.m11d4dpg"}}</p>
+    </section>
+  {{/if}}
+
+  {{#if views.society}}
+    <section class="p2-section p2-secret-creation"><h2>{{localize "P2.Text.m15gyemk"}}</h2>
+      <button type="button" data-action="rollTable" data-table="society" {{#if rolls.society}}disabled{{/if}}>{{localize "P2.Text.m1a6uzvy"}}</button>
+      <p>{{localize "P2.Text.mtoglwu"}} {{rolls.society.rolled}} {{localize "P2.Text.m15ynnjp"}} {{rolls.society.result}} {{localize "P2.Text.m1pu2k4a"}} <strong>{{data.secretSociety.name}}</strong></p>
+      {{#if isGM}}<label>{{localize "P2.Text.m7avs1b"}}<select name="societyChoice"><option value="">{{localize "P2.Text.mg3cg23"}}</option>{{#each societyOptions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select></label>{{/if}}
+      {{#if canCustomSociety}}<label>{{localize "P2.Text.mt4vo6a"}}<input type="text" name="customSociety" value="{{customSociety}}"></label>{{/if}}
+      {{#if isGM}}<label>{{localize "P2.Text.m1dr0ybk"}}<input type="number" min="0" step="1" name="rankLevel" value="{{data.secretSociety.rank.level}}"></label><label>{{localize "P2.Text.m14d6fhq"}}<input name="rankLabel" value="{{p2t data.secretSociety.rank.label}}"></label>{{else}}<p>{{localize "P2.Text.mz9186x"}}</p>{{/if}}
+      {{#if psychicWarning}}<p class="p2-rule-warning">{{psychicWarning}}</p><label class="p2-checkbox"><input type="checkbox" name="psychicConfirmed" {{#if psychicConfirmed}}checked{{/if}}> {{localize "P2.Text.m17flhpr"}}</label>{{/if}}
+    </section>
+  {{/if}}
+
+  {{#if views.skills}}
+    <div class="p2-pd" aria-live="polite"><strong>{{localize "P2.Text.md734m4"}} {{points.remaining}} {{localize "P2.Text.mbo0mse"}} {{points.total}}</strong><span>{{localize "P2.Text.mvqo8a9"}} {{points.spent}}</span></div>
+    <p>{{localize "P2.Text.m1q9j5lk"}}</p>
+    <p class="p2-help">{{localize "P2.Text.m1eszhxv"}}</p>
+    <div class="p2-allocation-grid">{{#each skillGroups}}<section><h3>{{p2t label}}</h3>
+      {{#each skills}}<div class="p2-allocation-row"><span>{{p2t label}}<small>{{localize "P2.Text.mz7rien"}} {{base}} {{localize "P2.Text.mf7p5j2"}} {{maximum}}</small></span>
+        <button type="button" data-action="decrease" data-skill="{{path}}" aria-label="Reducir {{p2t label}}" {{#unless canDecrease}}disabled{{/unless}}>−</button>
+        <output aria-label="{{p2t label}}">{{value}}</output>
+        <button type="button" data-action="increase" data-skill="{{path}}" aria-label="Aumentar {{p2t label}}" {{#unless canIncrease}}disabled{{/unless}}>+</button>
+      </div>{{/each}}</section>{{/each}}</div>
+  {{/if}}
+
+  {{#if views.equipment}}
+    <h3>{{localize "P2.Text.m1bcsy98"}}</h3>
+    <ul>{{#each starters}}<li>✓ {{name}}</li>{{/each}}</ul>
+    <p class="p2-pd">{{localize "P2.Text.m9msop5"}} {{credits.total}} {{localize "P2.Text.m1degdiu"}} <strong>{{localize "P2.Text.m1m61z62"}} {{credits.remaining}}</strong></p>
+    {{#if purchaseError}}<p class="p2-rule-warning">{{purchaseError}}</p>{{/if}}
+    {{#if isGM}}<button type="button" data-action="togglePurchaseOverride" aria-pressed="{{purchaseOverride}}">{{localize "P2.Text.myz1xe9"}} {{#if purchaseOverride}}{{localize "P2.Text.m9qp59o"}}{{else}}{{localize "P2.Text.met7ipm"}}{{/if}}</button>{{/if}}
+    <h3>{{localize "P2.Text.mf4rx53"}}</h3>
+    <p>{{localize "P2.Text.m13i8d3c"}}</p>
+    <table><thead><tr><th>{{localize "P2.Text.m1tnx55o"}}</th><th>{{localize "P2.Text.m1dulhhz"}}</th><th>{{localize "P2.Text.mv1wxhk"}}</th><th>{{localize "P2.Text.m1mnez65"}}</th></tr></thead><tbody>
+      {{#each catalogue}}<tr><td>{{name}}</td><td>{{price}} {{unit}}</td><td><div class="p2-purchase-controls">
+      <button type="button" data-action="refund" data-catalog-id="{{id}}" aria-label="Reducir {{name}}" {{#unless canDecrease}}disabled{{/unless}}>−</button>
+      <output>{{quantity}}</output><button type="button" data-action="buy" data-catalog-id="{{id}}" aria-label="Añadir {{name}}" {{#unless canIncrease}}disabled{{/unless}}>+</button>
+      </div></td><td>{{subtotal}}</td></tr>{{else}}<tr><td colspan="4">{{localize "P2.Text.m1pb06tl"}}</td></tr>{{/each}}
+    </tbody></table>
+    <h3>{{localize "P2.Text.m16t63li"}}</h3>
+    <ul>{{#each ownedEquipment}}<li>{{name}}{{#if quantity}} {{localize "P2.Text.m1degdiu"}} {{quantity}}{{/if}}</li>{{else}}<li>{{localize "P2.Text.m1qgrzc3"}}</li>{{/each}}</ul>
+    <p class="p2-help">{{localize "P2.Text.m1ur1xfl"}}</p>
+  {{/if}}
+
+  {{#if views.review}}
+    <section class="p2-section"><h2>{{localize "P2.Text.m1foxeyh"}}</h2>
+      <div class="p2-citizen-id">{{citizenId}}</div>
+      <dl class="p2-review-list"><dt>{{localize "P2.Text.m1m5who3"}}</dt><dd>{{#each clearances}}{{#if selected}}{{p2t label}}{{/if}}{{/each}}</dd><dt>{{localize "P2.Text.mce03an"}}</dt><dd>{{data.identity.sector}}</dd><dt>{{localize "P2.Text.m1hmeo6r"}}</dt><dd>{{data.cloneNumber}}</dd><dt>{{localize "P2.Text.moatr31"}}</dt><dd>{{p2t serviceLabel}}</dd></dl>
+      <h3>{{localize "P2.Text.m1a6o55q"}}</h3><div class="p2-review-attributes">{{#each attributes}}<div>{{p2t label}}: <strong>{{value}}</strong></div>{{/each}}</div>
+      <h3>{{localize "P2.Text.m1sz9wqv"}}</h3><div class="p2-capabilities">{{#each capabilities}}<div><span>{{p2t label}}</span><output>{{value}}</output></div>{{/each}}</div>
+    </section>
+    <section class="p2-section p2-secret-creation"><h2>{{localize "P2.Text.mzjman1"}}</h2>
+      <dl class="p2-review-list"><dt>{{localize "P2.Text.myyrzy1"}}</dt><dd>{{data.mutantPower.name}}</dd><dt>{{localize "P2.Text.ma2xmsk"}}</dt><dd>{{#if data.mutantPower.registered}}{{localize "P2.Text.m5zmp8l"}}{{else}}{{localize "P2.Text.mqo1k8m"}}{{/if}}</dd><dt>{{localize "P2.Text.m15gyemk"}}</dt><dd>{{data.secretSociety.name}}</dd><dt>{{localize "P2.Text.m1m5who3"}}</dt><dd>{{data.secretSociety.rank.level}} {{p2t data.secretSociety.rank.label}}</dd><dt>{{localize "P2.Text.m11zzs31"}}</dt><dd>{{p2t coverLabel}}</dd></dl>
+      {{#if psychicWarning}}<p>{{psychicWarning}}</p>{{/if}}
+    </section>
+    <section class="p2-section"><h2>{{localize "P2.Text.mqt2at8"}} {{points.spent}} {{localize "P2.Text.mbo0mse"}} {{points.total}}</h2>
+      <div class="p2-allocation-grid">{{#each skillGroups}}<section><h3>{{p2t label}}</h3>{{#each skills}}<div class="p2-review-skill"><span>{{p2t label}}</span><output>{{value}}</output></div>{{/each}}</section>{{/each}}</div>
+    </section>
+    <section class="p2-section"><h2>{{localize "P2.Text.m1bcsy98"}}</h2><ul>{{#each starters}}<li>{{name}}</li>{{/each}}</ul><h3>{{localize "P2.Text.m1pe5eu6"}}</h3><ul>{{#each selectedEquipment}}<li>{{name}} {{localize "P2.Text.mmriixi"}} {{quantity}} {{unit}} {{localize "P2.Text.m1degdiu"}} {{cost}} {{localize "P2.Text.mxsuxma"}}</li>{{else}}<li>{{localize "P2.Text.m10pi0w0"}}</li>{{/each}}</ul><p>{{localize "P2.Text.m9msop5"}} {{credits.total}} {{localize "P2.Text.my6lmd9"}} {{credits.remaining}}</p>{{#if purchaseOverride}}<p>{{localize "P2.Text.mmq4g77"}}</p>{{/if}}{{#if purchaseError}}<p class="p2-rule-warning">{{purchaseError}}</p>{{/if}}<p>{{localize "P2.Text.m1sih2lc"}}</p></section>
+  {{/if}}
+  </div>
+  <footer class="p2-creation-footer">
+    <button type="button" data-action="cancel">{{localize "P2.Text.m1szqwr8"}}</button>
+    <button type="button" data-action="back" {{#if first}}disabled{{/if}}>{{localize "P2.Text.m1q2zoiy"}}</button>
+    {{#if last}}<button type="button" data-action="finish">{{localize "P2.Text.m1ihvwq5"}}</button>{{else}}<button type="button" data-action="next">{{localize "P2.Text.mbahgj8"}}</button>{{/if}}
+  </footer>
+{{/if}}
+</div>

@@ -1,0 +1,46 @@
+.paranoia-sheet .p2-create-character { float: right; width: auto; padding: 3px 12px; font-weight: bold; }
+.paranoia-sheet label.p2-checkbox { display: flex; flex-direction: row; align-items: center; gap: 8px; margin: 10px 0; }
+.paranoia-sheet .p2-checkbox input { flex: 0 0 auto; }
+.paranoia-creation { min-width: 380px; min-height: 420px; }
+.paranoia-creation .p2-creation-body { display: flex; flex-direction: column; min-height: 0; height: 100%; container-type: inline-size; }
+.paranoia-creation .p2-creation-body > header { flex-shrink: 0; border-bottom: 2px solid #111; padding-bottom: 10px; }
+.paranoia-creation .p2-creation-body h1 { font: bold 22px "Courier New", monospace; margin: 5px 0 8px; color: #111; }
+.paranoia-creation .p2-steps { display: flex; gap: 4px 12px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; font-size: 11px; }
+.paranoia-creation .p2-steps .active { font-weight: bold; text-decoration: underline; }
+.paranoia-creation .p2-creation-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 5px 10px 0; }
+.paranoia-creation .p2-creation-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.paranoia-creation .p2-creation-attributes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.paranoia-creation .p2-creation-attributes section { display: flex; flex-direction: column; gap: 8px; padding: 8px; border: 1px solid #888; }
+.paranoia-creation .p2-creation-attributes button { margin-top: auto; height: auto; min-height: 30px; line-height: 1.3; white-space: normal; }
+.paranoia-creation .p2-creation-footer { display: flex; gap: 8px; padding-top: 10px; border-top: 2px solid #111; flex-shrink: 0; }
+.paranoia-creation .p2-creation-footer button { flex: 1; }
+.paranoia-creation .p2-creation-footer button:last-child { background: #171717; color: white; }
+.paranoia-creation .p2-creation-error, .paranoia-creation .p2-rule-warning { padding: 10px; border: 2px solid #111; background: #e8e5db; font-weight: bold; }
+.paranoia-creation .p2-creation-error { margin: 8px 0 0; flex-shrink: 0; }
+.paranoia-creation .p2-secret-creation { border: 3px double #111; }
+.paranoia-creation .p2-secret-creation > label { margin: 12px 0; }
+.paranoia-creation .p2-pd { display: flex; justify-content: space-between; gap: 10px; background: #171717; color: white; padding: 10px; position: sticky; top: 0; z-index: 1; }
+.paranoia-creation .p2-allocation-grid { columns: 2; column-gap: 20px; }
+.paranoia-creation .p2-allocation-grid > section { break-inside: avoid; padding-bottom: 16px; }
+.paranoia-creation .p2-allocation-row { display: grid; grid-template-columns: minmax(0, 1fr) 28px 30px 28px; gap: 6px; align-items: center; border-bottom: 1px dotted #aaa; padding: 5px 0; }
+.paranoia-creation .p2-allocation-row small { display: block; font-size: 10px; color: #555; }
+.paranoia-creation .p2-allocation-row button { width: 28px; height: 28px; padding: 0; }
+.paranoia-creation .p2-allocation-row output { text-align: center; }
+.paranoia-creation .p2-review-list { display: grid; grid-template-columns: minmax(100px, 1fr) 2fr; gap: 7px; margin: 10px 0; }
+.paranoia-creation .p2-review-list dt { font-weight: bold; }
+.paranoia-creation .p2-review-list dd { margin: 0; overflow-wrap: anywhere; }
+.paranoia-creation .p2-review-attributes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.paranoia-creation .p2-review-skill { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dotted #aaa; padding: 4px 0; }
+.paranoia-creation button:disabled { opacity: .45; cursor: default; }
+.paranoia-creation .p2-purchase-controls { display:flex; align-items:center; justify-content:center; gap:8px; }
+.paranoia-creation .p2-purchase-controls button { flex:0 0 28px; min-height:26px; padding:0; }
+.paranoia-creation .p2-purchase-controls output { min-width:2ch; text-align:center; }
+.paranoia-creation table th, .paranoia-creation table td { padding:5px 8px; }
+@container (max-width: 640px) {
+  .paranoia-creation .p2-creation-attributes, .paranoia-creation .p2-review-attributes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .paranoia-creation .p2-allocation-grid { columns: 1; }
+}
+@container (max-width: 440px) {
+  .paranoia-creation .p2-creation-fields { grid-template-columns: 1fr; }
+  .paranoia-creation .p2-pd { flex-direction: column; }
+}
