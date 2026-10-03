@@ -1,7 +1,3 @@
-## TO DOs
-
-- Añadir idiomas adicionales al español y al inglés, manteniendo las claves internas estables.
-
 # Paranoia 2ª Edición · Foundry VTT V14
 
 Release candidate 0.2.0-rc.1, verified against V14.368. This unofficial system requires a licensed Foundry installation. No rulebook PDF or scanned art is distributed.
