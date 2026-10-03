@@ -6,7 +6,7 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),".."),dist=join(root,
 // Only this known generated directory can be cleaned; installed packs are untouched.
 if(relative(dist,stage)!=="paranoia-2-edition")throw Error("Unsafe staging directory");
 await mkdir(dist,{recursive:true});await rm(stage,{recursive:true,force:true});await mkdir(stage,{recursive:true});
-for(const name of ["system.json","module","templates","styles","lang","README.md","LICENSE","NOTICE","to_github","docs"]){
+for(const name of ["system.json","module","templates","styles","lang","assets","README.md","LICENSE","NOTICE","to_github_instructions.md","docs"]){
   try{await cp(join(root,name),join(stage,name),{recursive:true});}catch(error){if(error.code!=="ENOENT")throw error;}
 }
 execFileSync(process.execPath,[join(root,"scripts/build-packs.mjs")],{env:{...process.env,PACK_OUTPUT:join(stage,"packs")},stdio:"inherit"});

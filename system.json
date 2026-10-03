@@ -126,5 +126,14 @@
         "ASSISTANT": "OWNER"
       }
     }
+  ],
+  "background": "systems/paranoia-2-edition/assets/art/system-cover.png",
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/paranoia-2-edition/assets/art/system-cover.png",
+      "thumbnail": "systems/paranoia-2-edition/assets/art/system-cover.png",
+      "caption": "Paranoia 2nd Edition · Alpha Complex"
+    }
   ]
 }

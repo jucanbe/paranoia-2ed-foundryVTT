@@ -19,6 +19,7 @@ import {registerSecurityClearance} from "./clearance/register.mjs";
 import {registerDevelopment} from "./development/register.mjs";
 import {registerCredits} from "./credits/register.mjs";
 import {registerMigrations} from "./migrations/register.mjs";
+import {registerWelcomeScene} from "./welcome.mjs";
 
 Hooks.once("init", () => {
   registerLocalization();
@@ -41,6 +42,7 @@ Hooks.once("init", () => {
   registerSocieties();
   game.paranoia=Object.freeze({...game.paranoia,CloneService});
   registerMigrations();
+  registerWelcomeScene();
   for(const hook of ["updateCompendium","createItem","updateItem","deleteItem"])Hooks.on(hook,document=>{if(document.collection?.startsWith?.("paranoia-2-edition.")||document.pack?.startsWith("paranoia-2-edition."))ItemCatalog.invalidate();});
   console.info("paranoia-2-edition | System initialized; Actor and Item data models registered.");
 });
