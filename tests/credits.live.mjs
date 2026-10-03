@@ -1,4 +1,3 @@
-import {unlock} from "../module/treason/store.mjs";
 import {CreationSession} from "../module/creation/session.mjs";
 import {commitCreation} from "../module/creation/commit.mjs";
 import {ItemCatalog,catalogId} from "../module/items/catalog.mjs";
@@ -25,8 +24,8 @@ export async function runCreditChecks(){
   let denied=false;try{await c.purchase(a,kitUuid,3);}catch{denied=true;}check(denied&&c.getBalance(a)===50,"Normal insufficient purchase");
   const debt=await c.purchase(a,kitUuid,3,{allowDebt:true});check(c.getBalance(a)===-25,"GM explicit debt");await c.correctTransaction(a,debt.id,25,{reason:"Correction"});check(c.getBalance(a)===0&&c.getHistory(a).at(-1).corrects===debt.id,"Compensating correction");
   const rope=(await ItemCatalog.entries()).find(i=>i.system.priceUnit==="meter");await c.purchase(a,rope,2,{allowDebt:true});check(a.items.find(i=>i.flags?.["paranoia-2-edition"]?.catalogSource===rope.uuid)?.system.length===2,"Per-meter purchase");
-  await unlock("isolated society verification passphrase");await c.reward(a,20,"SECRET SOURCE",{privateNotes:true,notes:"HIDDEN LEDGER NOTE",relatedItem:"HIDDEN SOURCE"});
-  const privateEntry=c.getHistory(a).at(-1);check(!JSON.stringify(a.toObject()).includes("HIDDEN LEDGER NOTE")&&!JSON.stringify(a.toObject()).includes("SECRET SOURCE"),"Private plaintext leak");check((await c.getPrivateDetails(a,privateEntry.id)).notes==="HIDDEN LEDGER NOTE","Private decrypt");
+  await c.reward(a,20,"SECRET SOURCE",{privateNotes:true,notes:"HIDDEN LEDGER NOTE",relatedItem:"HIDDEN SOURCE"});
+  const privateEntry=c.getHistory(a).at(-1);check(!JSON.stringify(c.getHistory(a)).includes("HIDDEN LEDGER NOTE")&&!JSON.stringify(c.getHistory(a)).includes("SECRET SOURCE"),"Private member history leak");check((await c.getPrivateDetails(a,privateEntry.id)).notes==="HIDDEN LEDGER NOTE","Private read private details");
   await a.update({"system.credits":375,"system.health.status":"dead"});const history=JSON.stringify(a.system.creditLedger);await game.paranoia.CloneService.activateNextClone(a,{inventory:"keep",power:"keep",silent:true});check(c.getBalance(a)===375&&JSON.stringify(a.system.creditLedger)===history,"Clone balance / history persistence");
   await game.paranoia.SecurityClearanceService.promote(a,{override:true,reason:"Live exception"});check(c.getBalance(a)===375,"Promotion changed credits");await game.paranoia.treason.declareTraitor(a,"Bounty regression",5000);check(c.getBalance(a)===375,"Bounty deducted from traitor");
   await a.update({"system.credits":100});const missionId=`credits-live-${a.id}`,rows=[{actor:a,delta:0,reason:"Failure",result:"failure",countForPromotion:false,validSurvivor:false,creditReward:1000,creditFine:250,creditReason:"Mission reward and fine"}];

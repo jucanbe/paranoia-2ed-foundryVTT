@@ -1,7 +1,7 @@
 import {staticMarkup} from "../i18n/index.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
 import {CATEGORIES,NS} from "./rules.mjs";
-import {isUnlocked,unlock,locked,readInbox} from "./store.mjs";
+import {readInbox} from "./ledger.mjs";
 import * as service from "./service.mjs";
 import {CLEARANCE_CODES} from "../actors/identity.mjs";
 import {isTerminal} from "../clones/rules.mjs";
@@ -20,12 +20,6 @@ async function form(title,content,accept=tr("Aplicar"),render){
     buttons:[{action:"apply",label:accept,default:true,callback:(_event,button)=>({values:Object.fromEntries(new FormData(button.form))})},{action:"cancel",label:tr("Cancelar")}],render});
   return result?.values??null;
 }
-export async function unlockDialog(){
-  if(!game.user.isGM)return;
-  const creating=!game.settings.get(NS,"treasonVault")?.version;
-  const values=await form(tr("Registro secreto de traición"),trHTML`<p>El registro se cifra con una frase secreta compartida solo entre DJ. Debes introducirla tras recargar Foundry. Guárdala: no existe recuperación si se pierde. No se envía ni se guarda la frase.</p>${field("password",tr("Frase secreta"),"","password")}${creating?field("confirmation",tr("Repite la frase secreta"),"","password"):""}`,tr("Desbloquear / preparar"));
-  if(values){if(creating&&values.password!==values.confirmation)throw Error(tr("Las frases no coinciden."));await unlock(values.password);}
-}
 export function equipmentWarnings(actor){
   if(!game.user.isGM)return [];
   const levels=Object.keys(CLEARANCE_CODES),level=levels.indexOf(actor.system.securityClearance);
@@ -34,7 +28,6 @@ export function equipmentWarnings(actor){
 export function panelHTML(actor){
   if(!game.user.isGM)return "";
   const button=(op,label)=>`<button type="button" data-action="treasonAction" data-treason-operation="${op}">${label}</button>`;
-  if(!isUnlocked())return trHTML`<section class="p2-section"><h2>Traición · solo DJ</h2>${button("unlock",tr("Desbloquear registro"))}</section>`;
   const r=service.getRecord(actor),warnings=equipmentWarnings(actor);
   return trHTML`<section class="p2-section"><h2>Traición · solo DJ</h2>${r.enabled?trHTML`<p><strong>Puntos: ${r.points} / 20</strong> · ${r.declaredTraitor?tr("TRAIDOR DECLARADO"):tr("Sin declaración")}</p>
     <div class="p2-treason-actions">${button("add",tr("Añadir PT"))}${button("remove",tr("Quitar PT"))}${button("history",tr("Historial"))}${button("trust",tr("Solicitar al Ordenador"))}${button("declare",tr("Declarar traidor inmediatamente"))}${button("revoke",tr("Revocar condición de traidor"))}${button("bounty",tr("Recompensa"))}${button("publish",tr("Publicar declaraciones pendientes"))}</div>`:staticMarkup("<p>Seguimiento desactivado.</p>")}
@@ -55,11 +48,13 @@ export async function historyDialog(actor){
     <h3>Confianza del Ordenador · detalles privados</h3>${r.trust.map(t=>`<p>${esc(t.request)}: ${t.die} &gt; ${t.points} → ${t.success?tr("Aceptada"):tr("Denegada")}</p>`).join("")}</div>`,ok:{label:tr("Cerrar")}});
 }
 export async function trustDialog(actor){
-  const values=await form(tr("Solicitar al Ordenador"),`<p>${esc(actor.name)}</p>${field("request",tr("Solicitud"))}`,tr("Solicitar"));
+  const values=await form(tr("Solicitar al Ordenador"),`<p>${esc(actor.name)}</p>${field("request",tr("Solicitud"))}${select("visibility",tr("Visibilidad"),{private:tr("Informe privado al DJ"),public:tr("Pública")})}`,tr("Solicitar"));
   if(!values)return;
   if(!values.request.trim())throw Error(tr("Indica la solicitud."));
-  if(game.user.isGM)await service.rollComputerTrust(actor,{request:values.request});
-  else await service.submitReport({kind:"trust",actorUuid:actor.uuid,reason:values.request,public:false});
+  const message=await service.submitReport({kind:"trust",actorUuid:actor.uuid,reason:values.request,public:values.visibility==="public"});
+  if(game.user.isGM){
+    await service.receiveReports();await service.rollComputerTrust(actor,{request:values.request,requestId:message.id});
+  }
 }
 export async function accusationDialog(actor){
   const citizens=Object.fromEntries(game.actors.filter(a=>["character","npc"].includes(a.type)&&a.visible).map(a=>[a.uuid,a.name]));
@@ -108,8 +103,6 @@ export async function action(actor,operation){
   if(operation==="trust")return trustDialog(actor);
   if(operation==="accuse")return accusationDialog(actor);
   if(!game.user.isGM)throw Error(tr("Solo el DJ puede gestionar la traición."));
-  if(operation==="unlock")return unlockDialog();
-  if(operation==="lock")return locked();
   if(operation==="dashboard")return openDashboard();
   if(operation==="mission")return missionDialog();
   if(operation==="receive")return service.receiveReports();
@@ -139,7 +132,7 @@ export function openDashboard(){
   dashboard??=new TreasonDashboard();return dashboard.render(true);
 }
 export class TreasonDashboard extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
-  static DEFAULT_OPTIONS={classes:["paranoia-sheet"],window:{title:"Traición · registro del DJ",resizable:true},position:{width:820,height:700},actions:{
+  static DEFAULT_OPTIONS={classes:["paranoia-sheet"],window:{title:"Traición · panel del DJ",resizable:true},position:{width:820,height:700},actions:{
     command:async function(_event,target){
       if(busy.has(this))return;busy.add(this);
       try{if(target.dataset.reportId)await reviewReport(target.dataset.reportId);
@@ -150,10 +143,9 @@ export class TreasonDashboard extends foundry.applications.api.HandlebarsApplica
   static PARTS={body:{template:"systems/paranoia-2-edition/templates/treason/dashboard.hbs"}};
   async _prepareContext(){
     if(!game.user.isGM)throw Error(tr("Solo DJ."));
-    if(!isUnlocked())return {unlocked:false};
     const actors=game.actors.filter(a=>["character","npc"].includes(a.type)).map(a=>({uuid:a.uuid,name:a.name,...service.getRecord(a)})).sort((a,b)=>b.points-a.points);
     const promotions=game.actors.filter(a=>clearance.isEnabled(a)).map(a=>{const r=clearance.getPromotionRequirements(a);return {uuid:a.uuid,name:a.name,current:LABELS.clearances[a.system.securityClearance],next:LABELS.clearances[r.target]??"—",progress:progressText(r),eligible:r.eligible,blocked:r.blocked};});
     const economy=game.actors.filter(a=>credits.isEnabled(a)).map(a=>({uuid:a.uuid,name:a.name,balance:credits.getBalance(a)}));
-    return {unlocked:true,actors,promotions,economy,inbox:Object.entries(readInbox()).filter(([,e])=>e.status==="pending").map(([id,e])=>({id,reason:e.reason,kind:e.kind}))};
+    return {actors,promotions,economy,inbox:Object.entries(readInbox()).filter(([,e])=>e.status==="pending").map(([id,e])=>({id,reason:e.reason,kind:e.kind}))};
   }
 }

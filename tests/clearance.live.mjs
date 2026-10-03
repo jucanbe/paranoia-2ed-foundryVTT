@@ -1,4 +1,3 @@
-import {unlock} from "../module/treason/store.mjs";
 import {CreationSession} from "../module/creation/session.mjs";
 import {commitCreation} from "../module/creation/commit.mjs";
 import {equipmentWarnings,openDashboard} from "../module/treason/dialogs.mjs";
@@ -6,7 +5,7 @@ import {panel} from "../module/clearance/dialogs.mjs";
 const check=(v,message)=>{if(!v)throw Error(message);};
 export async function runClearanceChecks(){
   check((game.world.id==="society-fresh-validation"||game.world.id.startsWith("release-audit-"))&&game.user.isGM,"Requires isolated validation World and GM");
-  await unlock("isolated society verification passphrase");
+  
   const s=game.paranoia.SecurityClearanceService,t=game.paranoia.treason;
   const existing=game.actors.find(a=>a.type==="character"),old=existing.system.securityClearance;
   const legacySource=existing.system.toObject();delete legacySource.securityProgress;delete legacySource.clearanceProgressionEnabled;
@@ -27,7 +26,7 @@ export async function runClearanceChecks(){
   check(a.name==="DAVID-O-ARO-1"&&a.prototypeToken.name===a.name,"Citizen/prototype identity");
   check(a.system.securityProgress.successfulMissions===0&&s.getNext(a)==="yellow","Reset/derived target");check(equipmentWarnings(a).length===0,"Item warning stale");
   check(unrelated===JSON.stringify({items:a.items.map(i=>i.toObject()),credits:a.system.credits,society:a.system.secretSociety,service:a.system.service,power:a.system.mutantPower}),"Promotion mutated unrelated fields");
-  check(!JSON.stringify(a.toObject()).includes("CLEARANCE-PRIVATE-GM-NOTE")&&!JSON.stringify(game.settings.get("paranoia-2-edition","treasonVault")).includes("CLEARANCE-PRIVATE-GM-NOTE"),"GM note exposed");
+  check(!JSON.stringify(a.toObject()).includes("CLEARANCE-PRIVATE-GM-NOTE")&&!JSON.stringify(game.settings.get("paranoia-2-edition","treasonLedger")).includes("CLEARANCE-PRIVATE-GM-NOTE"),"GM note exposed");
   await s.recordSuccessfulMission(a,`second-${a.id}`,{validSurvivor:true});
   const p=JSON.stringify(a.system.securityProgress),h=JSON.stringify(s.getHistory(a));
   await a.update({"system.health.status":"dead"});await game.paranoia.CloneService.activateNextClone(a,{inventory:"keep",power:"keep",silent:true});
@@ -43,7 +42,7 @@ export async function runClearanceChecks(){
   await a.sheet.render(true);check(a.sheet.element.querySelector(".p2-clearance"),"Character panel missing");
   await npc.sheet.render(true);check(npc.sheet.element.querySelector(".p2-clearance"),"NPC panel missing");await npc.sheet.close();
   const dashboard=await openDashboard();check(dashboard.element.textContent.includes("ASCENSOS"),"Dashboard missing");await dashboard.close();
-  return {version:game.version,actorId:a.id,npcId:npc.id,ownerName:owner.name,observerName:observer.name,creation:true,report:true,promotion:true,demotion:true,clone:true,encryptedHistory:true,itemWarnings:true,npc:true};
+  return {version:game.version,actorId:a.id,npcId:npc.id,ownerName:owner.name,observerName:observer.name,creation:true,report:true,promotion:true,demotion:true,clone:true,GM-onlyHistory:true,itemWarnings:true,npc:true};
 }
 export async function checkClearancePermissions(actorId,isOwner){
   const a=game.actors.get(actorId),s=game.paranoia.SecurityClearanceService;

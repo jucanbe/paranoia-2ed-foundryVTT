@@ -4,11 +4,10 @@ import * as service from "../module/credits/service.mjs";
 import {entry,creationLedger,purchaseCost} from "../module/credits/rules.mjs";
 import {ItemCatalog} from "../module/items/catalog.mjs";
 import {purchaseSummary} from "../module/creation/purchases.mjs";
-import {unlock} from "../module/treason/store.mjs";
 import * as treason from "../module/treason/service.mjs";
 const gm={id:"gm",isGM:true},owner={id:"owner",isGM:false},other={id:"other",isGM:false},users=[gm,owner,other];users.activeGM=gm;
-let serial=0,vault={},fail=false;const actors=new Map(),messages=[];
-globalThis.game={user:gm,users,actors:[],time:{worldTime:123},settings:{get:()=>structuredClone(vault),set:async(_ns,_key,v)=>{vault=structuredClone(v);}},messages};
+let serial=0,ledger={},fail=false;const actors=new Map(),messages=[];
+globalThis.game={user:gm,users,actors:[],time:{worldTime:123},settings:{get:()=>structuredClone(ledger),set:async(_ns,_key,v)=>{ledger=structuredClone(v);}},messages};
 globalThis.Hooks={callAll(){}};globalThis.ui={notifications:{warn(){}}};
 function merge(a,b){for(const [k,v] of Object.entries(b)){if(v&&typeof v==="object"&&!Array.isArray(v)){a[k]??={};merge(a[k],v);}else a[k]=structuredClone(v);}return a;}
 function expand(value){const out={};for(const [path,v] of Object.entries(value)){let target=out;const parts=path.split(".");for(const p of parts.slice(0,-1))target=target[p]??={};target[parts.at(-1)]=v;}return out;}
@@ -51,12 +50,12 @@ test("credit ledger, negative balances, purchases, privacy, corrections, reports
     const original=service.getHistory(a)[1];await service.correctTransaction(a,original.id,-500,{reason:"Recompensa corregida"});assert.equal(service.getBalance(a),200);assert.equal(service.getHistory(a).length,3);assert.equal(service.getHistory(a).at(-1).corrects,original.id);
     for(const bad of [NaN,Infinity,"100"]){assert.throws(()=>service.adjust(a,bad,{reason:"Bad"}));}
   });
-  await t.test("private reasons and notes encrypted in Actor; owner sees amount, public cards omit private detail",async()=>{
-    await unlock("credit service secret test phrase");await service.reward(a,10,"SECRET-SOCIETY-PAYMENT",{notes:"GM-ONLY-CREDIT-NOTE",privateNotes:true,notification:"public",showReason:true});
-    assert.equal(JSON.stringify(a.toObject()).includes("GM-ONLY-CREDIT-NOTE"),false);assert.equal(messages.at(-1).content.includes("SECRET-SOCIETY-PAYMENT"),false);
+  await t.test("native private notes are omitted from owner history and public cards",async()=>{
+    await service.reward(a,10,"SECRET-SOCIETY-PAYMENT",{notes:"GM-ONLY-CREDIT-NOTE",privateNotes:true,notification:"public",showReason:true});
+    assert.equal(JSON.stringify(a.toObject()).includes("GM-ONLY-CREDIT-NOTE"),true);assert.equal(messages.at(-1).content.includes("SECRET-SOCIETY-PAYMENT"),false);
     const h=service.getHistory(a).at(-1);assert.equal(h.private,true);assert.equal(h.privateData,undefined);assert.equal((await service.getPrivateDetails(a,h.id)).notes,"GM-ONLY-CREDIT-NOTE");
   });
-  await t.test("owner coordinator spend works but cannot award, fine, override, decrypt or spend others' funds",async()=>{
+  await t.test("owner coordinator spend works but cannot award, fine, override, read private details or spend others' funds",async()=>{
     const c=actor(50);await service.executeSpend(c,25,"Gasto",{requestId:"owner-spend"},owner);assert.equal(service.getBalance(c),25);await service.executeSpend(c,25,"Gasto",{requestId:"owner-spend"},owner);assert.equal(service.getBalance(c),25);
     assert.throws(()=>service.executeSpend(c,50,"Forged",{allowDebt:true},owner));assert.throws(()=>service.executePurchase(c,kit,3,{allowDebt:true},owner));
     game.user=owner;try{assert.throws(()=>service.reward(a,100,"Forged"));assert.throws(()=>service.fine(a,1,"Forged"));assert.throws(()=>service.adjust(a,100,{reason:"Forged"}));await assert.rejects(service.getPrivateDetails(a,service.getHistory(a).at(-1).id));}finally{game.user=gm;}
@@ -72,7 +71,7 @@ test("credit ledger, negative balances, purchases, privacy, corrections, reports
     const c=actor(100),rows=[{actor:c,delta:1,reason:"Failure",result:"failure",validSurvivor:false,countForPromotion:true,creditReward:1000,creditFine:250,creditReason:"Recompensa y daños"}];
     await treason.applyMissionReport(rows,{missionId:"credit-report"});assert.equal(service.getBalance(c),850);assert.deepEqual(service.getHistory(c).map(h=>[h.type,h.delta]),[["reward",1000],["fine",-250]]);
     await treason.applyMissionReport(rows,{missionId:"credit-report"});assert.equal(service.getBalance(c),850);assert.equal(service.getHistory(c).length,2);assert.equal(treason.getRecord(c).history.length,1);
-    const saved=structuredClone(vault);await assert.rejects(treason.applyMissionReport([{...rows[0],creditReward:-1}],{missionId:"bad-credit-report"}));assert.deepEqual(vault,saved);
+    const saved=structuredClone(ledger);await assert.rejects(treason.applyMissionReport([{...rows[0],creditReward:-1}],{missionId:"bad-credit-report"}));assert.deepEqual(ledger,saved);
     const before=service.getBalance(c);await treason.declareTraitor(c,"Conviction",5000);assert.equal(service.getBalance(c),before);
   });
   await t.test("stable direct reward ID prevents double click",async()=>{

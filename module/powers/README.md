@@ -114,7 +114,7 @@ Foundry Chat to Actor owners and GMs. Other users have no Secret tab or power co
 private chat content respects Foundry visibility. No power name/resource is inserted
 into public sheet markup or token effect icons. The optional public message contains
 only text deliberately entered by the GM as observable consequences. As with existing
-secret Actor fields, this uses Foundry ownership/UI visibility, not encryption or a
+secret Actor fields, this uses Foundry ownership/UI visibility, interface privacy only or a
 separate server-side field-permission system.
 
 ## Files

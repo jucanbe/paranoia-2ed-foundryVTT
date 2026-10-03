@@ -53,7 +53,7 @@ test("new clone restores the spent PM pool and removes only system-managed power
   assert.equal(a.system.mutantPower.name,"Telepatía");assert.equal(a.system.attributes.mutantPower.value,17);
   assert.deepEqual(a.toObject().effects,[{name:"Unrelated"}]);
 });
-test("clone preserves complete society membership, missions, contacts, favors and encrypted GM history",async()=>{
+test("clone preserves complete society membership, missions, contacts, favors and GM-only GM history",async()=>{
   const a=actor(),source=a.toObject();
   source.system.mutantPower.learned=[{id:"learned",key:"mindReading",source:"psionics",societyLevel:2,membershipId:"society",learnedAt:123}];
   source.system.securityClearance="blue";
@@ -63,7 +63,7 @@ test("clone preserves complete society membership, missions, contacts, favors an
   source.system.skills.agility.club.value=15;
   source.system.secretSociety={societyKey:"sierraClub",rank:{level:2,label:""},status:"active",exposed:true,
     missions:[{id:"secret",title:"Robar prototipo",status:"active"}],contacts:[{name:"Contacto"}],favors:[{description:"Favor pendiente"}],
-    gmData:{iv:"encrypted",data:"ciphertext"},membershipHistory:[{societyKey:"humanists"}]};
+    gmData:{memberships:{legacy:{notes:"GM note",rankHistory:[]}}},membershipHistory:[{societyKey:"humanists"}]};
   await a.update({system:source.system});await CloneService.activateNextClone(a,{inventory:"keep",silent:true});
   assert.deepEqual(a.system.secretSociety,source.system.secretSociety);assert.equal(a.system.cloneNumber,2);
   assert.deepEqual(a.system.mutantPower.learned,source.system.mutantPower.learned);

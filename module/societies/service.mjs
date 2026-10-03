@@ -1,7 +1,6 @@
 import {tr,trHTML} from "../i18n/index.mjs";
 import {SOCIETY_REGISTRY,societyName,MEMBERSHIP_STATUSES,MISSION_STATUSES,MISSION_CATEGORIES} from "./registry.mjs";
 import {newMembership,replaceMembership,migrateMembership} from "./migration.mjs";
-import {sealReport,openReport,isUnlocked} from "../treason/store.mjs";
 import {ITEM_SKILLS} from "../items/config.mjs";
 const queues=new Map();
 const id=()=>foundry.utils.randomID();
@@ -9,7 +8,7 @@ const text=value=>String(value??"").trim();
 function citizen(actor){if(!["character","npc"].includes(actor?.type))throw Error(tr("La afiliación requiere un ciudadano."));}
 function gm(actor){citizen(actor);if(!game.user.isGM)throw Error(tr("Solo el DJ puede gestionar afiliaciones y misiones."));}
 export function canView(actor,user=game.user){return !!user?.isGM||(actor?.type==="character"&&actor.testUserPermission(user,"OWNER"));}
-export function getMembership(actor){citizen(actor);if(!canView(actor))throw Error(tr("Afiliación confidencial."));return migrateMembership(actor.system.secretSociety?.toObject?.()??actor.system.secretSociety);}
+export function getMembership(actor){citizen(actor);if(!canView(actor))throw Error(tr("Afiliación confidencial."));const member=migrateMembership(actor.system.secretSociety?.toObject?.()??actor.system.secretSociety);if(!game.user.isGM)delete member.gmData;return member;}
 export function worldDefinitions(){return game.settings.get("paranoia-2-edition","customSocieties")??{};}
 export function getDefinition(key){return SOCIETY_REGISTRY[key]??worldDefinitions()[key]??null;}
 export async function saveWorldDefinition(key,input){
@@ -35,7 +34,7 @@ export function areEnemies(a,b){const def=getDefinition(a);return def?.enemies.i
 export async function privateData(actor){
   gm(actor);const member=getMembership(actor);
   if(!member.gmData)return {memberships:{}};
-  return openReport(member.gmData);
+  return structuredClone(member.gmData.native?member.gmData.value:member.gmData.memberships?member.gmData:{memberships:{}});
 }
 export function memberPrivate(data,member){return data.memberships[member.id||"legacy"]??={notes:"",rankHistory:[],missions:{},contacts:{}};}
 function mutate(actor,callback,{privateEdit=false}={}){
@@ -43,10 +42,10 @@ function mutate(actor,callback,{privateEdit=false}={}){
   const result=(queues.get(actor.uuid)??Promise.resolve()).catch(()=>{}).then(async()=>{
     const previous=getMembership(actor),stamp=JSON.stringify(actor.system.secretSociety);
     let secret;
-    if(privateEdit){if(!isUnlocked())throw Error(tr("Desbloquea el registro secreto del DJ para guardar notas o historial."));secret=await privateData(actor);}
+    if(privateEdit){secret=await privateData(actor);}
     const next=structuredClone(previous);await callback(next,secret);
-    if(privateEdit)next.gmData=await sealReport(secret);
-    // Validate before touching the Actor. Membership and encrypted audit share one document write.
+    if(privateEdit)next.gmData=structuredClone(secret);
+    // Validate before touching the Actor. Membership and GM audit share one document write.
     new CONFIG.Actor.dataModels[actor.type]({...actor.system.toObject(),secretSociety:next},{strict:true});
     if(JSON.stringify(actor.system.secretSociety)!==stamp)throw Error(tr("La afiliación cambió durante la edición. Revisa y repite."));
     if(!await actor.update({"system.secretSociety":next},{paranoiaSocietyEdit:true}))throw Error(tr("No se guardó la afiliación."));

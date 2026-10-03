@@ -51,7 +51,9 @@ Canonical registries: identity clearances in `module/actors/identity.mjs`; Servi
 
 Back up your entire World before upgrading. Patch-safe DataModel migrations normalize old society names/ranks, armor codes/protections, weapon categories/ammunition/reliability and power aliases. Unknown names and source data remain preserved. World data version 1 is applied automatically by the active GM: a GM-only Journal backup is written before document updates. Failed documents remain retryable. Existing balances, skills and histories are preserved; no purchases, PD spending or rewards are inferred. MigrationService allows a deliberate retry/import migration. Locked system Compendiums are rebuilt from source rather than migrated in place.
 
-Legacy Treason values are imported when the GM first unlocks the encrypted vault, only if no authoritative record already exists. Keep the vault passphrase safe: it is not stored in the system. All GM-only ledgers and society private notes use the existing encrypted store. Secret sheet context is restricted to owner/GM; NPC internals remain GM-only. Foundry document ownership is also an important boundary: do not grant observers access to Actors whose source data must remain confidential. UI hiding is not server-side field encryption for every Actor field.
+Foundry-native privacy is intended to prevent accidental/table-level disclosure, not to defend against an authorized player deliberately inspecting synchronized client data.
+
+Normal play uses native Foundry whispers, ownership and sheet visibility over HTTP. See [tabletop privacy](docs/native-privacy-audit.md).
 
 ## Known source gaps
 

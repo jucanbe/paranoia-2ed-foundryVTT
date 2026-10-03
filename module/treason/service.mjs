@@ -1,7 +1,7 @@
 import {staticMarkup} from "../i18n/index.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
 import {NS,initialRecord,adjustRecord,computerTrust,integer} from "./rules.mjs";
-import {readRecord,readInbox,actorKey,transaction,requireGM,sealReport,openReport} from "./store.mjs";
+import {readRecord,readInbox,actorKey,transaction,requireGM} from "./ledger.mjs";
 import {stageMissionReport,resumeMissionReport} from "../clearance/service.mjs";
 const esc=value=>foundry.utils.escapeHTML(String(value??""));
 const meta=()=>({id:foundry.utils.randomID(),timestamp:Date.now(),worldTime:game.time.worldTime,userId:game.user.id});
@@ -75,17 +75,19 @@ export async function publishDeclarations(){
     }
   });
 }
-export async function rollComputerTrust(actor,{request="",requestId=null}={}){
+export async function rollComputerTrust(actor,{request="",requestId=null,public:publicResponse=true}={}){
   requireGM();
   const result=await transaction(async body=>{
     const r=record(body,actor);if(!r.enabled)throw Error(tr("Seguimiento desactivado."));
     const entry=requestId?body.inbox[requestId]:null;
     if(requestId&&(!entry||entry.status!=="pending"||entry.kind!=="trust"||entry.actorUuid!==actor.uuid))throw Error(tr("Solicitud ya resuelta o no válida."));
+    const previous=requestId?r.trust.find(t=>t.id===requestId):null;
+    if(previous){entry.status="resolved";return structuredClone(previous);}
     const roll=await new foundry.dice.Roll("1d20").evaluate();
     const check=computerTrust(roll.total,r.points),id=requestId??foundry.utils.randomID();
     const detail={...meta(),...check,request:String(request),roll:roll.toJSON(),id};
     r.trust.push(detail);if(entry)entry.status="resolved";
-    body.responses??={};body.responses[id]={actorUuid:actor.uuid,name:actor.name,request:String(request),success:check.success,published:false};
+    body.responses??={};body.responses[id]={actorUuid:actor.uuid,name:actor.name,request:String(request),success:check.success,published:false,public:entry?.public??publicResponse,authorId:entry?.authorId??game.user.id};
     return detail;
   });
   await publishResponses();return result;
@@ -95,47 +97,39 @@ export async function publishResponses(){
     for(const [id,r] of Object.entries(body.responses??{})){
       if(r.published)continue;
       if(!game.messages.some(m=>m.getFlag(NS,"computerResponse")===id))await foundry.documents.ChatMessage.create({
-        content:trHTML`<section><strong>${esc(r.name)}</strong><p>Solicita: ${esc(r.request)}</p><b>EL ORDENADOR: SOLICITUD ${r.success?tr("ACEPTADA"):tr("DENEGADA")}</b></section>`,flags:{[NS]:{computerResponse:id}}});
+        content:trHTML`<section><strong>${esc(r.name)}</strong><p>Solicita: ${esc(r.request)}</p><b>EL ORDENADOR: SOLICITUD ${r.success?tr("ACEPTADA"):tr("DENEGADA")}</b></section>`,whisper:r.public===false?game.users.filter(u=>u.isGM||u.id===r.authorId).map(u=>u.id):[],flags:{[NS]:{computerResponse:id}}});
       r.published=true;
     }
   });
 }
-/** Authenticated Chat author supplies identity; ciphertext protects private reports from other clients. */
+/** Native Foundry whispers provide tabletop/UI privacy; source data remains synchronized. */
 export async function submitReport(payload){
   const actor=await fromUuid(payload.actorUuid);owner(actor);
   if(!game.users.activeGM)throw Error(tr("Se necesita un DJ conectado."));
   if(!["trust","accusation","proposal"].includes(payload.kind))throw Error(tr("Solicitud desconocida."));
   if(!String(payload.reason??"").trim())throw Error(tr("Indica el motivo o solicitud."));
-  const box=await sealReport(payload);
-  const publicText=payload.kind==="accusation"&&payload.public?trHTML`<p>${esc(actor.name)} acusa a ${esc((await fromUuid(payload.accusedUuid))?.name)}: ${esc(payload.reason)}</p><p>${esc(payload.notes)}</p>`:staticMarkup("<p>Informe privado enviado al Ordenador.</p>");
+  // Public reports use ordinary Chat; private reports use native recipients.
+  const publiclyVisible=["accusation","trust"].includes(payload.kind)&&payload.public===true;
+  if(payload.kind==="accusation")actorKey(await fromUuid(payload.accusedUuid));
+  const value={kind:payload.kind,actorUuid:actor.uuid,accusedUuid:payload.accusedUuid??null,reason:String(payload.reason),notes:String(payload.notes??""),public:publiclyVisible,category:payload.category??"other",...(payload.suggestedDelta!==undefined?{suggestedDelta:integer(payload.suggestedDelta)}:{})};
+  const publicText=payload.kind==="accusation"?trHTML`<p>${esc(actor.name)} acusa a ${esc((await fromUuid(payload.accusedUuid))?.name)}: ${esc(value.reason)}</p><p>${esc(value.notes)}</p>`:trHTML`<p>${esc(actor.name)}: ${esc(value.reason)}</p><p>${esc(value.notes)}</p>`;
   return foundry.documents.ChatMessage.create({content:publicText,
-    whisper:payload.public?[]:game.users.filter(u=>u.isGM||u.id===game.user.id).map(u=>u.id),
-    flags:{[NS]:{treasonReport:{box}}}});
+    whisper:publiclyVisible?[]:game.users.filter(u=>u.isGM||u.id===game.user.id).map(u=>u.id),
+    flags:{[NS]:{treasonReport:value}}});
 }
 export const propose=({actor,category="other",reason,suggestedDelta,notes=""})=>submitReport({kind:"proposal",actorUuid:actor.uuid,category,reason,suggestedDelta,notes,public:false});
-export async function receiveReports(){
-  requireGM();const known=readInbox();
-  for(const message of game.messages){
-    const packet=message.getFlag(NS,"treasonReport");if(!packet||known[message.id])continue;
-    let value;
-    try{
-      value=await openReport(packet.box);const actor=await fromUuid(value.actorUuid);owner(actor,message.author);
-      if(!["trust","accusation","proposal"].includes(value.kind)||!String(value.reason??"").trim())throw Error(tr("Informe no válido."));
-      if(value.kind==="accusation")actorKey(await fromUuid(value.accusedUuid));
-      if(value.suggestedDelta!==undefined)integer(value.suggestedDelta);
-    }catch{continue;} // Malformed or unauthorized packets cannot mutate citizen records.
-    await transaction(body=>{body.inbox[message.id]??={...value,authorId:message.author.id,status:"pending",timestamp:message.timestamp};});
-  }
-  return readInbox();
-}
+export async function receiveReports(){requireGM();return readInbox();}
 export async function adjudicateReport(id,{delta=0,reason,disposition="note"}={}){
   return transaction(async body=>{
     const entry=body.inbox[id];if(!entry||entry.status!=="pending"||entry.kind==="trust")throw Error(tr("Informe ya resuelto o no válido."));
     if(!["dismiss","note","apply"].includes(disposition))throw Error(tr("Decisión no válida."));
     if(disposition==="apply"){
       const actor=await fromUuid(entry.kind==="accusation"?entry.accusedUuid:entry.actorUuid);
-      change(body,actor,delta,{reason:reason||entry.reason,category:entry.kind==="accusation"?"accusation":entry.category,
-        relatedActor:entry.kind==="accusation"?entry.actorUuid:null,notes:entry.notes});
+      if(!record(body,actor).history.some(h=>h.reportId===id)){
+        change(body,actor,delta,{reason:reason||entry.reason,category:entry.kind==="accusation"?"accusation":entry.category,
+          relatedActor:entry.kind==="accusation"?entry.actorUuid:null,notes:entry.notes});
+        record(body,actor).history.at(-1).reportId=id;
+      }
     }
     entry.status=disposition;entry.adjudication={...meta(),delta:disposition==="apply"?delta:0,reason:reason??""};
   });

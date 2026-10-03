@@ -14,7 +14,7 @@
     <div class="p2-creation-fields">
       <label>{{p2t labels.name}}<input name="personalName" type="text" value="{{data.identity.name}}" autocomplete="off"></label>
       <label>{{p2t labels.clearance}}<select name="clearance" {{#if clearanceLocked}}disabled{{/if}}>{{#each clearances}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{p2t label}}</option>{{/each}}</select>{{#if clearanceLocked}}<input type="hidden" name="clearance" value="{{data.securityClearance}}">{{/if}}</label>
-      <label>{{p2t labels.sector}}<input name="sector" type="text" value="{{data.identity.sector}}" autocomplete="off"></label>
+      <label>{{p2t labels.sector}}<input name="sector" type="text" value="{{data.identity.sector}}" autocomplete="off" minlength="3" maxlength="3" pattern="\p{L}{3}" placeholder="ARO" required></label>
       <label>{{p2t labels.clone}}<input name="cloneNumber" type="number" value="{{data.cloneNumber}}" min="1" step="1" data-dtype="Number" {{#unless isGM}}readonly{{/unless}}></label>
     </div>
     <p>{{localize "P2.Text.mh7aj2l"}}</p>

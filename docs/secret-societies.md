@@ -1,3 +1,4 @@
+
 # Secret societies — Foundry VTT 14
 
 ## Source and registry
@@ -21,7 +22,7 @@ Character and NPC models share `module/data/models/society.mjs` through CitizenD
 - Contacts: ID, name, optional Actor UUID, role, notes and trust notes.
 - Favors/obligations: title, description, type (`favor` / `obligation`), status (`pending` / `resolved`), and the preserved legacy resolved flag, without a points economy.
 - `membershipHistory`, retaining former affiliation data, missions, contacts and favors.
-- `gmData`, an encrypted envelope containing membership-specific GM notes, rank audit, mission notes and contact notes.
+- `gmData`, an GM-only data object containing membership-specific GM notes, rank audit, mission notes and contact notes.
 
 Known old `name` values become keys; canonical names are no longer redundantly stored. Unknown names become custom memberships. Numeric old ranks become levels; descriptive ranks remain labels. Notes are preserved. Partial notes-only updates do not reset rank or affiliation. Foundry applies this idempotent migration when loading legacy data; normal saves persist the normalized shape. No production-world bulk rewrite was performed.
 
@@ -31,21 +32,19 @@ Creation now assigns level 1 with a blank title. Recreating/changing a character
 
 **Membership uses normal Foundry owner/GM sheet visibility.** Character owners see member-facing society data on the Secret tab. Observers and other players receive no society panel or society reference action. NPC society views are GM-only even if an NPC has a player ownership grant. Member notes remain editable through normal form submission. GM controls manage affiliation, status, rank, missions, contacts and favors. The service also checks these roles; normal form updates reject owner changes to managed fields outside character creation.
 
-This is **not encryption of member-facing Actor data**. Foundry transmits Actor source data to clients; sheet visibility alone cannot prevent a technically knowledgeable client inspecting those fields. This follows the normal-permission option stated during implementation. Do not claim that membership itself has the stronger encrypted privacy of Treason Points. The optional encryption question was unanswered, so no additional personal owner key/passphrase workflow was introduced.
-
-GM-only notes and rank history are different: they use the existing Treason encryption keys, and only ciphertext is stored in Actor `gmData`. The GM unlocks the existing secret ledger to read/update protected notes or rank history. There is no second passphrase. Players cannot decrypt or view those details. Ciphertext is copied with clone data, preserving the history. Keep the existing GM passphrase and world backup; moving encrypted Actors into another World does not transfer that World's decryption key automatically.
+GM notes and rank history are ordinary Actor data shown only in GM contexts. See [the native tabletop model](native-privacy-audit.md).
 
 No mission or membership details are automatically posted to public Chat. Mission assignment is silent. The explicit reveal action can publish only citizen name and affiliation. No private notes appear in that message. The reference compendium is hidden from Player/Trusted roles through Foundry's normal pack ownership; bundled source/reference text is not cryptographically secret.
 
 ## Workflows and integrations
 
-The Secret tab supplies member reference, missions, contacts, favors and former affiliations. GM actions assign/change society, promote/demote/correct rank, change status, expel, assign/resolve missions, add contacts/favors, inspect encrypted history and reveal affiliation.
+The Secret tab supplies member reference, missions, contacts, favors and former affiliations. GM actions assign/change society, promote/demote/correct rank, change status, expel, assign/resolve missions, add contacts/favors, inspect GM-only history and reveal affiliation.
 
 Rank changes record old/new rank, reason, timestamp, world time, GM and private note. Expulsion requires UI confirmation and retains history. Mission completion offers optional rank correction, favor notes or a Treason proposal; none is applied automatically. Equipment rewards continue to use normal catalogue drag-and-drop and existing Credits under GM control, not a second reward economy.
 
 Discovery offers no PT change, chosen additional PT, a separately confirmed traitor declaration, or a custom adjustment. These call the existing TreasonService. Mere membership, mission completion and society changes never affect PT, Computer Trust, health, clearance, Items or Credits automatically. Communist exposure does not execute the citizen.
 
-CloneService already preserves Citizen system data; a real clone replacement was verified to retain rank, missions, contacts, favors, exposed state and encrypted GM history. No clone reroll or reset was added.
+CloneService already preserves Citizen system data; a real clone replacement was verified to retain rank, missions, contacts, favors, exposed state and GM-only GM history. No clone reroll or reset was added.
 
 The namespaced API is `game.paranoia.SecretSocietyService`, including `getDefinition`, `worldDefinitions`, `saveWorldDefinition`, `getMembership`, `assignMembership`, `changeRank`, `assignMission`, `editMission`, `resolveMission`, `addContact`, `resolveContact`, `addFavor`, `markExposed`, `setStatus`, `removeMembership`, `proposeDiscovery`, `areAllies` and `areEnemies`. `paranoiaSocietyRankChanged` fires after persistence with the Actor and `{societyKey, previousRank, newRank, hooks}`. A Psionics promotion records an instruction entitlement in that same membership transaction. The GM then uses `MutantPowerService.learnPsionicPower(actor, key, level)` or the panel action to choose a new appropriate power. The original remains at `mutantPower.name`; additional powers live in `mutantPower.learned`. A level is granted once across the Actor's learned-power ledger, even after demotion/re-promotion. Selecting learned powers reuses the original Attribute, PM, GM approval, combat and private-chat paths. CloneService preserves both arrays. Legacy levels receive no retroactive invented grants.
 

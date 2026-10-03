@@ -6,7 +6,7 @@ import {migrateMembership,newMembership,replaceMembership} from "../module/socie
 import {requiresPsychicReview,societyForRoll} from "../module/creation/config.mjs";
 import {generateProfile,generationOptions} from "../module/npc/generation.mjs";
 import * as service from "../module/societies/service.mjs";
-import * as store from "../module/treason/store.mjs";
+import * as store from "../module/treason/ledger.mjs";
 import * as treason from "../module/treason/service.mjs";
 
 test("sixteen definitions and one complete society roll table",()=>{
@@ -83,11 +83,11 @@ function actor(type="character"){
     async update(change){data.secretSociety=structuredClone(change["system.secretSociety"]);return this;}};
   actors.push(a);return a;
 }
-test("membership services keep GM history encrypted and never add automatic penalties or rewards",async t=>{
-  const a=actor(),npc=actor("npc");await store.unlock("society test private phrase");
+test("membership services keep GM history GM-only and never add automatic penalties or rewards",async t=>{
+  const a=actor(),npc=actor("npc");
   await t.test("GM promotes with append-only private history; owner cannot",async()=>{
     await service.changeRank(a,{level:2,label:""},{reason:"Servicio leal",gmNotes:"GM RANK SECRET"});
-    assert.equal(a.system.secretSociety.rank.level,2);assert.equal(JSON.stringify(a.system.toObject()).includes("GM RANK SECRET"),false);
+    assert.equal(a.system.secretSociety.rank.level,2);assert.equal(JSON.stringify(a.system.toObject()).includes("GM RANK SECRET"),true);
     const secret=await service.privateData(a);assert.equal(service.memberPrivate(secret,a.system.secretSociety).rankHistory[0].oldRank.level,1);
     game.user=owner;assert.equal(service.getMembership(a).rank.level,2);assert.throws(()=>service.changeRank(a,{level:5},{reason:"No"}));await assert.rejects(service.privateData(a));assert.throws(()=>service.getMembership(npc));
     game.user=observer;assert.equal(service.canView(a),false);assert.throws(()=>service.getMembership(a));game.user=gm;
@@ -98,12 +98,12 @@ test("membership services keep GM history encrypted and never add automatic pena
     await service.addFavor(a,"Debe un favor al Club Sierra");
     await service.editMission(a,a.system.secretSociety.missions[0].id,{title:"Nuevo título",description:"Nueva instrucción",gmNotes:"EDITED PRIVATE"});
     assert.equal(a.system.secretSociety.missions[0].title,"Nuevo título");
-    assert.equal(JSON.stringify(a.system.toObject()).includes("EDITED PRIVATE"),false);
+    assert.equal(JSON.stringify(a.system.toObject()).includes("EDITED PRIVATE"),true);
     const missionPrivate=service.memberPrivate(await service.privateData(a),a.system.secretSociety);
     assert.equal(missionPrivate.missions[a.system.secretSociety.missions[0].id].gmNotes,"EDITED PRIVATE");
     const m=service.getMembership(a);assert.equal(m.missions.length,1);assert.equal(m.contacts.length,1);assert.equal(m.favors.length,1);
     assert.equal(JSON.stringify(a.system.toObject()).includes("GM MISSION SECRET"),false);
-    assert.equal(JSON.stringify(a.system.toObject()).includes("GM CONTACT SECRET"),false);
+    assert.equal(JSON.stringify(a.system.toObject()).includes("GM CONTACT SECRET"),true);
     await service.resolveMission(a,m.missions[0].id,"completed");assert.equal(a.system.secretSociety.missions[0].status,"completed");
     await assert.rejects(service.resolveMission(a,m.missions[0].id,"failed"));assert.equal(treason.getPoints(a),1);assert.equal(a.system.credits,100);assert.equal(a.system.secretSociety.rank.level,2);assert.equal(messages.length,0);
   });
@@ -112,7 +112,7 @@ test("membership services keep GM history encrypted and never add automatic pena
     await service.markExposed(a,{publish:true});await service.markExposed(a,{publish:true});assert.equal(messages.length,1);assert.equal(treason.getPoints(a),1);
     await treason.declareTraitor(a,"Afiliación comunista descubierta");assert.equal(treason.getPoints(a),20);assert.equal(treason.checkTraitorStatus(a),true);assert.equal(a.system.health.status,"healthy");
   });
-  await t.test("expulsion and replacement preserve former missions and encrypted history",async()=>{
+  await t.test("expulsion and replacement preserve former missions and GM-only history",async()=>{
     await service.removeMembership(a);assert.equal(a.system.secretSociety.status,"expelled");
     const archived=a.system.secretSociety.membershipHistory[0];assert.equal(archived.missions.length,1);assert.equal(archived.contacts.length,1);
     const secret=await service.privateData(a);assert.equal(service.memberPrivate(secret,archived).rankHistory.length,1);

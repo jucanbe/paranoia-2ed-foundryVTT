@@ -3,7 +3,7 @@ import { basicSkillForAttribute, isGeneratedAttribute } from "../data/derived-ca
 import {initialPoints} from "../powers/rules.mjs";
 import {identifySociety} from "../societies/registry.mjs";
 import {newMembership,replaceMembership} from "../societies/migration.mjs";
-import { CLEARANCE_CODES, normalizeIdentityText } from "../actors/identity.mjs";
+import { CLEARANCE_CODES, normalizeIdentityText, validSectorCode } from "../actors/identity.mjs";
 import { DEVELOPMENT_POINTS, SERVICES, skillMaximum, serviceForRoll, powerForRoll, societyForRoll, validateD20, requiresPsychicReview } from "./config.mjs";
 
 /** Local draft only. No Foundry documents are mutated here. rollD20 is injectable for tests. */
@@ -130,6 +130,7 @@ export class CreationSession {
     const d = this.data;
     if (step === "identity") {
       if (!normalizeIdentityText(d.identity.name) || !normalizeIdentityText(d.identity.sector)) throw new Error(tr("Introduce nombre y sector."));
+      if (!validSectorCode(d.identity.sector)) throw new Error(tr("El sector debe contener exactamente tres letras, sin números ni símbolos."));
       if (!Object.hasOwn(CLEARANCE_CODES, d.securityClearance) || !Number.isInteger(d.cloneNumber) || d.cloneNumber < 1) throw new Error(tr("Revisa nivel y número de clon."));
     }
     if (["attributes", "derived", "skills"].includes(step) && !this.attributesReady) throw new Error(tr("Establece los ocho atributos (1–20)."));

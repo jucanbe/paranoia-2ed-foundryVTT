@@ -2,7 +2,6 @@ import {tr,trHTML} from "../i18n/index.mjs";
 import {amount,entry,ledger,purchaseCost,TRANSACTION_TYPES} from "./rules.mjs";
 import {ItemCatalog} from "../items/catalog.mjs";
 import {canPurchase} from "../creation/purchases.mjs";
-import {sealReport,openReport} from "../treason/store.mjs";
 import {requestCredits} from "./requests.mjs";
 const queues=new Map(),NS="paranoia-2-edition";
 function citizen(actor){if(!["character","npc"].includes(actor?.type))throw Error(tr("Solo los ciudadanos tienen un saldo personal de créditos."));}
@@ -12,7 +11,7 @@ function gm(actor){citizen(actor);if(!game.user.isGM||game.users.activeGM?.id!==
 export const isEnabled=actor=>actor?.type==="character"||(actor?.type==="npc"&&actor.system.creditTrackingEnabled===true);
 export function getBalance(actor){owner(actor);return amount(actor.system.credits);}
 export function getHistory(actor){owner(actor);return ledger(actor).history.map(({privateData,...h})=>({...h,private:!!privateData}));}
-export async function getPrivateDetails(actor,id){gm(actor);const h=ledger(actor).history.find(h=>h.id===id);if(!h)throw Error(tr("Transacción desconocida."));return h.privateData?openReport(h.privateData):null;}
+export async function getPrivateDetails(actor,id){gm(actor);const h=ledger(actor).history.find(h=>h.id===id);if(!h)throw Error(tr("Transacción desconocida."));return h.privateData?structuredClone(h.privateData.native?h.privateData.value:h.privateData):null;}
 function enqueue(actor,callback){const result=(queues.get(actor.uuid)??Promise.resolve()).catch(()=>{}).then(callback);queues.set(actor.uuid,result);return result;}
 const stamp=actor=>JSON.stringify({credits:actor.system.credits,ledger:actor.system.creditLedger,items:actor.items?.map(i=>i.toObject())});
 const meta=user=>({id:foundry.utils.randomID(),timestamp:Date.now(),worldTime:game.time.worldTime,userId:(user??game.user).id});
@@ -27,9 +26,8 @@ async function write(actor,balance,history,expected,items){
 }
 async function privateOptions(options){
   if(!options.privateNotes)return options;
-  if(!game.settings.get(NS,"treasonVault")?.publicKey)throw Error(tr("Prepara el registro secreto del DJ para cifrar notas económicas privadas."));
-  // Never persist private reasons, item sources or notes in plaintext Actor data.
-  const privateData=await sealReport({reason:String(options.reason??""),notes:String(options.notes??""),relatedItem:String(options.relatedItem??"")});
+  // Private details are omitted by getHistory and all player-facing chat cards.
+  const privateData={reason:String(options.reason??""),notes:String(options.notes??""),relatedItem:String(options.relatedItem??"")};
   return {...options,reason:tr("Transacción privada del DJ"),notes:"",relatedItem:"",privateData};
 }
 async function notify(actor,h,options){

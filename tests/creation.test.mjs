@@ -19,6 +19,18 @@ function session(values = Array(8).fill(5)) {
   return new CreationSession(source(), async () => { if (!queue.length) throw Error("Roll queue exhausted"); return queue.shift(); });
 }
 
+test("creation requires a three-letter sector and accepts lowercase codes", () => {
+  const s = session();
+  for (const sector of ["A", "AB", "ABCD", "A12", "A-B", "A B"]) {
+    s.data.identity.sector = sector;
+    assert.throws(() => s.validateStep("identity"), /tres letras/);
+  }
+  for (const sector of ["ARO", "cpu", " urk "]) {
+    s.data.identity.sector = sector;
+    assert.doesNotThrow(() => s.validateStep("identity"));
+  }
+});
+
 test("eight d20 rolls and two distinct replacement rerolls; third and repeat rejected", async () => {
   const initial = Object.keys(LABELS.attributeNames).map(key => key === "strength" ? 2 : key === "agility" ? 15 : 10);
   const s = session([...initial, 15, 2]);

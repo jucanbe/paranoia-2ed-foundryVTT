@@ -19,6 +19,6 @@ function memberFields(){
 export function societyFields(){
   const {SchemaField,ArrayField,ObjectField}=foundry.data.fields;
   return new SchemaField({...memberFields(),membershipHistory:new ArrayField(new SchemaField(memberFields()),{required:true,initial:[]}),
-    // GM notes and rank history use the existing GM public-key encryption, never plaintext.
+    // GM notes and rank history are shown only in GM sheet/service contexts.
     gmData:new ObjectField({required:true,nullable:true,initial:null})});
 }

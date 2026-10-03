@@ -11,8 +11,11 @@ import {identifyPower} from "../powers/registry.mjs";
 
 // An optimistic fingerprint also rejects unrelated edits made while a dialog is open.
 export async function cloneRevision(actor){
-  const bytes=new TextEncoder().encode(JSON.stringify(revisionSource(actor.toObject())));
-  return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes)),b=>b.toString(16).padStart(2,"0")).join("");
+  const source=JSON.stringify(revisionSource(actor.toObject()));
+  // Compact non-cryptographic revision marker; no browser secure-context dependency.
+  let fingerprint=14695981039346656037n;
+  for(let i=0;i<source.length;i++)fingerprint=BigInt.asUintN(64,(fingerprint^BigInt(source.charCodeAt(i)))*1099511628211n);
+  return `${source.length}:${fingerprint.toString(16)}`;
 }
 export class CloneService {
   static canActivate(actor){return !!(game.user.isGM&&isRulesActor(actor)&&isTerminal(actor.system.health));}

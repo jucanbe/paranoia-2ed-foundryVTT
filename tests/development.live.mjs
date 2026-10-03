@@ -1,4 +1,3 @@
-import {unlock} from "../module/treason/store.mjs";
 import {CreationSession} from "../module/creation/session.mjs";
 import {commitCreation} from "../module/creation/commit.mjs";
 const check=(v,message)=>{if(!v)throw Error(message);};
@@ -21,7 +20,7 @@ export async function runDevelopmentChecks(){
   await game.paranoia.rollCheck({actor:a,type:"attribute",key:"strength",createMessage:false});check(a.system.development.usage.length===1,"Attribute counted as skill");
   await d.award(a,0,{reason:"Used-only check",restriction:"used",resetUsage:true});check(a.system.development.restricted&&!d.canImprove(a,"dexterity.laserWeapons"),"Usage restriction");
   await d.restrictSkills(a,[],false,{reason:"Allow all"});await d.correct(a,-1,{reason:"Balance adjustment"});
-  await unlock("isolated society verification passphrase");
+  
   const missionId=`dev-failed-${a.id}`,rows=[{actor:a,delta:1,reason:"Failure",result:"failure",countForPromotion:true,validSurvivor:false,developmentAward:4,developmentReason:"Adventure enjoyment"}];
   await game.paranoia.treason.applyMissionReport(rows,{missionId});await game.paranoia.treason.applyMissionReport(rows,{missionId});
   check(d.getAvailable(a)===4&&a.system.securityProgress.successfulMissions===0,"Failure award / duplicate / clearance independence");

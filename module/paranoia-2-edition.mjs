@@ -1,3 +1,4 @@
+import {registerReferenceImports} from "./references/register.mjs";
 import {registerCompendiumLocalization} from "./i18n/compendiums.mjs";
 import {registerLocalization} from "./i18n/index.mjs";
 import { registerDataModels } from "./data/models/register.mjs";
@@ -24,6 +25,7 @@ import {registerWelcomeScene} from "./welcome.mjs";
 Hooks.once("init", () => {
   registerLocalization();
   registerCompendiumLocalization();
+  registerReferenceImports();
   registerDataModels();
   registerSheets();
   registerRolls();

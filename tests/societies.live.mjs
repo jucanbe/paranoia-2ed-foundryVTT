@@ -3,7 +3,6 @@ import {societyReferenceHTML} from "../module/societies/reference.mjs";
 import {CreationSession} from "../module/creation/session.mjs";
 import {commitCreation} from "../module/creation/commit.mjs";
 import {NPCGenerator} from "../module/npc/service.mjs";
-import {unlock} from "../module/treason/store.mjs";
 import {panel} from "../module/societies/dialogs.mjs";
 
 const check=(condition,message)=>{if(!condition)throw Error(message);};
@@ -11,7 +10,7 @@ const check=(condition,message)=>{if(!condition)throw Error(message);};
 export async function runSocietyIntegrationChecks(){
   check((game.world.id==="society-fresh-validation"||game.world.id.startsWith("release-audit-"))&&game.user.isGM,"Requires the isolated validation World and GM");
   check(validateSocietyRegistry(),"Registry relationships");
-  await unlock("isolated society verification passphrase");
+  
   const society=game.paranoia.SecretSocietyService,powers=game.paranoia.MutantPowerService;
   const legacy=await Actor.create({name:"LEGACY-R-TEST-1",type:"character",system:{secretSociety:{name:"Club Sierra",rank:"2",notes:"Preserved legacy note"}}});
   check(legacy.system.secretSociety.societyKey==="sierraClub"&&legacy.system.secretSociety.rank.level===2&&legacy.system.secretSociety.notes==="Preserved legacy note","Legacy Actor data loss");
@@ -38,11 +37,11 @@ export async function runSocietyIntegrationChecks(){
   await society.changeRank(created,{level:2,label:""},{reason:"Restoration"});
   let repeated=false;try{await powers.learnPsionicPower(created,"mentalBlast",2);}catch{repeated=true;}
   check(repeated&&powers.psionicTrainingLevels(created).length===0,"Repeated level grant");
-  await society.assignMission(created,{title:"Member-visible test mission",description:"Private member instruction",gmNotes:"Encrypted mission GM note"});
+  await society.assignMission(created,{title:"Member-visible test mission",description:"Private member instruction",gmNotes:"GM-only mission GM note"});
   await society.addContact(created,{name:"Missing contact",actorUuid:"Actor.deleted"});
   const mission=created.system.secretSociety.missions[0];
   await society.editMission(created,mission.id,{title:mission.title,description:"Updated instruction"});
-  check(!JSON.stringify(created.toObject()).includes("Encrypted mission GM note"),"Plaintext GM note");
+  check((await society.privateData(created)).memberships[created.system.secretSociety.id].missions[mission.id].gmNotes==="GM-only mission GM note","GM note persistence");
   const html=await panel(created);check(html.includes("Misiones")&&html.includes("Elegir nuevo poder psiónico")===false,"Panel render or pending instruction");
   await society.resolveMission(created,mission.id,"completed");
   check(created.system.secretSociety.missions[0].status==="completed","Mission resolution persistence");

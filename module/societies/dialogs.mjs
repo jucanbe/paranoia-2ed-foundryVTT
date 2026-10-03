@@ -5,8 +5,7 @@ import {societyReferenceHTML} from "./reference.mjs";
 import {learnPsionicPower,psionicTrainingLevels,availablePowers} from "../powers/service.mjs";
 import {POWER_REGISTRY} from "../powers/registry.mjs";
 import {SOCIETY_REGISTRY,societyName,societyDisplayName,rankLabel,MEMBERSHIP_STATUSES,MISSION_STATUSES,MISSION_CATEGORIES} from "./registry.mjs";
-import {isUnlocked} from "../treason/store.mjs";
-import {unlockDialog,adjustDialog,action as treasonAction} from "../treason/dialogs.mjs";
+import {adjustDialog,action as treasonAction} from "../treason/dialogs.mjs";
 const esc=v=>foundry.utils.escapeHTML(String(v??""));
 const field=(key,label,value="",type="text")=>`<label>${esc(label)}<input name="${key}" type="${type}" value="${esc(value)}" ${type==="number"?'step="1"':''}></label>`;
 const area=(key,label,value="")=>`<label>${esc(label)}<textarea name="${key}" rows="3">${esc(value)}</textarea></label>`;
@@ -25,7 +24,7 @@ export async function panel(actor){
     activeMissions:(m.missions??[]).filter(x=>x.status==="active").length,contactCount:m.contacts?.length??0,
     missions:(m.missions??[]).map(x=>({...x,statusLabel:MISSION_STATUSES[x.status],active:x.status==="active"})),contacts:m.contacts??[],favors:(m.favors??[]).map(x=>({...x,typeLabel:x.type==="obligation"?tr("Obligación"):tr("Favor")})),
     former:(m.membershipHistory??[]).map(x=>({...x,rank:{...x.rank,label:x.rank.label||tr(rankLabel(x))},name:societyDisplayName(x),statusLabel:MEMBERSHIP_STATUSES[x.status]})),
-    privateUnlocked:isGM&&isUnlocked(),custom:m.societyKey==="custom",psionicTraining:isGM&&psionicTrainingLevels(actor).length>0
+    custom:m.societyKey==="custom",psionicTraining:isGM&&psionicTrainingLevels(actor).length>0
   });
 }
 export async function reference(actor){
@@ -34,7 +33,7 @@ export async function reference(actor){
   return foundry.applications.api.DialogV2.prompt({window:{title:tr("Referencia confidencial de sociedad")},position:{width:620},content:`<div class="p2-society-form">${content}</div>`,ok:{label:tr("Cerrar")}});
 }
 async function rankDialog(actor,delta){
-  const m=service.getMembership(actor),v=await form(delta>0?tr("Ascender en la sociedad"):tr("Descender / corregir rango"),`${field("level",tr("Nivel"),Math.max(0,m.rank.level+delta),"number")}${field("label",tr("Título (opcional)"),m.rank.label)}${field("reason",tr("Motivo"))}${area("gmNotes",tr("Nota del DJ (cifrada)"))}`);
+  const m=service.getMembership(actor),v=await form(delta>0?tr("Ascender en la sociedad"):tr("Descender / corregir rango"),`${field("level",tr("Nivel"),Math.max(0,m.rank.level+delta),"number")}${field("label",tr("Título (opcional)"),m.rank.label)}${field("reason",tr("Motivo"))}${area("gmNotes",tr("Nota del DJ (privada)"))}`);
   if(v)await service.changeRank(actor,{level:Number(v.level),label:v.label},v);
 }
 async function privateHistory(actor){
@@ -73,7 +72,6 @@ export async function run(actor,operation,entryId){
   }
   if(!game.user.isGM)throw Error(tr("Solo el DJ puede modificar esta información."));
   const m=service.getMembership(actor);
-  if(operation==="unlock")return unlockDialog();
   if(operation==="history")return privateHistory(actor);
   if(operation==="learnPsionic"){
     const known=new Set(availablePowers(actor).map(p=>p.key)),levels=psionicTrainingLevels(actor);
@@ -102,11 +100,11 @@ export async function run(actor,operation,entryId){
   }
   if(operation==="expel"&&await confirm(tr("Expulsar de la sociedad"),tr("Se conservan misiones, contactos y rango. ¿Confirmas la expulsión?")))return service.removeMembership(actor);
   if(operation==="gmNotes"){
-    const data=await service.privateData(actor),v=await form(tr("Notas de sociedad · solo DJ"),area("notes",tr("Nota cifrada"),service.memberPrivate(data,m).notes));
+    const data=await service.privateData(actor),v=await form(tr("Notas de sociedad · solo DJ"),area("notes",tr("Nota privada del DJ"),service.memberPrivate(data,m).notes));
     if(v)return service.setGMNotes(actor,v.notes);
   }
   if(operation==="mission"){
-    const v=await form(tr("Asignar misión secreta"),`<p>${esc(societyDisplayName(m))}</p>${field("title",tr("Título"))}${area("description",tr("Instrucciones"))}${select("category",tr("Tipo orientativo (no tabla oficial)"),MISSION_CATEGORIES)}${field("assignedBy",tr("Asignada por"))}${area("rewardNotes",tr("Beneficio / recompensa narrativa"))}${area("consequenceNotes",tr("Consecuencia del fracaso"))}${area("secretNotes",tr("Notas visibles al miembro"))}${area("gmNotes",tr("Notas del DJ (cifradas)"))}`);
+    const v=await form(tr("Asignar misión secreta"),`<p>${esc(societyDisplayName(m))}</p>${field("title",tr("Título"))}${area("description",tr("Instrucciones"))}${select("category",tr("Tipo orientativo (no tabla oficial)"),MISSION_CATEGORIES)}${field("assignedBy",tr("Asignada por"))}${area("rewardNotes",tr("Beneficio / recompensa narrativa"))}${area("consequenceNotes",tr("Consecuencia del fracaso"))}${area("secretNotes",tr("Notas visibles al miembro"))}${area("gmNotes",tr("Notas del DJ (privadas)"))}`);
     if(v)return service.assignMission(actor,v);
   }
   if(operation==="resolve"){
@@ -115,12 +113,12 @@ export async function run(actor,operation,entryId){
   }
   if(operation==="editMission"){
     const mission=m.missions.find(x=>x.id===entryId);if(!mission)throw Error(tr("Misión no encontrada."));
-    const secret=isUnlocked()?service.memberPrivate(await service.privateData(actor),m).missions[entryId]?.gmNotes??"":null;
-    const v=await form(tr("Editar misión secreta"),`${field("title",tr("Título"),mission.title)}${area("description",tr("Instrucciones"),mission.description)}${field("assignedBy",tr("Asignada por"),mission.assignedBy)}${area("rewardNotes",tr("Recompensa"),mission.rewardNotes)}${area("consequenceNotes",tr("Consecuencias"),mission.consequenceNotes)}${area("secretNotes",tr("Notas del miembro"),mission.secretNotes)}${secret!==null?area("gmNotes",tr("Notas del DJ (cifradas)"),secret):staticMarkup("<p>Desbloquea el registro del DJ para editar sus notas.</p>")}`);
+    const secret=service.memberPrivate(await service.privateData(actor),m).missions[entryId]?.gmNotes??"";
+    const v=await form(tr("Editar misión secreta"),`${field("title",tr("Título"),mission.title)}${area("description",tr("Instrucciones"),mission.description)}${field("assignedBy",tr("Asignada por"),mission.assignedBy)}${area("rewardNotes",tr("Recompensa"),mission.rewardNotes)}${area("consequenceNotes",tr("Consecuencias"),mission.consequenceNotes)}${area("secretNotes",tr("Notas del miembro"),mission.secretNotes)}${area("gmNotes",tr("Notas del DJ (privadas)"),secret)}`);
     if(v)return service.editMission(actor,entryId,v);
   }
   if(operation==="contact"){
-    const v=await form(tr("Añadir contacto"),`${field("name",tr("Nombre"))}${field("actorUuid",tr("UUID de Actor (opcional)"))}${field("role",tr("Papel"))}${area("notes",tr("Notas del miembro"))}${area("trustNotes",tr("Lealtad / confianza"))}${area("gmNotes",tr("Notas del DJ (cifradas)"))}`);
+    const v=await form(tr("Añadir contacto"),`${field("name",tr("Nombre"))}${field("actorUuid",tr("UUID de Actor (opcional)"))}${field("role",tr("Papel"))}${area("notes",tr("Notas del miembro"))}${area("trustNotes",tr("Lealtad / confianza"))}${area("gmNotes",tr("Notas del DJ (privadas)"))}`);
     if(v)return service.addContact(actor,v);
   }
   if(operation==="favor"){

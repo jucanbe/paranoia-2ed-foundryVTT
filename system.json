@@ -125,6 +125,42 @@
         "PLAYER": "NONE",
         "ASSISTANT": "OWNER"
       }
+    },
+    {
+      "name": "services",
+      "label": "Paranoia 2ª Edición - Servicios",
+      "path": "packs/services",
+      "type": "JournalEntry",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "TRUSTED": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "mutant-powers",
+      "label": "Paranoia 2ª Edición - Poderes Mutantes",
+      "path": "packs/mutant-powers",
+      "type": "JournalEntry",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "NONE",
+        "TRUSTED": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "skills",
+      "label": "Paranoia 2ª Edición - Atributos y Habilidades",
+      "path": "packs/skills",
+      "type": "JournalEntry",
+      "system": "paranoia-2-edition",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "background": "systems/paranoia-2-edition/assets/art/system-cover.png",

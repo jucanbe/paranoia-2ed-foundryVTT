@@ -1,6 +1,6 @@
 # Nivel de Seguridad: ascensos y degradaciones
 
-Se reutilizan `module/actors/identity.mjs` (orden, abreviaturas e identidad), el informe final de `module/treason/dialogs.mjs`, TreasonService y su almacén cifrado. No se añade otro enum ni otro registro de traición.
+Se reutilizan `module/actors/identity.mjs` (orden, abreviaturas e identidad), el informe final de `module/treason/dialogs.mjs`, TreasonService y su almacén privados para el DJ. No se añade otro enum ni otro registro de traición.
 
 ## Requisitos proporcionados
 
@@ -41,19 +41,19 @@ API: `game.paranoia.SecurityClearanceService`, implementada en `module/clearance
 - `recordSuccessfulMission(actor, missionId, {validSurvivor, countForPromotion, override, reason})`; también acepta un objeto de opciones con missionId.
 - `enableTracking`, `getHistory`, `resumeAction`, `resumeMissionReport`.
 
-Requiere desbloquear el **registro de traición** para guardar cambios y comprobar la condición de traidor. El DJ coordinador realiza las escrituras. Las fichas ofrecen Ascender, Degradar, Cambiar nivel, Corregir progreso e Historial de CS. Para Rojo/UV se confirma el requisito especial en Corregir progreso o se registra una excepción expresa en Ascender. Degradar varios niveles exige una segunda confirmación. El panel existente del DJ añade ASCENSOS.
+Privacy and access: see [the native tabletop model](native-privacy-audit.md).
 
-`showPromotionProgressToPlayers` es una opción de Mundo, visible en español y activada por defecto. Solo el propietario puede ver progreso; observadores no lo reciben en el contexto de ficha. Jugadores no tienen controles ni acceso al historial cifrado, y el DataModel bloquea cambios de CS/progreso, borrado de esos campos y el intento de reiniciar creación para eludir permisos. La creación inicial conserva su selector; recrear un personaje terminado conserva su CS y progreso.
+`showPromotionProgressToPlayers` es una opción de Mundo, visible en español y activada por defecto. Solo el propietario puede ver progreso; observadores no lo reciben en el contexto de ficha. Jugadores no tienen controles ni acceso al historial privados para el DJ, y el DataModel bloquea cambios de CS/progreso, borrado de esos campos y el intento de reiniciar creación para eludir permisos. La creación inicial conserva su selector; recrear un personaje terminado conserva su CS y progreso.
 
-El ajuste limita la presentación de progreso en la ficha; los contadores son datos ordinarios del Actor, no un almacén secreto frente a herramientas de desarrollo. Las notas del DJ y el historial sí están cifrados y no se guardan en el Actor.
+El ajuste limita la presentación de progreso en la ficha; los contadores son datos ordinarios del Actor, no un almacén secreto frente a herramientas de desarrollo. Las notas del DJ y el historial sí están privados para el DJ y no se guardan en el Actor.
 
 ## Informe final, historial y recuperación
 
 `TreasonService.applyMissionReport(rows, {missionId})` amplía el flujo existente. Cada fila lleva Actor, delta de PT, motivo y resultado (`success`, `failure`, `none`, `custom`), además de `countForPromotion`, `validSurvivor` y `override`. El DJ confirma supervivencia; la salud solo propone un valor inicial, porque podría haberse activado otro clon. Éxito y ajuste de PT son independientes. Un PNJ con ascensos activos y Traición desactivada admite progreso con delta PT cero.
 
-El informe conserva la transacción única de PT. En esa misma transacción cifrada se registran las acciones de progreso pendientes. Después se actualizan los Actors y se confirman sus recibos. **No es una transacción distribuida entre Actors y ajustes de Mundo**: si una escritura falla, el registro conserva la operación pendiente. Se puede reanudar desde Historial de CS o mediante la API, sin repetir PT ni contar de nuevo. Un cambio incompatible del Actor bloquea la reanudación para revisión. Reenviar la misma referencia con datos diferentes se rechaza.
+El informe conserva la transacción única de PT. En esa misma transacción privados para el DJ se registran las acciones de progreso pendientes. Después se actualizan los Actors y se confirman sus recibos. **No es una transacción distribuida entre Actors y ajustes de Mundo**: si una escritura falla, el registro conserva la operación pendiente. Se puede reanudar desde Historial de CS o mediante la API, sin repetir PT ni contar de nuevo. Un cambio incompatible del Actor bloquea la reanudación para revisión. Reenviar la misma referencia con datos diferentes se rechaza.
 
-Los cambios de CS y las correcciones usan ese mismo diario recuperable. Cada entrada incluye niveles anterior/nuevo, tipo, motivo, referencia, notas, fecha, tiempo de juego, DJ, estado y progreso anterior/nuevo. Todo se guarda en el registro cifrado ya existente. El anuncio de chat es opcional y está apagado por defecto: solo contiene identidad anterior, nuevo CS e identidad nueva.
+Los cambios de CS y las correcciones usan ese mismo diario recuperable. Cada entrada incluye niveles anterior/nuevo, tipo, motivo, referencia, notas, fecha, tiempo de juego, DJ, estado y progreso anterior/nuevo. Todo se guarda en el registro privados para el DJ ya existente. El anuncio de chat es opcional y está apagado por defecto: solo contiene identidad anterior, nuevo CS e identidad nueva.
 
 Los avisos de inventario se recalculan a partir del CS actual; no se modifican Items. Los filtros de compra existentes consultan el CS del borrador y permanecen vigentes.
 
@@ -63,7 +63,7 @@ Archivos creados: `module/clearance/{rules,service,dialogs,register}.mjs`, `test
 
 Archivos modificados: `module/data/models/citizen.mjs`, `module/paranoia-2-edition.mjs`, `module/treason/{store,service,dialogs}.mjs`, `module/sheets/{character-sheet,npc-sheet}.mjs`, `module/creation/{commit,wizard}.mjs`, `templates/{character-sheet,character-creation}.hbs`, `templates/npc/sheet.hbs`, `templates/treason/dashboard.hbs` y `tests/clone-service.test.mjs`. No se modificaron Compendios, CloneService, poderes ni la tabla canónica de identidades.
 
-`node --test tests/*.test.mjs`: 146 pruebas, incluyendo requisitos, dos/tres misiones, excepciones, traidor declarado, referencias duplicadas, reinicios, identidad, alias, degradación, límites, auditoría cifrada, fallos/reintentos, informe atómico de PT, PNJ optativo, permisos y conservación al clonar. La regresión incluye creación, sociedades, poderes, Traición, clones, combate, Items, robots y vehículos.
+`node --test tests/*.test.mjs`: 146 pruebas, incluyendo requisitos, dos/tres misiones, excepciones, traidor declarado, referencias duplicadas, reinicios, identidad, alias, degradación, límites, auditoría privados para el DJ, fallos/reintentos, informe atómico de PT, PNJ optativo, permisos y conservación al clonar. La regresión incluye creación, sociedades, poderes, Traición, clones, combate, Items, robots y vehículos.
 
 Prueba real mantenida: `scripts/verify-clearance-live.cjs` y `tests/clearance.live.mjs`, restringidos al Mundo desechable `society-fresh-validation` en localhost:30001. Comprueba Foundry V14.368, creación, valores iniciales para datos antiguos, informe desde UI, confirmación de ascenso, historial, degradación por API, equipo, clones, PNJ y sesiones separadas propietario/observador, incluida la opción para ocultar progreso.
 

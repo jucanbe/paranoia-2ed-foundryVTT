@@ -19,7 +19,8 @@ export function registerCompendiumLocalization(){
     }
   });
   const translateReference=(app,element)=>{
-    if(!app.document?.pack?.startsWith("paranoia-2-edition.societies"))return;
+    const journal=app.document?.documentName==="JournalEntryPage"?app.document.parent:app.document;
+    if(!["societies","services","mutant-powers","skills"].some(pack=>journal?.pack===`paranoia-2-edition.${pack}`)&&journal?.getFlag?.("paranoia-2-edition","referencePack")!=="skills")return;
     const root=element instanceof HTMLElement?element:element?.[0];
     if(!root)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];

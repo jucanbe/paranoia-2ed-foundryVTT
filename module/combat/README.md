@@ -15,7 +15,7 @@ context. Individual phases, rewinds and starting/resetting the encounter do not 
 
 `PhaseCombat` stores phase/unlock/eligible IDs and action snapshots in `flags.paranoia-2-edition.state`.
 Combatant flags hold player declarations, GM modifiers, attack usage and movement completion. NPC declarations
-are GM-whisper ChatMessages using Foundry's normal visibility (not encryption). Their text
+are GM-whisper ChatMessages using Foundry's normal visibility (interface privacy only). Their text
 never enters player tracker context. NPC means an Actor without a player owner; no new
 Actor type is needed. Ending/deleting an encounter removes its temporary NPC records;
 embedded Combatants and their flags disappear with the encounter. Attack chat history remains.

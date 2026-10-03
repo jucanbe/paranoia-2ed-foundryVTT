@@ -50,6 +50,7 @@ for(const pack of ["weapons","armor","equipment","robots","robot-programs","vehi
   }finally{await db.close();}
 }
 if(!selected.length||selected.includes("societies"))await import("./build-societies.mjs");
+if(!selected.length||selected.some(p=>["services","mutant-powers","skills"].includes(p)))await import("./build-reference-packs.mjs");
 if(selected.length)process.exit(0);
 const list=items=>items.map(item=>`- ${item.name} (${item.catalogId})`).join("\n");
 const weapons=catalogue.filter(item=>item.type==="weapon");

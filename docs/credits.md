@@ -6,7 +6,7 @@ Implementación validada en Foundry VTT 14.368. Se conserva `system.credits` com
 
 Ya existían el saldo de ciudadanos, los 100 créditos iniciales, compras en creación, precios estructurados del catálogo, unidades por metro, inventario asignado y conservación del sistema del ciudadano al activar un clon. El informe final ya gestionaba PT, ascensos y PD mediante un registro recuperable con ID estable.
 
-Faltaban un servicio económico, historial persistente, permisos que impidieran editar el saldo libremente, diálogos de operaciones y créditos en el informe final. Se reutilizan el catálogo, el informe, los DataModels y el cifrado del registro del DJ.
+Faltaban un servicio económico, historial persistente, permisos que impidieran editar el saldo libremente, diálogos de operaciones y créditos en el informe final. Se reutilizan el catálogo, el informe, los DataModels y el privados para el DJ del registro del DJ.
 
 ## Servicio y datos
 
@@ -32,7 +32,7 @@ El historial se despliega por transacción. El DJ puede corregir mediante una nu
 
 El panel del DJ incluye una vista económica con controles por ciudadano. Los PNJ tienen seguimiento económico desactivado por defecto; el DJ puede activarlo. Robots y vehículos no reciben saldo ni historial: su botón «Proponer multa» permite seleccionar al ciudadano responsable y decidir el importe.
 
-La privacidad opcional cifra motivo, notas y fuente relacionados mediante el registro secreto existente del DJ. Requiere preparar su clave pública; consultar los detalles requiere desbloquear el registro. El Actor almacena texto visible genérico y datos cifrados. Los mensajes están desactivados por defecto; aviso privado o publicación pública requieren elección explícita. Nunca se publican notas privadas.
+Privacy and access: see [the native tabletop model](native-privacy-audit.md).
 
 ## Recompensas, multas e informe final
 
@@ -62,8 +62,8 @@ Modificado: `module/data/models/citizen.mjs`, `module/creation/commit.mjs`, `mod
 
 ## Validación
 
-`node --test tests/*.test.mjs`: 171 pruebas, 171 aprobadas. Incluye creación, compras, multas negativas, recompensa desde deuda, asignaciones gratuitas, reembolso intacto, correcciones, permisos, cifrado, fallo de actualización sin cobro, informe repetido, clonado y regresiones de poderes, sociedades, traición, ascensos, PD, combate, robots y vehículos.
+`node --test tests/*.test.mjs`: 171 pruebas, 171 aprobadas. Incluye creación, compras, multas negativas, recompensa desde deuda, asignaciones gratuitas, reembolso intacto, correcciones, permisos, privados para el DJ, fallo de actualización sin cobro, informe repetido, clonado y regresiones de poderes, sociedades, traición, ascensos, PD, combate, robots y vehículos.
 
-`scripts/verify-credits-live.cjs`, con Playwright disponible y el mundo aislado `society-fresh-validation` en puerto 30001: pruebas reales GM/propietario/observador, creación GM y propietario a 65 créditos, compra coordinada 50 → 0, deuda, reembolso, Plasticuerda, notas cifradas, clone 375 conservado, ascenso y bounty sin modificar saldo, informe repetido a 850, informe UI de misión fallida con neto +750 y diálogos de recompensa/multa/corrección. Cero errores JavaScript o de consola. El script y macro están destinados al mundo de validación, no a datos de campaña.
+`scripts/verify-credits-live.cjs`, con Playwright disponible y el mundo aislado `society-fresh-validation` en puerto 30001: pruebas reales GM/propietario/observador, creación GM y propietario a 65 créditos, compra coordinada 50 → 0, deuda, reembolso, Plasticuerda, notas privados para el DJ, clone 375 conservado, ascenso y bounty sin modificar saldo, informe repetido a 850, informe UI de misión fallida con neto +750 y diálogos de recompensa/multa/corrección. Cero errores JavaScript o de consola. El script y macro están destinados al mundo de validación, no a datos de campaña.
 
 No se implementan salarios, descuentos, tarifas universales, seguros, bancos, conversión PD/créditos ni multas automáticas. Las transferencias entre ciudadanos son opcionales y quedan para un flujo posterior; se reserva el tipo estable sin simular atomicidad entre dos cuentas. No se modificó contenido de Compendios.

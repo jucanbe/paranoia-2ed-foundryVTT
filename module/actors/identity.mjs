@@ -9,6 +9,10 @@ export function normalizeIdentityText(value) {
   return typeof value === "string" ? value.trim().toUpperCase() : "";
 }
 
+export function validSectorCode(value) {
+  return /^\p{L}{3}$/u.test(normalizeIdentityText(value));
+}
+
 export function buildCitizenId(system, fallback = "") {
   if(system.identity?.useCitizenId===false)return fallback||tr("PNJ sin nombre");
   const name = normalizeIdentityText(system.identity?.name);

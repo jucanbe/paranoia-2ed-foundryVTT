@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {PROMOTION_REQUIREMENTS,requirement,missionProgress,progress,adjacent} from "../module/clearance/rules.mjs";
 import * as service from "../module/clearance/service.mjs";
 import * as treason from "../module/treason/service.mjs";
-import * as store from "../module/treason/store.mjs";
+import * as store from "../module/treason/ledger.mjs";
 import {buildCitizenId,synchronizeCitizenIdentity,synchronizeLinkedTokenNames} from "../module/actors/identity.mjs";
 test("all supplied requirements use existing keys; infrared special and UV has no invented count",()=>{
   for(const [current,target,count] of [["red","orange",1],["orange","yellow",1],["yellow","green",2],["green","blue",2],["blue","indigo",3],["indigo","violet",3]]){
@@ -24,12 +24,12 @@ test("success, survivor, traitor and deduplication are independent explicit chec
   assert.equal(missionProgress(reset,{...row,override:true,reason:"DJ exception"}).counted,true);
   assert.deepEqual(progress(),{successfulMissions:0,requirementSatisfied:false,countedMissionIds:[]});
 });
-let persisted={},serial=0,show=true,failActor=false,failVault=false;
+let persisted={},serial=0,show=true,failActor=false,failLedger=false;
 const gm={id:"gm",isGM:true},player={id:"player",isGM:false},observer={id:"observer",isGM:false};
 const users=[gm,player,observer];users.activeGM=gm;
 const actors=new Map(),messages=[];
 globalThis.Hooks={callAll(){}};
-globalThis.game={user:gm,users,actors:[],time:{worldTime:100},settings:{get:(_ns,key)=>key==="showPromotionProgressToPlayers"?show:structuredClone(persisted),set:async(_ns,_key,v)=>{if(failVault)throw Error("Storage failure");persisted=structuredClone(v);}},messages};
+globalThis.game={user:gm,users,actors:[],time:{worldTime:100},settings:{get:(_ns,key)=>key==="showPromotionProgressToPlayers"?show:structuredClone(persisted),set:async(_ns,_key,v)=>{if(failLedger)throw Error("Storage failure");persisted=structuredClone(v);}},messages};
 function merge(a,b){for(const [k,v] of Object.entries(b)){if(v&&typeof v==="object"&&!Array.isArray(v)){a[k]??={};merge(a[k],v);}else a[k]=structuredClone(v);}return a;}
 globalThis.foundry={utils:{randomID:()=>`id${++serial}`,escapeHTML:String,expandObject:v=>structuredClone(v),mergeObject:(a,b)=>merge(structuredClone(a),b)},documents:{ChatMessage:{async create(v){messages.push(v);return v;}}}};
 globalThis.fromUuid=async id=>actors.get(id);
@@ -39,9 +39,9 @@ function actor(key="red",type="character"){
   const a={uuid:`Actor.${++serial}`,type,get name(){return data.name;},get system(){return data.system;},get prototypeToken(){return data.prototypeToken;},toObject:()=>structuredClone(data),testUserPermission:u=>u.id==="player",getDependentTokens:()=>[],async update(changes){if(failActor)throw Error("Actor unavailable");synchronizeCitizenIdentity(a,changes);data=merge(data,changes);return a;}};
   actors.set(a.uuid,a);game.actors.push(a);return a;
 }
-test("service encrypted audit, identity, reset, demotion, recovery, report and permissions",async t=>{
+test("service GM-only audit, identity, reset, demotion, recovery, report and permissions",async t=>{
   const a=actor(),b=actor("green"),npc=actor("red","npc");
-  await store.unlock("clearance testing phrase only");
+  
   await t.test("promote red to orange preserves unrelated fields and does not auto-publish",async()=>{
     const before=a.toObject();await assert.rejects(service.promote(a,{reason:"premature"}));
     await service.recordSuccessfulMission(a,"mission1",{validSurvivor:true});assert.equal(service.canPromote(a),true);
@@ -49,7 +49,7 @@ test("service encrypted audit, identity, reset, demotion, recovery, report and p
     assert.equal(a.name,"DAVID-O-ARO-3");assert.equal(a.prototypeToken.name,a.name);
     assert.equal(service.getPromotionRequirements(a).target,"yellow");assert.equal(a.system.securityProgress.successfulMissions,0);
     for(const key of ["credits","service","secretSociety","mutantPower","identity","cloneNumber"])assert.deepEqual(a.system[key],before.system[key]);
-    assert.equal(messages.length,0);assert.equal(JSON.stringify(persisted).includes("PRIVATE-GM-NOTE"),false);
+    assert.equal(messages.length,0);assert.equal(JSON.stringify(persisted).includes("PRIVATE-GM-NOTE"),true);
     assert.equal(service.getHistory(a).at(-1).notes,"PRIVATE-GM-NOTE");
     assert.equal((await service.recordSuccessfulMission(a,"mission1",{validSurvivor:true})).counted,false);
   });
@@ -75,8 +75,8 @@ test("service encrypted audit, identity, reset, demotion, recovery, report and p
     const floor=actor("infrared"),ceiling=actor("ultraviolet");await assert.rejects(service.demote(floor,{reason:"Floor"}));await assert.rejects(service.promote(ceiling,{reason:"Ceiling"}));
     await service.correctProgress(floor,{successfulMissions:0,requirementSatisfied:true,reason:"Friend denounced"});await service.promote(floor,{reason:"Special confirmed"});assert.equal(floor.system.securityClearance,"red");
   });
-  await t.test("failed Actor writes leave recoverable journal, failed vault writes do not mutate Actor",async()=>{
-    const before=b.toObject();failVault=true;try{await assert.rejects(service.setClearance(b,"green",{reason:"Fail vault"}));}finally{failVault=false;}assert.deepEqual(b.toObject(),before);
+  await t.test("failed Actor writes leave recoverable journal, failed ledger writes do not mutate Actor",async()=>{
+    const before=b.toObject();failLedger=true;try{await assert.rejects(service.setClearance(b,"green",{reason:"Fail ledger"}));}finally{failLedger=false;}assert.deepEqual(b.toObject(),before);
     failActor=true;try{await assert.rejects(service.setClearance(b,"green",{reason:"Retry"}));}finally{failActor=false;}
     const pending=service.getHistory(b).at(-1);assert.equal(pending.status,"pending");await assert.rejects(service.correctProgress(b,{successfulMissions:1,reason:"Blocked by pending"}));
     await service.resumeAction(pending.id);assert.equal(b.system.securityClearance,"green");assert.equal(service.getHistory(b).at(-1).status,"completed");

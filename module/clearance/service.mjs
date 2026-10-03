@@ -1,5 +1,5 @@
 import {tr,trHTML} from "../i18n/index.mjs";
-import {readClearanceLedger,readRecord,transaction,requireGM,actorKey,isUnlocked} from "../treason/store.mjs";
+import {readClearanceLedger,readRecord,transaction,requireGM,actorKey} from "../treason/ledger.mjs";
 import {adjacent,clearanceIndex,progress,requirement,missionProgress} from "./rules.mjs";
 import {LABELS} from "../sheets/labels.mjs";
 import {prepareAward,applyPreparedAward} from "../development/service.mjs";
@@ -17,9 +17,9 @@ export function getPromotionRequirements(actor){
   citizen(actor);
   if(!game.user.isGM&&(!actor.testUserPermission(game.user,"OWNER")||!game.settings.get(NS,"showPromotionProgressToPlayers")))return null;
   const r=requirement(getCurrent(actor),actor.system.securityProgress);
-  const declared=game.user.isGM&&isUnlocked()?readRecord(actor).declaredTraitor:null;
-  return {...r,enabled:isEnabled(actor),eligible:game.user.isGM&&isUnlocked()&&isEnabled(actor)&&r.satisfied&&!declared,
-    blocked:game.user.isGM?(declared?tr("No elegible: traidor declarado"):!isUnlocked()?tr("Desbloquea el registro de traición"):""):""};
+  const declared=game.user.isGM?readRecord(actor).declaredTraitor:null;
+  return {...r,enabled:isEnabled(actor),eligible:game.user.isGM&&isEnabled(actor)&&r.satisfied&&!declared,
+    blocked:game.user.isGM?(declared?tr("No elegible: traidor declarado"):""):""};
 }
 export const canPromote=actor=>!!getPromotionRequirements(actor)?.eligible;
 export function getHistory(actor){requireGM();citizen(actor);return Object.values(readClearanceLedger().actions).filter(a=>a.actorUuid===actor.uuid);}

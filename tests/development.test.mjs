@@ -5,10 +5,9 @@ import * as service from "../module/development/service.mjs";
 import {saveWorldDefinition} from "../module/societies/service.mjs";
 import {calculateTarget,evaluateCheck} from "../module/rolls/rules.mjs";
 import * as treason from "../module/treason/service.mjs";
-import {unlock} from "../module/treason/store.mjs";
 const gm={id:"gm",isGM:true},owner={id:"owner",isGM:false},other={id:"other",isGM:false},users=[gm,owner,other];users.activeGM=gm;
-let serial=0,fail=false,vault={},custom={};const actors=new Map(),messages=[];
-globalThis.game={user:gm,users,actors:[],time:{worldTime:99},settings:{get:(_ns,key)=>key==="customSocieties"?custom:structuredClone(vault),set:async(_ns,key,v)=>{if(key==="customSocieties")custom=structuredClone(v);else vault=structuredClone(v);}},messages};
+let serial=0,fail=false,ledger={},custom={};const actors=new Map(),messages=[];
+globalThis.game={user:gm,users,actors:[],time:{worldTime:99},settings:{get:(_ns,key)=>key==="customSocieties"?custom:structuredClone(ledger),set:async(_ns,key,v)=>{if(key==="customSocieties")custom=structuredClone(v);else ledger=structuredClone(v);}},messages};
 globalThis.Hooks={callAll(){}};globalThis.ui={notifications:{warn(){}}};
 function merge(a,b){for(const [k,v] of Object.entries(b)){if(v&&typeof v==="object"&&!Array.isArray(v)){a[k]??={};merge(a[k],v);}else a[k]=structuredClone(v);}return a;}
 function expand(changes){const result={};for(const [path,value] of Object.entries(changes)){const parts=path.split(".");let target=result;for(const p of parts.slice(0,-1))target=target[p]??={};target[parts.at(-1)]=value;}return result;}
@@ -92,10 +91,10 @@ test("development awards, atomic spending, audit, restrictions, refund, custom m
     const before=service.getAvailable(a);await assert.rejects(service.awardBatch([{actor:a,amount:2,options:{reason:"OK"}},{actor:npc,amount:-1,options:{reason:"Bad"}}]));assert.equal(service.getAvailable(a),before);
   });
   await t.test("failed mission still gets PD; report retries do not duplicate awards, PT or clearance",async()=>{
-    const c=actor();await unlock("development integration test phrase");
+    const c=actor();
     const rows=[{actor:c,delta:1,reason:"Mission failed",result:"failure",validSurvivor:false,countForPromotion:true,developmentAward:4,developmentReason:"Adventure"}];
     await treason.applyMissionReport(rows,{missionId:"failed-mission"});assert.equal(service.getAvailable(c),4);assert.equal(treason.getPoints(c),2);assert.equal(c.system.securityClearance,"red");
     await treason.applyMissionReport(rows,{missionId:"failed-mission"});assert.equal(service.getAvailable(c),4);assert.equal(treason.getRecord(c).history.length,1);
-    const saved=structuredClone(vault);await assert.rejects(treason.applyMissionReport([{...rows[0],developmentAward:-1}],{missionId:"invalid-pd"}));assert.deepEqual(vault,saved);
+    const saved=structuredClone(ledger);await assert.rejects(treason.applyMissionReport([{...rows[0],developmentAward:-1}],{missionId:"invalid-pd"}));assert.deepEqual(ledger,saved);
   });
 });

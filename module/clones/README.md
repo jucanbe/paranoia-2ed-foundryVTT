@@ -54,7 +54,7 @@ time of death. Old Actors receive an empty array automatically.
 
 History appears only in owner/GM Secret-tab context; GM notes are omitted from owner
 template context. Like existing secret character data, this is sheet-level visibility using
-Foundry ownership, not field-level encryption. Players cannot modify history via the normal
+Foundry ownership, interface privacy only. Players cannot modify history via the normal
 Actor update lifecycle or invoke activation. Public chat contains only old/new citizen IDs
 and Sano; silent activation is optional.
 
