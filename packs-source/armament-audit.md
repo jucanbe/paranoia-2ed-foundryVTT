@@ -1,29 +1,29 @@
-# Revisión de armas y armaduras — 2026-10-03
+# Weapon and armor review — 2026-10-03
 
-Fuente: `JOC-Paranoia-Manual Básico.ROLes.pdf`, edición española JOC. Revisión visual del Anexo B: páginas PDF 162 (precios/CS), 163 (armaduras) y 165 (armamento), y del texto de armas en páginas impresas 89–92. La numeración PDF y la impresa son diferentes.
+Source: `JOC-Paranoia-Manual Básico.ROLes.pdf`, Spanish JOC edition. Visual review of Annex B: PDF pages 162 (prices/clearance), 163 (armor) and 165 (armament), and of the weapon text on printed pages 89–92. PDF and printed page numbers differ.
 
-## Resultado
+## Result
 
-- 41 armas: se conservan todos los IDs anteriores y se añaden rifleláser, rifle sónico, cuchillo arrojadizo, arco, roca y lanza.
-- 11 armaduras: las diez filas de la tabla más el uniforme inicial conservado. Aislante T1, amianto C4, combate T7, placas P3, malla P2, cuero P1, Faraday E4, Kevlar P3, Réflex L4 y traje de batalla T4.
-- Daño normal, tipo, alcance, radio, Cg, RCg, notas, precio y CS se almacenan en campos estructurados cuando están verificados. Las averías conservan su daño independiente.
-- Tirabalas normal, tirabalas semiautomático y rifle cónico tienen respectivamente 9, 9 y 10 perfiles de munición. «Usar» configura el ataque sin comprar, crear ni consumir munición, ni restablecer cargas.
-- Lanzaaguas se corrige a Lanzaagujas manteniendo `water-gun`. El arma sónica anterior pasa a identificarse como pistola sónica manteniendo `sonic-weapon`. Neurolátigo E10, lanzallamas portátil E11 y Gauss E9 corrigen las categorías anteriores.
-- La habilidad de Armas de Proyectil, definida en la página impresa 67 y ausente del modelo anterior, se incorpora como `dexterity.projectileWeapons`; las otras claves y puntuaciones se conservan.
-- Las siete armas integradas del Buitre Guerrero conservan sus IDs y obtienen los atributos verificados del catálogo. No se modifica ningún Actor del mundo.
+- 41 weapons: all previous IDs are kept, and the laser rifle, sonic rifle, throwing knife, bow, rock and spear are added.
+- 11 armors: the ten table rows plus the preserved starting uniform. Insulating T1, asbestos C4, combat T7, plate P3, mail P2, leather P1, Faraday E4, Kevlar P3, Reflec L4 and battle suit T4.
+- Normal damage, type, range, radius, Cg, RCg, notes, price and clearance are stored in structured fields when verified. Malfunctions keep their independent damage.
+- The normal slugthrower, semi-automatic slugthrower and cone rifle have 9, 9 and 10 ammunition profiles respectively. "Use" configures the attack without buying, creating or consuming ammunition, and without restoring charges.
+- "Lanzaaguas" is corrected to "Lanzaagujas" (needle gun) while keeping `water-gun`. The former sonic weapon is now identified as the sonic pistol while keeping `sonic-weapon`. Neural whip E10, portable flamethrower E11 and Gauss E9 correct the previous categories.
+- The Projectile Weapons skill, defined on printed page 67 and missing from the previous model, is added as `dexterity.projectileWeapons`; the other keys and scores are preserved.
+- The seven integrated weapons of the Warrior Vulture keep their IDs and receive the verified catalogue attributes. No World Actor is modified.
 
-## Interpretación y límites
+## Interpretation and limits
 
-Los valores `?` siguen siendo desconocidos: no se inventan daño, tipo, carga o recarga para morteros, lanzamisiles o lanzagases. `Pt` conserva el efecto particular del gas sin convertirse en un número de daño ficticio; `O` identifica un efecto no dañino. La lanza conserva B/P y necesita seleccionar B para cuerpo a cuerpo o P al arrojarla. El Hacha anterior se conserva, pero no tiene una fila propia en esta tabla y sus estadísticas siguen sin presumirse.
+`?` values remain unknown: no damage, type, charge or recharge is invented for mortars, missile launchers or gas launchers. `Pt` keeps the gas's particular effect without turning it into a fictitious damage number; `O` identifies a non-damaging effect. The spear keeps B/P and requires selecting B for melee or P when thrown. The former Axe is preserved, but it has no row of its own in this table and its statistics are still not assumed.
 
-Cg y RCg se conservan literalmente en `sourceDetails.chargeTurns` y `sourceDetails.tableRecharge`. No se convierten automáticamente en capacidad de munición ni duración de la recarga: las reglas descriptivas específicas y los campos de combate existentes siguen separados. Los efectos de color Réflex, gas, aturdimiento, telarañas, conos y la restricción de Gauss a robots requieren adjudicación del DJ. La marca de ráfagas procede de la nota `r`, sin inventar consumo.
+Cg and RCg are kept literally in `sourceDetails.chargeTurns` and `sourceDetails.tableRecharge`. They are not automatically converted into ammunition capacity or reload duration: the specific descriptive rules and the existing combat fields remain separate. Reflec colour effects, gas, stun, webs, cones and the Gauss restriction to robots require GM adjudication. The burst flag comes from the `r` note, without inventing consumption.
 
-El uniforme inicial no se convierte por inferencia en Réflex L4. El equipo asignado sigue siendo gratuito y la creación conserva sus 100 créditos. Las copias ya importadas en Actors no se sobrescriben: deben actualizarse manualmente o sustituirse desde el compendio revisado si el DJ lo desea.
+The starting uniform is not converted into Reflec L4 by inference. Assigned equipment remains free and character creation keeps its 100 credits. Copies already imported into Actors are not overwritten: they must be updated manually or replaced from the revised compendium if the GM wishes.
 
-## Verificación
+## Verification
 
-- Pruebas de atributos, categorías, claves, armaduras, perfiles, permisos y regresión de compras/creación.
-- Foundry V14.368, mundo aislado: los 52 documentos cargan con sus modelos estrictos y sus fichas se abren sin errores; selección de PP17 a 200 m y persistencia tras recargar.
-- IDs del catálogo y UUIDs del compendio anteriores conservados.
+- Tests for attributes, categories, keys, armor, profiles, permissions and purchase/creation regression.
+- Foundry V14.368, isolated world: all 52 documents load with their strict models and their sheets open without errors; PP17 selected at 200 m and persisted after reload.
+- Previous catalogue IDs and compendium UUIDs preserved.
 
-El PDF original no se incorpora al repositorio.
+The original PDF is not included in the repository.

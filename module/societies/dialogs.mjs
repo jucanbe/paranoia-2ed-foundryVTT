@@ -23,7 +23,7 @@ export async function panel(actor){
     isGM,hasSociety:!!m.societyKey,name:societyDisplayName(m)||tr("Sin sociedad"),rank:{...m.rank,label:m.rank.label||tr(rankLabel(m))},status:MEMBERSHIP_STATUSES[m.status],exposed:m.exposed,notes:m.notes,
     activeMissions:(m.missions??[]).filter(x=>x.status==="active").length,contactCount:m.contacts?.length??0,
     missions:(m.missions??[]).map(x=>({...x,statusLabel:MISSION_STATUSES[x.status],active:x.status==="active"})),contacts:m.contacts??[],favors:(m.favors??[]).map(x=>({...x,typeLabel:x.type==="obligation"?tr("Obligación"):tr("Favor")})),
-    former:(m.membershipHistory??[]).map(x=>({...x,rank:{...x.rank,label:x.rank.label||tr(rankLabel(x))},name:societyDisplayName(x),statusLabel:MEMBERSHIP_STATUSES[x.status]})),
+    former:(m.membershipHistory??[]).map(x=>({...x,rank:{...x.rank,label:x.rank.label||tr(rankLabel(x))},name:societyDisplayName(x),statusLabel:MEMBERSHIP_STATUSES[x.status],missions:(x.missions??[]).map(y=>({...y,statusLabel:MISSION_STATUSES[y.status]??y.status}))})),
     custom:m.societyKey==="custom",psionicTraining:isGM&&psionicTrainingLevels(actor).length>0
   });
 }
@@ -33,7 +33,7 @@ export async function reference(actor){
   return foundry.applications.api.DialogV2.prompt({window:{title:tr("Referencia confidencial de sociedad")},position:{width:620},content:`<div class="p2-society-form">${content}</div>`,ok:{label:tr("Cerrar")}});
 }
 async function rankDialog(actor,delta){
-  const m=service.getMembership(actor),v=await form(delta>0?tr("Ascender en la sociedad"):tr("Descender / corregir rango"),`${field("level",tr("Nivel"),Math.max(0,m.rank.level+delta),"number")}${field("label",tr("Título (opcional)"),m.rank.label)}${field("reason",tr("Motivo"))}${area("gmNotes",tr("Nota del DJ (privada)"))}`);
+  const m=service.getMembership(actor),v=await form(delta>0?tr("Ascender en la sociedad"):tr("Descender / corregir rango"),`${field("level",tr("Nivel"),Math.max(0,m.rank.level+delta),"number")}${field("label",tr("Título (opcional)"),m.rank.label)}${field("reason",tr("Motivo (opcional)"))}${area("gmNotes",tr("Nota del DJ (privada)"))}`);
   if(v)await service.changeRank(actor,{level:Number(v.level),label:v.label},v);
 }
 async function privateHistory(actor){
@@ -53,7 +53,7 @@ async function discovery(actor){
   if(v.response==="add")await adjustDialog(actor,{category:"secretSociety",reason:tr("Afiliación descubierta")});
   if(v.response==="declare")await treasonAction(actor,"declare");
   if(v.response==="custom"){
-    const change=await form(tr("Ajuste personalizado de PT"),`${field("delta",tr("Ajuste"),0,"number")}${field("reason",tr("Motivo"),tr("Afiliación descubierta"))}`);
+    const change=await form(tr("Ajuste personalizado de PT"),`${field("delta",tr("Ajuste"),0,"number")}${field("reason",tr("Motivo (opcional)"),tr("Afiliación descubierta"))}`);
     if(change)await game.paranoia.treason.adjustPoints(actor,Number(change.delta),{reason:change.reason,category:"secretSociety"});
   }
 }
@@ -82,7 +82,7 @@ export async function run(actor,operation,entryId){
   if(operation==="expose")return discovery(actor);
   if(operation==="treason")return adjustDialog(actor,{category:"secretSociety",reason:tr("Descubrimiento de actividad de sociedad secreta")});
   if(operation==="propose"){
-    const v=await form(tr("Proponer revisión de traición"),`${field("reason",tr("Motivo"))}${field("suggestedDelta",tr("Ajuste sugerido (opcional)"),"","number")}`,tr("Enviar al buzón del DJ"));
+    const v=await form(tr("Proponer revisión de traición"),`${field("reason",tr("Motivo (opcional)"))}${field("suggestedDelta",tr("Ajuste sugerido (opcional)"),"","number")}`,tr("Enviar al buzón del DJ"));
     if(v)return service.proposeDiscovery(actor,{reason:v.reason,suggestedDelta:v.suggestedDelta===""?undefined:Number(v.suggestedDelta)});
   }
   if(operation==="assign"){

@@ -75,7 +75,7 @@ test("development awards, atomic spending, audit, restrictions, refund, custom m
   });
   await t.test("GM correction changes balance explicitly, not lifetime totals; stale undo rejected",async()=>{
     const earned=a.system.development.lifetimeEarned,spent=a.system.development.lifetimeSpent;await service.correct(a,-1,{reason:"Balance correction"});assert.equal(a.system.development.lifetimeEarned,earned);assert.equal(a.system.development.lifetimeSpent,spent);
-    await assert.rejects(service.correct(a,-100,{reason:"Below zero"}));assert.throws(()=>service.correct(a,1,{}));
+    await assert.rejects(service.correct(a,-100,{reason:"Below zero"}));
     const e=service.getHistory(a).find(h=>h.kind==="expenditure"&&h.rows.some(r=>r.skillKey==="dexterity.laserWeapons"));await assert.rejects(service.refund(a,e.id,{reason:"Stale"}));
   });
   await t.test("custom World society metadata is validated and reused; inactive membership has no discount",async()=>{

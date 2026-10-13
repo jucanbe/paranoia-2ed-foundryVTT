@@ -13,7 +13,7 @@ export async function requestPower(actor,operation,options={}){
   const request={actorUuid:actor.uuid,operation,options,cloneNumber:actor.system.cloneNumber,
     powerKey:ownedPower(actor,options.powerKey)?.key,round:combat?.round,combatId:combat?.id,status:"pending"};
   const message=await foundry.documents.ChatMessage.create({
-    content:await renderPower("request",{actorName:actor.name,operation,isUse:operation==="use",...options}),
+    content:await renderPower("request",{actorName:actor.name,operation:({use:tr("Usar poder"),recover:tr("Recuperar PM"),adjudicate:tr("Adjudicar resultado"),endEffect:tr("Terminar efecto")})[operation]??operation,isUse:operation==="use",...options}),
     whisper:privateRecipients(actor),flags:{[NS]:{powerRequest:request}}},{notify:false});
   if(game.user.id===game.users.activeGM.id)return processPowerRequest(message,options);
   ui.notifications.info(operation==="use"?tr("Solicitud privada enviada al DJ para revisar coste y dificultad."):tr("Solicitud privada enviada al DJ."));

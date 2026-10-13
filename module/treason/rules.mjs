@@ -15,7 +15,6 @@ export function adjustRecord(record, delta, options={}, metadata={}) {
   integer(delta); integer(record.points,tr("PT"));
   if(!record.enabled) throw Error(tr("Seguimiento de traición desactivado."));
   const reason=String(options.reason??"").trim();
-  if(!reason) throw Error(tr("Indica el motivo del cambio."));
   const category=options.category??"other";
   if(!Object.hasOwn(CATEGORIES,category)) throw Error(tr("Categoría no válida."));
   const next=structuredClone(record), previous=record.points;

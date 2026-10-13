@@ -13,27 +13,27 @@
   </nav>
   <div class="p2-scroll">
     <section class="tab {{tabs.character.cssClass}}" data-group="primary" data-tab="character">
-      <header class="p2-citizen-header">
+      <header class="p2-citizen-header"><div class="p2-portrait-layout"><img class="p2-actor-portrait" src="{{img}}" alt="{{name}}" {{#if canEditPortrait}}data-action="editPortrait" title="{{p2t "Cambiar imagen"}}"{{/if}}><div class="p2-portrait-identity">
         {{#if editable}}<button type="button" class="p2-create-character" data-action="createCharacter">{{p2t labels.createCharacter}}</button>{{/if}}
         <span class="p2-eyebrow">{{p2t labels.citizenId}}</span>
         <div class="p2-citizen-id" aria-live="polite">{{name}}</div>
-        {{#if editable}}<div class="p2-treason-actions"><button type="button" data-action="treasonAction" data-treason-operation="trust">{{localize "P2.Text.m1a0jm9s"}}</button><button type="button" data-action="treasonAction" data-treason-operation="accuse">{{localize "P2.Text.m1fay20y"}}</button></div>{{/if}}
+        {{#if editable}}<div class="p2-treason-actions"><button type="button" data-action="treasonAction" data-treason-operation="trust">{{localize "P2.Text.m1a0jm9s"}}</button><button type="button" data-action="treasonAction" data-treason-operation="accuse">{{localize "P2.Text.m1fay20y"}}</button><button type="button" data-action="treasonAction" data-treason-operation="message"><i class="fa-solid fa-envelope" inert></i> {{#if isGM}}{{p2t "Mensaje privado al jugador"}}{{else}}{{p2t "Mensaje privado al DJ"}}{{/if}}</button></div>{{/if}}
         <div class="p2-identity">
         <label class="p2-name">{{p2t labels.name}}<input type="text" name="system.identity.name" value="{{identity.name}}" placeholder="{{#if legacyIdentity}}{{name}}{{/if}}"></label>
         <label>{{p2t labels.clearance}}<output>{{p2t clearanceLabel}}</output></label>
         <label>{{p2t labels.sector}}<input type="text" name="system.identity.sector" value="{{identity.sector}}"></label>
         <label>{{p2t labels.clone}}<input type="number" name="system.cloneNumber" value="{{identity.cloneNumber}}" min="1" step="1" data-dtype="Number"></label>
-        <label class="p2-service">{{p2t labels.service}}<input type="text" name="system.service" value="{{identity.service}}"></label>
+        <label class="p2-service">{{p2t labels.service}}{{#if identity.isSSI}}<output>{{identity.service}}</output>{{else}}<input type="text" name="system.service" value="{{identity.service}}">{{/if}}</label>
         </div>
         <p class="p2-help">{{#if legacyIdentity}}{{p2t labels.legacyIdentity}}{{else}}{{p2t labels.identityHint}}{{/if}}</p>
-      </header>
+      </div></div></header>
       {{{clearancePanel}}}
       {{{developmentPanel}}}
       <section class="p2-section">
         <h2>{{p2t labels.attributes}}</h2>
         {{#if isGM}}<button type="button" class="p2-duel" data-action="attributeDuel">{{rollLabels.duel}}</button>{{/if}}
         <div class="p2-attributes">
-          {{#each attributes}}<div class="p2-attribute"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="attribute" data-check-key="{{key}}" title="Tirar {{p2t label}}. {{../rollLabels.tooltip}}" {{#unless ../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number"></div>{{/each}}
+          {{#each attributes}}<div class="p2-attribute"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="attribute" data-check-key="{{key}}" title="{{p2t "Tirar"}} {{p2t label}}. {{../rollLabels.tooltip}}" {{#unless ../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number"></div>{{/each}}
         </div>
       </section>
       <section class="p2-section">
@@ -49,7 +49,7 @@
           {{#each skillGroups}}
           <section class="p2-skill-group">
             <h3>{{p2t label}}</h3>
-            {{#each skills}}<div class="p2-value-row"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="skill" data-check-key="{{key}}" title="Tirar {{p2t label}}. {{../../rollLabels.tooltip}}" {{#unless ../../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number" {{#unless ../../canEditSkills}}readonly{{/unless}}></div>{{/each}}
+            {{#each skills}}<div class="p2-value-row"><button class="p2-check" type="button" data-action="rollCheck" data-check-type="skill" data-check-key="{{key}}" title="{{p2t "Tirar"}} {{p2t label}}. {{../../rollLabels.tooltip}}" {{#unless ../../editable}}disabled{{/unless}}>{{p2t label}} <i class="fa-solid fa-dice-d20" aria-hidden="true"></i></button><input aria-label="{{p2t label}}" type="number" name="{{path}}" value="{{value}}" step="any" data-dtype="Number" {{#unless ../../canEditSkills}}readonly{{/unless}}></div>{{/each}}
           </section>
           {{/each}}
         </div>
@@ -84,7 +84,7 @@
       <section class="p2-section"><h2>{{localize "P2.Text.m1gx788z"}}</h2>
         <p>{{localize "P2.Text.m7yxzqz"}} <strong>{{secret.cloneNumber}}</strong></p>
         {{#if isGM}}<button type="button" data-action="activateClone">{{#if secret.terminal}}{{localize "P2.Text.m1t6e0y2"}}{{else}}{{localize "P2.Text.m1773wdc"}}{{/if}}</button>{{else}}{{#if secret.terminal}}<p>{{localize "P2.Text.m1j9h1kc"}}</p>{{/if}}{{/if}}
-        {{#each secret.cloneHistory}}<details class="p2-clone-record">
+        {{#each secret.cloneHistory}}<details class="p2-clone-record" data-sync="clone-{{@index}}">
           <summary>#{{number}} {{citizenId}} {{localize "P2.Text.m1degdiu"}} {{p2t healthLabel}}</summary>
           <p>{{p2t dateLabel}} {{localize "P2.Text.msu9yoj"}} {{worldTime}} {{localize "P2.Text.m1w9pcoy"}}</p>
           <p>{{localize "P2.Text.mg3l1j6"}} {{causeOfDeath}}</p><p>{{notes}}</p>
@@ -94,7 +94,7 @@
           <ul>{{#each inventorySnapshot}}<li>{{quantity}} {{localize "P2.Text.mmriixi"}} {{name}} ({{type}}){{#if assigned}} {{localize "P2.Text.m4mrpna"}}{{/if}}{{#if length}} {{localize "P2.Text.m1degdiu"}} {{length}} {{localize "P2.Text.m1sduwzc"}}{{/if}}</li>{{else}}<li>{{localize "P2.Text.m1biem2"}}</li>{{/each}}</ul>
         </details>{{else}}<p>{{localize "P2.Text.mze6m7v"}}</p>{{/each}}
       </section>
-      <section class="p2-section"><h2>{{p2t labels.coverService}}</h2><label>{{p2t labels.coverService}}<input type="text" name="system.coverService" value="{{secret.coverService}}"></label></section>
+      {{#if secret.service.isSSI}}<section class="p2-section"><h2>{{p2t "Servicio real"}}</h2>{{#if isGM}}<input name="system.service" value="{{secret.service.realService}}">{{else}}<p>{{secret.service.realService}}</p>{{/if}}<label>{{p2t "Servicio de cobertura"}}<input name="system.coverService" value="{{secret.coverService}}" {{#unless isGM}}disabled{{/unless}}></label>{{#if secret.service.needsCoverService}}<p>{{p2t "Cobertura pendiente: el DJ debe determinar otro Servicio."}}</p>{{/if}}{{#if isGM}}<button type="button" data-action="serviceAction" data-service-action="roll">{{p2t "Tirar Servicio de cobertura"}}</button>{{/if}}</section>{{/if}}{{#if isGM}}{{#if secret.service.invalidCoverService}}<section class="p2-section"><p>{{p2t "Cobertura antigua no válida"}}: {{secret.coverService}}</p><button type="button" data-action="serviceAction" data-service-action="clear">{{p2t "Eliminar Servicio de Cobertura no válido"}}</button></section>{{/if}}{{/if}}
       <div class="p2-secret-grid">
         {{{societyPanel}}}
         <section class="p2-section"><h2>{{p2t labels.mutantPower}}</h2>

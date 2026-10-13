@@ -15,7 +15,7 @@ test("adjustments append audit records and clamp to 0–20",()=>{
   r=adjustRecord(r,-1,{reason:"Éxito"});assert.equal(r.points,3);
   r=adjustRecord(r,-9,{reason:"Corrección"});assert.equal(r.points,0);assert.equal(r.history.length,3);
   assert.equal(r.history[2].delta,-3);assert.equal(r.history[2].requestedDelta,-9);
-  assert.throws(()=>adjustRecord(r,NaN,{reason:"Bad"}));assert.throws(()=>adjustRecord(r,1,{}));
+  assert.throws(()=>adjustRecord(r,NaN,{reason:"Bad"}));assert.equal(adjustRecord(r,1,{}).history.at(-1).reason,"");
 });
 test("20 declares; lowering does not pardon; explicit revoke is audited",()=>{
   const r={...initialRecord("character"),points:19};

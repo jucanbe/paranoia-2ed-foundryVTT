@@ -1,5 +1,8 @@
 import {staticMarkup} from "../i18n/index.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
+import {documentText} from "../i18n/documents.mjs";
+import {messageActorPlayers} from "../messages/register.mjs";
+import {privateMessageDialog,sendPrivateMessage} from "../messages/service.mjs";
 import {CATEGORIES,NS} from "./rules.mjs";
 import {readInbox} from "./ledger.mjs";
 import * as service from "./service.mjs";
@@ -23,7 +26,7 @@ async function form(title,content,accept=tr("Aplicar"),render){
 export function equipmentWarnings(actor){
   if(!game.user.isGM)return [];
   const levels=Object.keys(CLEARANCE_CODES),level=levels.indexOf(actor.system.securityClearance);
-  return [...actor.items].filter(i=>level>=0&&levels.indexOf(i.system.securityClearance)>level).map(i=>i.name);
+  return [...actor.items].filter(i=>level>=0&&levels.indexOf(i.system.securityClearance)>level).map(i=>documentText(i));
 }
 export function panelHTML(actor){
   if(!game.user.isGM)return "";
@@ -33,10 +36,10 @@ export function panelHTML(actor){
     <div class="p2-treason-actions">${button("add",tr("Añadir PT"))}${button("remove",tr("Quitar PT"))}${button("history",tr("Historial"))}${button("trust",tr("Solicitar al Ordenador"))}${button("declare",tr("Declarar traidor inmediatamente"))}${button("revoke",tr("Revocar condición de traidor"))}${button("bounty",tr("Recompensa"))}${button("publish",tr("Publicar declaraciones pendientes"))}</div>`:staticMarkup("<p>Seguimiento desactivado.</p>")}
     ${actor.type==="npc"?button("tracking",r.enabled?tr("Desactivar seguimiento"):tr("Activar seguimiento")):""}
     ${warnings.length?trHTML`<p>Equipo por encima del nivel de seguridad: ${warnings.map(esc).join(", ")}</p>${button("equipment",tr("Registrar posible traición"))}`:""}
-    ${button("dashboard",tr("Panel de traición / informe final"))}</section>`;
+    ${button("dashboard",tr("Panel de traición / informe final"))}${actor.type==="npc"&&game.users.some(u=>!u.isGM&&actor.testUserPermission(u,"OWNER"))?button("message",tr("Mensaje privado al jugador")):""}</section>`;
 }
 export async function adjustDialog(actor,{negative=false,category="other",reason="",notes=""}={}){
-  const values=await form(negative?tr("Quitar PT"):tr("Añadir PT"),`${field("amount",tr("Cantidad"),1,"number")}${field("reason",tr("Motivo"),reason)}${select("category",tr("Categoría"),{[category]:CATEGORIES[category],...CATEGORIES})}${field("relatedActor",tr("UUID del ciudadano relacionado (opcional)"))}${field("notes",tr("Nota privada"),notes)}`);
+  const values=await form(negative?tr("Quitar PT"):tr("Añadir PT"),`${field("amount",tr("Cantidad"),1,"number")}${field("reason",tr("Motivo (opcional)"),reason)}${select("category",tr("Categoría"),{[category]:CATEGORIES[category],...CATEGORIES})}${field("relatedActor",tr("UUID del ciudadano relacionado (opcional)"))}${field("notes",tr("Nota privada"),notes)}`);
   if(!values)return;
   const amount=Number(values.amount);if(!Number.isSafeInteger(amount)||amount<0)throw Error(tr("Cantidad no válida."));
   await service.adjustPoints(actor,negative?-amount:amount,{...values,relatedActor:values.relatedActor||null});
@@ -66,7 +69,7 @@ export async function missionDialog(){
   const actors=game.actors.filter(a=>a.type==="character"||(a.type==="npc"&&(service.getRecord(a).enabled||clearance.isEnabled(a)||development.isEnabled(a)||credits.isEnabled(a))));
   const content=trHTML`${field("missionId",tr("Referencia única de misión"),foundry.utils.randomID())}<p>Traición, ascenso y Desarrollo son independientes. La concesión sugerida es 4 PD, también si la misión fracasa. Si ya se activó otro clon o hubo desaparición/vaporización, revisa «Superviviente válido».</p><div style="overflow:auto"><table><thead><tr><th>Incluir / ciudadano</th><th>Resultado</th><th>PT / ajuste</th><th>Ascenso</th><th>DESARROLLO</th><th>CRÉDITOS</th><th>Motivo / excepción DJ</th></tr></thead><tbody>${actors.map((a,i)=>{
     const enabled=clearance.isEnabled(a)&&!!clearance.getNext(a),valid=!isTerminal(a.system.health)&&!service.getRecord(a).declaredTraitor;
-    return trHTML`<tr><td><label><input type="checkbox" name="include${i}" ${a.type==="character"||!isTerminal(a.system.health)?"checked":""}>${esc(a.name)}</label><br>Clon actual: ${a.system.cloneNumber}</td><td><select name="result${i}" data-outcome="${i}">${choices({none:tr("Sin participación"),success:tr("Éxito"),failure:tr("Fracaso"),custom:tr("Definido por DJ")})}</select></td><td>${service.getRecord(a).enabled?service.getPoints(a):tr("Seguimiento PT desactivado")}<input aria-label="Ajuste PT" type="number" step="1" name="delta${i}" value="0" ${!service.getRecord(a).enabled?"readonly":""}></td><td><label><input type="checkbox" name="count${i}" ${enabled&&valid?"checked":""} ${!enabled?"disabled":""}>Contar para ascenso</label><label><input type="checkbox" name="survivor${i}" ${valid?"checked":""}>Superviviente válido para ascenso</label>${enabled?esc(progressText(clearance.getPromotionRequirements(a))):tr("Seguimiento de ascensos desactivado")}</td><td>${development.isEnabled(a)?`${field(`pd${i}`,tr("PD concedidos"),game.settings.get(NS,"defaultDevelopmentAward"),"number")}${field(`pdReason${i}`,tr("Motivo PD (visible al propietario)"),tr("Desarrollo tras la aventura"))}<label><input type="checkbox" name="used${i}">Limitar a habilidades utilizadas</label><label><input type="checkbox" name="resetUsage${i}">Reiniciar usos</label>`:tr("Desarrollo desactivado")}</td><td>${credits.isEnabled(a)?trHTML`${field(`reward${i}`,tr("Recompensa"),0,"number")}${field(`fine${i}`,tr("Multa"),0,"number")}${field(`creditReason${i}`,tr("Motivo económico"),tr("Resultado económico de misión"))}<small>Referencia sugerida: ${game.settings.get(NS,"defaultMissionReward")} créditos; no automática.</small><output data-credit-net="${i}">Neto: 0</output>`:tr("Economía desactivada")}</td><td><input aria-label="Motivo" name="reason${i}" value="Informe final de misión"><label><input type="checkbox" name="override${i}">Excepción DJ (motivo obligatorio)</label></td></tr>`;
+    return trHTML`<tr><td><label><input type="checkbox" name="include${i}" ${a.type==="character"||!isTerminal(a.system.health)?"checked":""}>${esc(a.name)}</label><br>Clon actual: ${a.system.cloneNumber}</td><td><select name="result${i}" data-outcome="${i}">${choices({none:tr("Sin participación"),success:tr("Éxito"),failure:tr("Fracaso"),custom:tr("Definido por DJ")})}</select></td><td>${service.getRecord(a).enabled?service.getPoints(a):tr("Seguimiento PT desactivado")}<input aria-label="Ajuste PT" type="number" step="1" name="delta${i}" value="0" ${!service.getRecord(a).enabled?"readonly":""}></td><td><label><input type="checkbox" name="count${i}" ${enabled&&valid?"checked":""} ${!enabled?"disabled":""}>Contar para ascenso</label><label><input type="checkbox" name="survivor${i}" ${valid?"checked":""}>Superviviente válido para ascenso</label>${enabled?esc(progressText(clearance.getPromotionRequirements(a))):tr("Seguimiento de ascensos desactivado")}</td><td>${development.isEnabled(a)?`${field(`pd${i}`,tr("PD concedidos"),game.settings.get(NS,"defaultDevelopmentAward"),"number")}${field(`pdReason${i}`,tr("Motivo PD (visible al propietario)"),tr("Desarrollo tras la aventura"))}<label><input type="checkbox" name="used${i}">Limitar a habilidades utilizadas</label><label><input type="checkbox" name="resetUsage${i}">Reiniciar usos</label>`:tr("Desarrollo desactivado")}</td><td>${credits.isEnabled(a)?trHTML`${field(`reward${i}`,tr("Recompensa"),0,"number")}${field(`fine${i}`,tr("Multa"),0,"number")}${field(`creditReason${i}`,tr("Motivo económico"),tr("Resultado económico de misión"))}<small>Referencia sugerida: ${game.settings.get(NS,"defaultMissionReward")} créditos; no automática.</small><output data-credit-net="${i}">Neto: 0</output>`:tr("Economía desactivada")}</td><td><input aria-label="Motivo" name="reason${i}" value="${tr("Informe final de misión")}"><label><input type="checkbox" name="override${i}">Excepción DJ</label></td></tr>`;
   }).join("")}</tbody></table></div>`;
   const values=await form(tr("Informe Final de misión"),content,tr("Confirmar informe"),(_event,dialog)=>{
     dialog.element.querySelectorAll("[data-credit-net]").forEach(output=>{const i=output.dataset.creditNet,reward=dialog.element.querySelector(`[name="reward${i}"]`),fine=dialog.element.querySelector(`[name="fine${i}"]`),refresh=()=>{output.textContent=trHTML`Neto: ${Number(reward.value)-Number(fine.value)} créditos`;};reward.addEventListener("input",refresh);fine.addEventListener("input",refresh);});
@@ -94,14 +97,18 @@ export async function reviewReport(id){
     if(await foundry.applications.api.DialogV2.confirm({window:{title:tr("Confianza del Ordenador")},content:`<p>${esc(actor.name)}: ${esc(entry.reason)}</p>`,yes:{label:tr("Solicitar")},no:{label:tr("Cancelar")}}))await service.rollComputerTrust(actor,{request:entry.reason,requestId:id});
     return;
   }
-  const values=await form(tr("Revisar informe privado"),`<p>${esc(actor.name)}: ${esc(entry.reason)}</p><p>${esc(entry.notes)}</p>${entry.accusedUuid?trHTML`<p>Acusado: ${esc((await fromUuid(entry.accusedUuid))?.name)}</p>`:""}${select("disposition",tr("Decisión"),{note:tr("Anotar sin PT"),dismiss:tr("Desestimar"),apply:tr("Aplicar ajuste elegido por DJ")})}${field("delta",tr("Ajuste (sin cantidad oficial)"),entry.suggestedDelta??0,"number")}${field("reason",tr("Motivo"),entry.reason)}`);
-  if(values)await service.adjudicateReport(id,{...values,delta:Number(values.delta)});
+  const values=await form(tr("Revisar informe privado"),`<p>${esc(actor.name)}: ${esc(entry.reason)}</p><p>${esc(entry.notes)}</p>${entry.accusedUuid?trHTML`<p>Acusado: ${esc((await fromUuid(entry.accusedUuid))?.name)}</p>`:""}${select("disposition",tr("Decisión"),{note:tr("Anotar sin PT"),dismiss:tr("Desestimar"),apply:tr("Aplicar ajuste elegido por DJ")})}${field("delta",tr("Ajuste (sin cantidad oficial)"),entry.suggestedDelta??0,"number")}${field("reason",tr("Motivo (opcional)"),entry.reason)}<label class="p2-treason-field">${esc(tr("Respuesta privada al jugador (opcional)"))}<textarea name="reply" rows="3"></textarea></label>`);
+  if(!values)return;
+  await service.adjudicateReport(id,{...values,delta:Number(values.delta)});
+  if(String(values.reply??"").trim()&&entry.authorId)await sendPrivateMessage({recipients:[entry.authorId],text:values.reply,speakerMode:"computer",replyTo:id});
 }
 export async function action(actor,operation){
   if(operation?.startsWith("credit:"))return creditDialog(actor,operation.slice(7));
   if(operation?.startsWith("clearance:"))return clearanceDialog(actor,operation.slice(10));
   if(operation==="trust")return trustDialog(actor);
   if(operation==="accuse")return accusationDialog(actor);
+  if(operation==="message")return game.user.isGM?messageActorPlayers(actor)
+    :privateMessageDialog({recipients:game.users.filter(u=>u.isGM).map(u=>u.id),actor,title:tr("Mensaje privado al DJ")});
   if(!game.user.isGM)throw Error(tr("Solo el DJ puede gestionar la traición."));
   if(operation==="dashboard")return openDashboard();
   if(operation==="mission")return missionDialog();
@@ -114,7 +121,7 @@ export async function action(actor,operation){
   if(operation==="tracking")return service.enableTracking(actor,!service.getRecord(actor).enabled);
   if(operation==="declare"||operation==="revoke"||operation==="bounty"){
     const values=await form(operation==="declare"?tr("Confirmar declaración inmediata (PT = 20)"):operation==="revoke"?tr("Revocar condición de traidor"):tr("Recompensa por eliminación"),
-      `${field("reason",tr("Motivo"))}${operation!=="revoke"?field("bounty",tr("Créditos (vacío: sin especificar)"),service.getRecord(actor).bounty??"","number"):""}`,tr("Confirmar"));
+      `${field("reason",tr("Motivo (opcional)"))}${operation!=="revoke"?field("bounty",tr("Créditos (vacío: sin especificar)"),service.getRecord(actor).bounty??"","number"):""}`,tr("Confirmar"));
     if(!values)return;
     const bounty=values.bounty?.trim()?Number(values.bounty):null;
     return operation==="declare"?service.declareTraitor(actor,values.reason,bounty):operation==="revoke"?service.revokeTraitor(actor,values.reason):service.setBounty(actor,bounty,values.reason);
@@ -132,10 +139,12 @@ export function openDashboard(){
   dashboard??=new TreasonDashboard();return dashboard.render(true);
 }
 export class TreasonDashboard extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2){
+  get title(){return tr(super.title);}
   static DEFAULT_OPTIONS={classes:["paranoia-sheet"],window:{title:"Traición · panel del DJ",resizable:true},position:{width:820,height:700},actions:{
     command:async function(_event,target){
       if(busy.has(this))return;busy.add(this);
-      try{if(target.dataset.reportId)await reviewReport(target.dataset.reportId);
+      try{if(target.dataset.replyId)await privateMessageDialog({recipients:[target.dataset.replyTo],replyTo:target.dataset.replyId,title:tr("Responder en privado")});
+        else if(target.dataset.reportId)await reviewReport(target.dataset.reportId);
         else await action(target.dataset.actorUuid?await fromUuid(target.dataset.actorUuid):null,target.dataset.operation);
         await this.render();
       }catch(error){ui.notifications.error(error.message);}finally{busy.delete(this);}
@@ -146,6 +155,6 @@ export class TreasonDashboard extends foundry.applications.api.HandlebarsApplica
     const actors=game.actors.filter(a=>["character","npc"].includes(a.type)).map(a=>({uuid:a.uuid,name:a.name,...service.getRecord(a)})).sort((a,b)=>b.points-a.points);
     const promotions=game.actors.filter(a=>clearance.isEnabled(a)).map(a=>{const r=clearance.getPromotionRequirements(a);return {uuid:a.uuid,name:a.name,current:LABELS.clearances[a.system.securityClearance],next:LABELS.clearances[r.target]??"—",progress:progressText(r),eligible:r.eligible,blocked:r.blocked};});
     const economy=game.actors.filter(a=>credits.isEnabled(a)).map(a=>({uuid:a.uuid,name:a.name,balance:credits.getBalance(a)}));
-    return {actors,promotions,economy,inbox:Object.entries(readInbox()).filter(([,e])=>e.status==="pending").map(([id,e])=>({id,reason:e.reason,kind:e.kind}))};
+    return {actors,promotions,economy,inbox:Object.entries(readInbox()).filter(([,e])=>e.status==="pending").map(([id,e])=>({id,reason:e.reason,kind:({trust:tr("Solicitud al Ordenador"),accusation:tr("Acusación"),proposal:tr("Propuesta")})[e.kind]??e.kind,author:game.users.get(e.authorId)?.name??"",authorId:e.authorId}))};
   }
 }

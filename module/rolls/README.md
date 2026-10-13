@@ -2,7 +2,7 @@
 
 Click an Attribute or Skill label to select difficulty and an integer modifier.
 Shift-click makes a Normal check with modifier 0. Numeric inputs remain editable.
-The GM's **Duelo de atributos** button compares any two Attributes.
+The GM's **Attribute duel** button compares any two Attributes.
 
 The public API returns a Promise with the structured result, native Roll(s), and ChatMessage:
 

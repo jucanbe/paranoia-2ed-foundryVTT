@@ -1,3 +1,4 @@
+import {tr} from "../../i18n/index.mjs";
 import {LegacyDataModel,legacyField} from "./legacy.mjs";
 import {textField,numberField} from "./fields.mjs";
 import {ITEM_CLEARANCES} from "../../items/config.mjs";
@@ -29,10 +30,10 @@ export class VehicleData extends LegacyDataModel{
     this.parent.updateSource({prototypeToken:{name:data.name,actorLink:false}});
   }
   async _preUpdate(changes,options,user){
-    if(!user.isGM){ui.notifications.warn("La configuración del vehículo requiere al DJ.");return false;}
+    if(!user.isGM){ui.notifications.warn(tr("La configuración del vehículo requiere al DJ."));return false;}
     await super._preUpdate(changes,options,user);
     const expanded=foundry.utils.expandObject(changes),next=foundry.utils.mergeObject(this.parent.toObject(),expanded,{inplace:false}),v=next.system.vehicle;
-    if(expanded.system?.vehicle?.control?.currentMode&&v.control.currentMode!==this.vehicle.control.currentMode&&!controlAvailable(v))throw Error("Ese modo de control no está disponible.");
+    if(expanded.system?.vehicle?.control?.currentMode&&v.control.currentMode!==this.vehicle.control.currentMode&&!controlAvailable(v))throw Error(tr("Ese modo de control no está disponible."));
     if(expanded.items||expanded.system?.vehicle?.electronicBrain?.memory){
       const cap=v.electronicBrain.memory.capacity,previous=this.vehicle.electronicBrain.memory.capacity;
       validateMemory(next.items,cap,{previousUsed:cap===previous?programSummary(this.parent.items,previous).used:0,override:options.robotMemoryOverride===true});

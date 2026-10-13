@@ -156,7 +156,7 @@ async function attack(combat,c,options,user) {
       weaponName:preview.weapon.name,skillName:result.name,outcome:result.success?tr("IMPACTO"):tr("FALLO"),specialLabel:result.specialResult ? result.label : ""});
     const mode=Object.hasOwn(CONFIG.ChatMessage.modes,options.messageMode)?options.messageMode:game.settings.get("core","messageMode");
     handoff.messageMode=mode;
-    const message=await postRolls(c.actor,[result.roll],content,mode,{[NS]:{attack:handoff}});
+    const message=await postRolls(c.actor,[result.roll],content,mode,{[NS]:{attack:handoff}},user?.id);
     await reserve({pending:false,resolved:true,operatorUuid:preview.operator.actor.uuid,messageId:message.id,result: {hit:result.success}});
     if(result.success&&shot.shot==="resolve")await resolveAttackDamage(message,{automatic:true});
     return {messageId:message.id,...message.getFlag(NS,"attack")};
@@ -189,7 +189,7 @@ async function burstAttack(combat,c,options,user,{snapshot,declaration,aggregate
     const shot=await recordShot(weapon,die,{burst:true,override:!!options.override&&user.isGM,ignoreMalfunction:!!options.ignoreMalfunction&&user.isGM});
     const mode=Object.hasOwn(CONFIG.ChatMessage.modes,options.messageMode)?options.messageMode:game.settings.get("core","messageMode");
     const data={attackerName:c.actor.name,weaponName:weapon.name,baseValue:previews[0].baseValue,burstSkill:previews[0].burstSkill,targetCount:ids.length,weapon:weapon.uuid,malfunction:shot.malfunction,notes:shot.notes.join(" · "),shots:previews.map((p,i)=>({combatId:combat.id,round:combat.round,combatantId:c.id,attacker:c.actor.uuid,target:p.target.actor.uuid,targetToken:p.target.token?.uuid??null,area:p.area,impactPoint:options.impactPoint??null,targetCloneNumber:p.target.actor.system.cloneNumber,targetName:p.target.name,weapon:weapon.uuid,weaponId:weapon.id,weaponCategory:weapon.system.weaponCategory,weaponName:weapon.name,damageNumber:weapon.system.damageNumber,attackRoll:rolls[i].dieResult,attackTarget:rolls[i].finalTarget,hit:rolls[i].success&&!(shot.shot==="cancel"&&malfunctions(weapon.system,rolls[i].dieResult)),damagePending:rolls[i].success&&!(shot.shot==="cancel"&&malfunctions(weapon.system,rolls[i].dieResult)),damageStatus:shot.shot==="manual"?tr("Avería: adjudicar disparo y daño"):tr("Pendiente"),messageMode:mode,modifiers:p.modifiers}))};
-    const message=await postRolls(c.actor,rolls.map(r=>r.roll),await render("burst-chat",data),mode,{[NS]:{burstAttack:data}});
+    const message=await postRolls(c.actor,rolls.map(r=>r.roll),await render("burst-chat",data),mode,{[NS]:{burstAttack:data}},user?.id);
     await reserve({pending:false,resolved:true,messageId:message.id,operatorUuid:previews[0].operator.actor.uuid});
     if(shot.shot==="resolve")for(let i=0;i<data.shots.length;i++)if(data.shots[i].hit)await resolveBurstDamage(message,i,{automatic:true});
     return {messageId:message.id,burst:true};

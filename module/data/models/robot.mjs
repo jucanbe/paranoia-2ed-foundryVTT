@@ -1,3 +1,4 @@
+import {tr} from "../../i18n/index.mjs";
 import {LegacyDataModel,legacyField} from "./legacy.mjs";
 import {textField,numberField} from "./fields.mjs";
 import {ROBOT_STATES,ASIMOV,programSummary,validateMemory} from "../../robots/rules.mjs";
@@ -24,7 +25,7 @@ export class RobotData extends LegacyDataModel{
     this.parent.updateSource({prototypeToken:{name:data.name,actorLink:false}});
   }
   async _preUpdate(changes,options,user){
-    if(!user.isGM){ui.notifications.warn("La configuración del robot requiere al DJ.");return false;}
+    if(!user.isGM){ui.notifications.warn(tr("La configuración del robot requiere al DJ."));return false;}
     await super._preUpdate(changes,options,user);
     const expanded=foundry.utils.expandObject(changes),next=foundry.utils.mergeObject(this.parent.toObject(),expanded,{inplace:false});
     if(expanded.system?.health?.status&&expanded.system.health.status!==this.health.status){
@@ -36,7 +37,7 @@ export class RobotData extends LegacyDataModel{
     if(expanded.items||expanded.system?.robot?.memory){
       const previous=programSummary(this.parent.items,this.robot.memory.capacity).used;
       const cap=next.system.robot.memory.capacity,used=programSummary(next.items,cap).used;
-      if(!options.robotMemoryOverride&&(used>previous||cap!==this.robot.memory.capacity)&&(cap==null||used>cap)&&used>0)throw Error("Memoria insuficiente");
+      if(!options.robotMemoryOverride&&(used>previous||cap!==this.robot.memory.capacity)&&(cap==null||used>cap)&&used>0)throw Error(tr("Memoria insuficiente"));
     }
     if(expanded.name&&this.parent.prototypeToken.name===this.parent.name)changes.prototypeToken={...expanded.prototypeToken,name:expanded.name};
   }

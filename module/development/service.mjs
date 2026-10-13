@@ -23,7 +23,7 @@ export function preview(actor,rows,options={}){
 export function canImprove(actor,key,increase=1){try{preview(actor,[{skillKey:key,increase}]);return true;}catch{return false;}}
 const stamp=actor=>JSON.stringify({development:actor.system.development,skills:actor.system.skills,enabled:actor.system.developmentEnabled,society:actor.system.secretSociety});
 const meta=(kind,user=game.user)=>({id:foundry.utils.randomID(),kind,timestamp:Date.now(),worldTime:game.time.worldTime,userId:user.id});
-function reason(options){if(!String(options.reason??"").trim())throw Error(tr("Indica el motivo."));return String(options.reason).trim();}
+function reason(options){return String(options.reason??"").trim();}
 function enqueue(actor,callback){
   const result=(queues.get(actor.uuid)??Promise.resolve()).catch(()=>{}).then(callback);queues.set(actor.uuid,result);return result;
 }

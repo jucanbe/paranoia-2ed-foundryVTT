@@ -27,9 +27,13 @@ export class SimpleItemSheet extends foundry.applications.api.HandlebarsApplicat
     const field=(key,kind="text",label=L[key],choices)=>{
       const value=documentText(this.item,`system.${key}`,foundry.utils.getProperty(system,key));
       const disabled=!game.user.isGM&&((key==="ammoCurrent"&&enabled("ammunition"))||(key==="malfunctioned"&&enabled("malfunctions")));
+      const schemaField=system.schema?.getField?.(key);
       const result={disabled,path:`system.${key}`,label,value,isNumber:kind==="number",isBoolean:kind==="boolean",isMultiline:kind==="textarea"};
+      if(kind==="number")Object.assign(result,{min:schemaField?.min??0,max:schemaField?.max,step:schemaField?.integer?1:"any"});
+      // A blank option is only offered where the schema accepts an empty value.
+      const allowBlank=!["category","priceUnit"].includes(key)&&schemaField?.blank!==false;
       if(choices){
-        result.choices=Object.entries(["category","priceUnit"].includes(key)?choices:{"":L.none,...choices}).map(([id,label])=>({id,label,selected:id===value}));
+        result.choices=Object.entries(allowBlank?{"":L.none,...choices}:choices).map(([id,label])=>({id,label,selected:id===value}));
         // Keep legacy free-text skills selected until the owner explicitly replaces them.
         if(value&&!Object.hasOwn(choices,value))result.choices.push({id:value,label:`${value} (${L.legacy})`,selected:true});
       }
@@ -59,6 +63,6 @@ export class SimpleItemSheet extends foundry.applications.api.HandlebarsApplicat
     if(system.sourceDetails)sections.push({label:tr("Datos de la fuente (sin automatización)"),optional:true,fields:Object.entries(SOURCE_DETAIL_LABELS).filter(([key])=>!hasArmamentTable||!tableFields.has(key)).map(([key,label])=>field(`sourceDetails.${key}`,SOURCE_DETAIL_NUMBERS.includes(key)?"number":"text",label,key==="guidance"?GUIDANCE:key==="countermeasure"?COUNTERMEASURES:undefined))});
     if(this.item.type==="weapon"&&system.sourceDetails?.weaponTypeCode)sections.splice(1,0,{label:tr("Tabla de armamento · Anexo B"),fields:[field("damageNotation"),field("sourceDetails.areaRadiusMeters","number",tr("RAc · radio de acción (m)")),field("sourceDetails.chargeTurns","number",tr("Cg · carga (turnos)")),field("sourceDetails.tableRecharge","number",tr("RCg · recarga (tabla)")),field("sourceDetails.tableNotes","text",tr("Notas: r ráfagas · cf cono frontal · cg cargador · a área"))]});
     const ammunitionProfiles=(system.ammunitionProfiles??[]).map(p=>({...p,label:documentText(this.item,`system.ammunitionProfiles.${system.ammunitionProfiles.indexOf(p)}.label`,p.label),selected:p.id===system.ammunitionProfile,damage:p.damageNotation||"?",radius:p.sourceDetails?.areaRadiusMeters??"?"}));
-    return {...context,labels:L,name:documentText(this.item),img:this.item.img,sections,ammunitionProfiles,experimental:system.experimental,assigned:system.assigned,optionalExpanded:this.element?.querySelector("details")?.open??false};
+    return {...context,labels:L,name:documentText(this.item),img:this.item.img,sections,ammunitionProfiles,experimental:system.experimental,assigned:system.assigned};
   }
 }

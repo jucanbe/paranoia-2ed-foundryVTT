@@ -16,7 +16,7 @@ test("minimal NPC uses seven native-injected d20 results and initializes every s
   assert.equal(s.health.status,"healthy");assert.equal(s.creation,undefined);assert.equal(s.clones,undefined);
 });
 test("optional mutation rolls its eighth Attribute and independent power; society starts at level one without an invented title",async()=>{
-  let count=0;const s=await generateProfile(defaults(),generationOptions({mutation:true,society:true}),async()=>{count++;return 5;});
+  let count=0;const s=await generateProfile(defaults(),generationOptions({service:"SDF",mutation:true,society:true}),async()=>{count++;return 5;});
   assert.equal(count,10);assert.equal(s.attributes.mutantPower.value,5);assert.equal(s.mutantPower.name,"Empatía");assert.equal(s.mutantPower.key,"empathy");
   assert.deepEqual(s.mutantPower.points,{value:5,max:5});assert.deepEqual(s.secretSociety.rank,{level:1,label:""});assert.equal(s.secretSociety.societyKey,"deathLeopards");
 });
@@ -25,7 +25,7 @@ test("clearance never modifies Attributes; explicit competence heuristic clamps 
   const uv=await generateProfile(defaults(),generationOptions({securityClearance:"ultraviolet"}),async()=>19);
   assert.deepEqual(red.attributes,uv.attributes);
   const elite=await generateProfile(defaults(),generationOptions({competence:"elite"}),async()=>19);
-  const minor=await generateProfile(defaults(),generationOptions({competence:"minor"}),async()=>1);
+  const minor=await generateProfile(defaults(),generationOptions({service:"SDF",competence:"minor"}),async()=>1);
   assert.equal(elite.attributes.strength.value,20);assert.equal(minor.attributes.strength.value,1);
 });
 test("citizen, plain name, and five repeated identities stay unique",()=>{
@@ -60,3 +60,5 @@ test("equipment uses stable catalogue IDs and fails before creation when a start
 test("shared rules accept Characters and NPCs only",()=>{
   assert.ok(isRulesActor({type:"character"}));assert.ok(isRulesActor({type:"npc"}));assert.equal(isRulesActor({type:"robot"}),false);
 });
+
+test("SSI NPC cover rerolls SSI; normal NPC has no cover",async()=>{let calls=0;const rolls=[5,5,5,5,5,5,5,1,2,10];const s=await generateProfile(defaults(),generationOptions({service:"SSI"}),async()=>{calls++;return rolls.shift();});assert.equal(calls,10);assert.equal(s.service,"SSI");assert.equal(s.coverService,"SDF");const normal=await generateProfile(defaults(),generationOptions({service:"STC"}),async()=>5);assert.equal(normal.coverService,null);});

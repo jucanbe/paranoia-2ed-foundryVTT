@@ -1,3 +1,4 @@
+import {getApparentService} from "../actors/service.mjs";
 import {documentText} from "../i18n/documents.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
 import { CharacterData, SECURITY_CLEARANCES } from "../data/models/character.mjs";
@@ -10,7 +11,7 @@ import {rollCreationD20} from "./dice.mjs";
 import { CREATION_STEPS, SERVICES, MUTANT_POWERS, SOCIETIES, DEVELOPMENT_POINTS, serviceLabel, skillMaximum, requiresPsychicReview, PSYCHIC_WARNING } from "./config.mjs";
 import { commitCreation } from "./commit.mjs";
 import {ItemCatalog,STARTER_IDS,catalogId} from "../items/catalog.mjs";
-import {purchaseSummary,canPurchase} from "./purchases.mjs";
+import {purchaseSummary,canPurchase,STARTING_CREDITS} from "./purchases.mjs";
 
 const OPEN_WIZARDS = new Map();
 const confirm = content => foundry.applications.api.DialogV2.confirm({
@@ -89,7 +90,8 @@ export class CharacterCreationWizard extends foundry.applications.api.Handlebars
     }
     if (this.stepId === "service" && game.user.isGM) {
       if (values.service && values.service !== s.data.service && !await this.confirmAllocationReset()) return false;
-      for (const key of ["service", "coverService"]) if (values[key]) s.setService(key, values[key]);
+      if(values.service) s.setService("service",values.service);
+      if(s.data.service === "SSI" && values.coverService) s.setService("coverService",values.coverService);
     }
     if (this.stepId === "mutation") {
       if (game.user.isGM && values.powerName) s.setPower(values.powerName);
@@ -102,6 +104,12 @@ export class CharacterCreationWizard extends foundry.applications.api.Handlebars
       if ("psychicConfirmed" in values) s.psychicConfirmed = !!values.psychicConfirmed;
     }
     return true;
+  }
+
+  /** A new step starts at its top instead of inheriting the previous step's scroll offset. */
+  resetScroll() {
+    const scroll = this.element?.querySelector(".p2-creation-scroll");
+    if (scroll) scroll.scrollTop = 0;
   }
 
   async runAction(action, target) {
@@ -117,8 +125,9 @@ export class CharacterCreationWizard extends foundry.applications.api.Handlebars
         s.validateStep(this.stepId);
         if(this.stepId==="equipment")purchaseSummary(s.purchases,await ItemCatalog.entries(),s.data.securityClearance,game.user.isGM&&s.purchaseOverride);
         this.step = Math.min(8, this.step + 1);
+        this.resetScroll();
       }
-      else if (action === "back") this.step = Math.max(0, this.step - 1);
+      else if (action === "back") { this.step = Math.max(0, this.step - 1); this.resetScroll(); }
       else if (action === "generateAttributes") { if (await this.confirmAllocationReset()) await s.generateAttributes(); }
       else if (action === "rerollAttribute") { if (await this.confirmAllocationReset()) await s.rerollAttribute(target.dataset.attribute); }
       else if (action === "rollTable") {
@@ -168,9 +177,9 @@ export class CharacterCreationWizard extends foundry.applications.api.Handlebars
         let purchaseError="";
         try{purchaseSummary(s.purchases,entries,d.securityClearance,override);}catch(error){purchaseError=error.message;}
         const starters=STARTER_IDS.map(id=>{const item=entries.find(i=>catalogId(i)===id);if(!item)throw new Error(trHTML`Equipo inicial no disponible: ${id}`);return {name:documentText(item)};});
-        equipment={starters,purchaseOverride:override,purchaseError,credits:summary,selectedEquipment:summary.rows,
+        equipment={starters,purchaseOverride:override,purchaseError,credits:{starting:STARTING_CREDITS,total:summary.total,remaining:summary.remaining,overBudget:summary.remaining<0},selectedEquipment:summary.rows,
           catalogue:entries.filter(i=>i.flags?.["paranoia-2-edition"]?.startingPurchase&&(canPurchase(i,d.securityClearance,override)||s.purchases[catalogId(i)]>0))
-            .sort((a,b)=>a.name.localeCompare(b.name,"es"))
+            .sort((a,b)=>documentText(a).localeCompare(documentText(b),game.i18n.lang))
             .map(i=>{const id=catalogId(i),quantity=s.purchases[id]??0;return {id,name:documentText(i),price:i.system.price,unit:i.system.priceUnit==="meter"?tr("/ metro"):i.system.priceUnit==="bottle"?tr("/ botella"):"",quantity,subtotal:i.system.price*quantity,canDecrease:quantity>0,canIncrease:canPurchase(i,d.securityClearance,override)&&(override||summary.remaining>=i.system.price)};})};
       }catch(error){equipment={purchaseError:error.message};}
     }
@@ -190,7 +199,8 @@ export class CharacterCreationWizard extends foundry.applications.api.Handlebars
       rerolls: s.rerolls.map(r => ({...r, label: LABELS.attributeNames[r.key]})),
       capabilities: capabilityRows(model),
       serviceOptions: selectOptions(Object.keys(SERVICES), d.service, serviceLabel),
-      coverOptions: selectOptions(Object.keys(SERVICES), d.coverService, serviceLabel),
+      isSSI:d.service === "SSI", apparentService:serviceLabel(getApparentService(d)),
+      coverOptions: selectOptions(Object.keys(SERVICES).filter(key=>key!=="SSI"), d.coverService, serviceLabel),
       serviceLabel: serviceLabel(d.service), coverLabel: serviceLabel(d.coverService),
       powerOptions: selectOptions(MUTANT_POWERS, d.mutantPower.name),
       societyOptions: selectOptions(SOCIETIES, s.societyChoice),

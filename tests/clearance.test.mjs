@@ -20,7 +20,7 @@ test("success, survivor, traitor and deduplication are independent explicit chec
   for(const change of [{result:"failure"},{result:"none"},{validSurvivor:false},{countForPromotion:false},{declaredTraitor:true}])assert.equal(missionProgress({}, {...row,...change}).counted,false);
   assert.equal(missionProgress(first.progress,row).counted,false);
   const reset={...first.progress,successfulMissions:0};assert.equal(missionProgress(reset,row).counted,false);
-  assert.throws(()=>missionProgress(reset,{...row,override:true}));
+  assert.equal(missionProgress(reset,{...row,override:true}).counted,true);
   assert.equal(missionProgress(reset,{...row,override:true,reason:"DJ exception"}).counted,true);
   assert.deepEqual(progress(),{successfulMissions:0,requirementSatisfied:false,countedMissionIds:[]});
 });

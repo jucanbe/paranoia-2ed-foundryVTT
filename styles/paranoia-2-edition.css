@@ -2,3 +2,13 @@
 .paranoia-sheet p,.paranoia-sheet dd,.paranoia-sheet details {overflow-wrap:anywhere;}
 .paranoia-sheet button:focus-visible,.paranoia-sheet a:focus-visible {outline:2px solid currentColor;outline-offset:2px;}
 .paranoia-sheet textarea {resize:vertical;}
+
+/* Core Actor.img portraits shared by the four Actor sheets. */
+.paranoia-sheet .p2-portrait-layout{display:flex;align-items:flex-start;gap:16px;min-width:0;}
+.paranoia-sheet .p2-portrait-identity{flex:1;min-width:0;}
+.paranoia-sheet .p2-actor-portrait{width:120px;height:120px;flex:0 0 auto;object-fit:cover;border:2px solid currentColor;background:#2b2b2b;}
+.paranoia-npc .p2-actor-portrait{width:90px;height:90px;}
+.paranoia-vehicle .p2-actor-portrait{width:160px;height:120px;}
+.paranoia-sheet .p2-actor-portrait[data-action]{cursor:pointer;}
+.paranoia-sheet .p2-actor-portrait[data-action]:hover{outline:2px solid var(--color-warm-1,#b32127);outline-offset:2px;}
+@media(max-width:650px){.paranoia-sheet .p2-portrait-layout{gap:10px;flex-wrap:wrap;}.paranoia-sheet .p2-actor-portrait{max-width:100px;max-height:100px;}}

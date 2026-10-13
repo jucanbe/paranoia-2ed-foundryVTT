@@ -1,5 +1,6 @@
+import {rollCoverService} from "../actors/service.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
-import {NPC_GENERATION_CONFIG as POLICY,NPC_EQUIPMENT_PRESETS,NPC_ROLES} from "./config.mjs";
+import {NPC_GENERATION_CONFIG as POLICY,NPC_EQUIPMENT_PRESETS,NPC_ROLES,NPC_NAME_PARTS} from "./config.mjs";
 import {CLEARANCE_CODES,buildCitizenId,normalizeIdentityText} from "../actors/identity.mjs";
 import {SERVICES,powerForRoll,validateD20,requiresPsychicReview} from "../creation/config.mjs";
 import {SOCIETY_REGISTRY,societyKeyForRoll} from "../societies/registry.mjs";
@@ -40,6 +41,7 @@ export async function generateProfile(defaults,options,rollD20){
     const [group,key]=path.split(".");const skill=system.skills[group]?.[key];if(skill)skill.value=Math.min(14,skill.value+POLICY.serviceSkillIncrease);
   }
   system.securityClearance=options.securityClearance;system.service=options.service;system.cloneNumber=options.cloneNumber;
+  system.coverService=options.service === "SSI"?(await rollCoverService(rollD20)).result:null;
   system.identity.useCitizenId=options.useCitizenId;system.npc.role=options.role;system.npc.gmNotes=String(options.notes??"");system.credits=0;
   if(options.mutation){const power=identifyPower(powerForRoll(validateD20(await rollD20())));system.mutantPower.name=power.label;system.mutantPower.key=power.key;}
   system.mutantPower.points=initialPoints(system.attributes.mutantPower.value);
@@ -67,14 +69,35 @@ export async function selectNPCEquipment(entries,options,randomIndex){
   }
   return selected;
 }
+/** Syllable-built names: optional onset + vowel + optional coda, 1–3 times. Cosmetic only. */
+export function randomNPCName(randomIndex){
+  const {onsets,vowels,midCodas,codas,syllables,minLength,maxLength}=NPC_NAME_PARTS,pick=list=>list[randomIndex(list.length)];
+  let name="";
+  for(let attempt=0;attempt<20;attempt++){
+    name="";
+    for(let i=0,count=pick(syllables);i<count;i++){
+      // Later syllables always need an onset so vowels do not collide (no "AEO").
+      const onset=i?pick(onsets.filter(Boolean)):pick(onsets);
+      const last=i===count-1;
+      name+=onset+pick(vowels)+(last?pick(codas):randomIndex(4)?"":pick(midCodas));
+    }
+    if(name.length>=minLength&&name.length<=maxLength)return name;
+  }
+  return (name+"BOT").slice(0,maxLength);
+}
 export function uniqueNPCIdentity(system,options,usedNames,randomIndex){
-  const base=String(options.name??"").trim()||POLICY.names[randomIndex(POLICY.names.length)];
+  const chosen=String(options.name??"").trim();
   system.identity.sector=normalizeIdentityText(options.sector)||Array.from({length:3},()=>POLICY.sectorAlphabet[randomIndex(POLICY.sectorAlphabet.length)]).join("");
-  let suffix=0,name;
-  do{
-    const personal=suffix?`${base}${suffix+1}`:base;
-    system.identity.name=normalizeIdentityText(personal);
-    name=buildCitizenId(system,personal);suffix++;
-  }while(usedNames.has(name.toLocaleUpperCase()));
+  const idFor=personal=>{system.identity.name=normalizeIdentityText(personal);return buildCitizenId(system,personal);};
+  let base=chosen,name;
+  if(!base){
+    // Prefer a fresh random name over numbered duplicates (BORO, BORO2…) so groups read as distinct citizens.
+    for(let attempt=0;attempt<50;attempt++){
+      base=randomNPCName(randomIndex);name=idFor(base);
+      if(!usedNames.has(name.toLocaleUpperCase())){usedNames.add(name.toLocaleUpperCase());return name;}
+    }
+  }
+  let suffix=0;
+  do{name=idFor(suffix?`${base}${suffix+1}`:base);suffix++;}while(usedNames.has(name.toLocaleUpperCase()));
   usedNames.add(name.toLocaleUpperCase());return name;
 }

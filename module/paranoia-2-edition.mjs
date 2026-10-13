@@ -19,6 +19,7 @@ import {registerSocieties} from "./societies/register.mjs";
 import {registerSecurityClearance} from "./clearance/register.mjs";
 import {registerDevelopment} from "./development/register.mjs";
 import {registerCredits} from "./credits/register.mjs";
+import {registerMessages} from "./messages/register.mjs";
 import {registerMigrations} from "./migrations/register.mjs";
 import {registerWelcomeScene} from "./welcome.mjs";
 
@@ -42,6 +43,7 @@ Hooks.once("init", () => {
   registerDevelopment();
   registerCredits();
   registerSocieties();
+  registerMessages();
   game.paranoia=Object.freeze({...game.paranoia,CloneService});
   registerMigrations();
   registerWelcomeScene();

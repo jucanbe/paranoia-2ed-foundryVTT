@@ -4,14 +4,14 @@
 
 `registry.mjs` is the only list of the twenty powers. Creation's d20 table and clone
 replacement consume its names in the original order. Stable English keys identify
-handlers. Existing names remain valid, including Hipersentido/Supersentido,
+handlers. Existing Spanish source names remain valid as aliases, including Hipersentido/Supersentido,
 Adaptación metabólica/Supermetabolismo, Telekinesis/Telequinesis and Rayos-X variants.
 Actor `mutantPower.name`, notes and registration are preserved; the key is resolved,
 not duplicated as a second editable identity.
 
-The Secret tab offers **Usar Poder Mutante**, **Recuperar PM**, the current/max pool,
+The Secret tab offers **Use Mutant Power**, **Recover MP**, the current/max pool,
 and active effects. A player proposes intent, cost, difficulty and modifier in a
-private request. The active GM opens **Revisar y aprobar**, adjusts those values,
+private request. The active GM opens **Review and approve (GM)**, adjusts those values,
 then commits the attempt. No PM are spent or dice rolled before approval. GM uses
 can commit directly. An active GM is required to serialize document changes.
 
@@ -59,28 +59,28 @@ effects. Its existing random/manual power options and history remain intact.
 
 The private result card opens a GM adjudication dialog:
 
-- **Control de Adrenalina:** GM-entered Strength/Agility bonuses and a separate
+- **Adrenaline Control:** GM-entered Strength/Agility bonuses and a separate
   GM-entered increase to dependent learned Agility skills. Base data are untouched.
   Existing capacity/Basic Skill tables see the temporary Attribute increases where
   their defined domains apply; no beyond-table capacity values are invented.
-- **Empatía:** +5 to Cynicism skills while the GM-approved contextual effect is
+- **Empathy:** +5 to Cynicism skills while the GM-approved contextual effect is
   active. End it when that context no longer applies. Identical active power bonuses
   do not stack.
-- **Adrenalina/Campo de Energía:** ending the effect creates a separate temporary
+- **Adrenaline Control/Energy Field:** ending the effect creates a separate temporary
   exhaustion effect, equivalent to Wounded for checks, without writing a wound.
   Repeated adrenaline after exhaustion escalates to temporary incapacity. The GM
   confirms adequate rest to remove exhaustion; PM recovery alone does not certify it.
-- **Carisma/Rayo mental:** native Cynicism/Endurance resistance checks with a
-  GM-set modifier. Failed Rayo Mental resistance permits canonical HealthService
+- **Charisma/Mental Blast:** native Cynicism/Endurance resistance checks with a
+  GM-set modifier. Failed Mental Blast resistance permits canonical HealthService
   stun; the caster is excluded. Electroshock can also hand off an explicit stun.
   This uses the existing N+2 combat stun/recovery rule, not an invented stunner ND
   or newly assumed power-specific duration. The GM can clear stun as usual.
-- **Regeneración:** allows a check while Wounded or Incapacitated. GM-confirmed
+- **Regeneration:** allows a check while Wounded or Incapacitated. GM-confirmed
   recovery calls HealthService (Incapacitated → Wounded → Healthy); ordinary success
   is not automatically instant. Dead and Vaporized cannot be regenerated.
-- **Teleportación:** no Token moves on the roll. The GM must choose the source
+- **Teleportation:** no Token moves on the roll. The GM must choose the source
   Token, enter scene coordinates and explicitly confirm the destination.
-- **Levitación/Polimorfismo/other ongoing powers:** managed descriptive effect,
+- **Levitation/Polymorphism/other ongoing powers:** managed descriptive effect,
   duration, targets and notes. Portraits and token appearance are not replaced.
 - **Manual consequences:** GM-selected HealthService result or descriptive effect,
   without inventing a damage number. Adjudications are marked per operation/target

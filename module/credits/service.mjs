@@ -108,7 +108,6 @@ export function correctTransaction(actor,id,delta,options={}){
 export function prepareMissionCredits(actor,{reward=0,fine=0,reason="",missionReportId,missionReference=missionReportId}={}){
   gm(actor);amount(reward);amount(fine);if(reward<0||fine<0)throw Error(tr("Recompensa y multa deben ser cantidades no negativas."));
   if((reward||fine)&&!isEnabled(actor))throw Error(tr("Activa el seguimiento económico del PNJ."));
-  if((reward||fine)&&!String(reason).trim())throw Error(tr("Indica el motivo económico."));
   amount(actor.system.credits+reward);amount(actor.system.credits+reward-fine);
   return {actorUuid:actor.uuid,reward,fine,reason,missionReportId,missionReference};
 }

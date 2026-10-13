@@ -1,4 +1,5 @@
 import {CitizenData} from "./citizen.mjs";
+import {tr} from "../../i18n/index.mjs";
 import {textField} from "./fields.mjs";
 import {POWER_REGISTRY,identifyPower} from "../../powers/registry.mjs";
 import {NPC_ROLES} from "../../npc/config.mjs";
@@ -20,10 +21,11 @@ export class NPCData extends CitizenData {
     return super._preCreate(data,options,user);
   }
   async _preUpdate(changes,options,user){
-    if(!user.isGM){ui.notifications.warn("Solo el DJ puede editar este PNJ.");return false;}
+    if(!user.isGM){ui.notifications.warn(tr("Solo el DJ puede editar este PNJ."));return false;}
     const expanded=foundry.utils.expandObject(changes),power=expanded.system?.mutantPower;
-    if(power&&Object.hasOwn(power,"key"))power.name=POWER_REGISTRY[power.key]?.label??"";
-    else if(power&&Object.hasOwn(power,"name"))power.key=identifyPower(power.name)?.key??"";
+    if(power&&Object.hasOwn(power,"key")&&power.key!==this.mutantPower.key)power.name=POWER_REGISTRY[power.key]?.label??"";
+    else if(power&&Object.hasOwn(power,"name")&&power.name!==this.mutantPower.name)power.key=identifyPower(power.name)?.key??"";
+    else if(power){delete power.key;if(Object.hasOwn(power,"name")&&power.name===this.mutantPower.name)delete power.name;}
     Object.keys(changes).forEach(key=>delete changes[key]);Object.assign(changes,expanded);
     return super._preUpdate(changes,options,user);
   }

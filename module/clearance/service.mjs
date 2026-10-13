@@ -24,9 +24,8 @@ export function getPromotionRequirements(actor){
 export const canPromote=actor=>!!getPromotionRequirements(actor)?.eligible;
 export function getHistory(actor){requireGM();citizen(actor);return Object.values(readClearanceLedger().actions).filter(a=>a.actorUuid===actor.uuid);}
 function event(actor,after,options){
-  if(!String(options.reason??"").trim())throw Error(tr("Indica el motivo."));
   return {id:foundry.utils.randomID(),actorUuid:actor.uuid,before:snapshot(actor),after,
-    previousClearance:getCurrent(actor),newClearance:after.securityClearance,type:options.type??"manual",reason:String(options.reason),
+    previousClearance:getCurrent(actor),newClearance:after.securityClearance,type:options.type??"manual",reason:String(options.reason??"").trim(),
     missionReference:String(options.missionReference??""),notes:String(options.notes??""),timestamp:Date.now(),worldTime:game.time.worldTime,userId:game.user.id,status:"pending",previousName:actor.name};
 }
 function checkPending(body,actor){if(Object.values(ledger(body).actions).some(a=>a.actorUuid===actor.uuid&&a.status==="pending"))throw Error(tr("Hay un cambio pendiente: reanúdalo desde el historial antes de continuar."));}

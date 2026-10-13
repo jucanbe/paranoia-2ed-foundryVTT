@@ -6,7 +6,7 @@ The distributed `packs/weapons`, `packs/armor`, and `packs/equipment` directorie
 
 The three JSON files here are the editable canonical source. Weapons and armor were checked against the full JOC Spanish manual supplied on 2026-10-03: PDF pages 162–165 (Annex B), with descriptive rules on printed pages 89–92. The catalogue contains 41 weapons and 11 armor entries; these include all armament table rows through selectable ammunition profiles, all ten armor table rows, and preserved legacy/generic entries. Robot and vehicle sources are separate; integrated vehicle weapons retain matching verified catalogue statistics.
 
-All normal weapon damage numbers and ranges remain unset. Malfunction codes are separate `system.sourceDetails` metadata and never substitute for normal damage. Unknown prices are null; only the 13 verified starting purchases have prices. The starter uniform has no inferred protection; the separate Réflex example is L4. Unknown skill/category/clearance text is blank. No effects execute from the descriptive metadata.
+All normal weapon damage numbers and ranges remain unset. Malfunction codes are separate `system.sourceDetails` metadata and never substitute for normal damage. Unknown prices are null; only the 13 verified starting purchases have prices. The starter uniform has no inferred protection; the separate Reflec example is L4. Unknown skill/category/clearance text is blank. No effects execute from the descriptive metadata.
 
 ## Maintainer build
 

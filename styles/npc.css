@@ -2,7 +2,7 @@
 .paranoia-npc .p2-npc-tools {display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
 .paranoia-npc .p2-npc-tools button {flex:1 1 120px;font-size:12px}
 .paranoia-npc .p2-attributes {grid-template-columns:repeat(7,minmax(0,1fr))}
-.paranoia-npc .p2-skills {max-height:310px;overflow:auto;grid-template-columns:repeat(3,minmax(0,1fr))}
+.paranoia-npc .p2-skills {display:grid;columns:auto;gap:6px 20px;align-items:start;max-height:310px;overflow-x:hidden;overflow-y:auto;grid-template-columns:repeat(3,minmax(0,1fr))}
 .paranoia-npc .p2-section {margin-bottom:8px}
 .paranoia-npc summary {font-weight:bold;cursor:pointer;padding:6px;background:#171717;color:#fff}
 .paranoia-npc .p2-npc-secret {border:2px solid #171717}

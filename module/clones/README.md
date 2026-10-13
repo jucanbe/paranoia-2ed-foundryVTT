@@ -13,9 +13,11 @@ writing it. Activation is GM-only; remote GM requests go through private authent
 ChatMessage receipts to the active GM. They are not replayed on reload. Receipts remain
 private to avoid a Foundry 14 chat-animation race with immediate message deletion.
 
-The active GM serializes requests and shares the health service's per-Actor lock. A SHA-256
-fingerprint of canonical gameplay data rejects stale dialogs or competing requests before
-and after preparation. Client-local `_stats` fields are excluded because embedded Item
+The active GM serializes requests and shares the health service's per-Actor lock. A compact,
+non-cryptographic 64-bit FNV-1a fingerprint (plus the serialized length) of canonical gameplay
+data rejects stale dialogs or competing requests before and after preparation. It only detects
+changes; it needs no Web Crypto or secure context and provides no tamper protection.
+Client-local `_stats` fields are excluded because embedded Item
 timestamps can differ across V14 clients until reload. Normal ownership rules apply;
 this is not a security boundary against modified clients or multiple sessions impersonating
 the same GM account.

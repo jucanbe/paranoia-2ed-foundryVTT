@@ -71,7 +71,6 @@ export function changeRank(actor,newRank,{reason,gmNotes=""}={}){
     previousRank=structuredClone(member.rank);
     if(!member.societyKey)throw Error(tr("Asigna primero una sociedad."));
     if(!Number.isSafeInteger(newRank.level)||newRank.level<0)throw Error(tr("El nivel debe ser un entero no negativo."));
-    if(!text(reason))throw Error(tr("Indica el motivo del cambio de rango."));
     const rank={level:newRank.level,label:text(newRank.label)};
     if(member.societyKey==="psionics"&&rank.level>member.rank.level){
       member.psionicLevels??=[];

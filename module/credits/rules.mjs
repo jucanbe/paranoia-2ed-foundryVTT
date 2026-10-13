@@ -5,9 +5,8 @@ export function amount(value,{positive=false}={}){
 }
 export function entry(balance,delta,{type="adjustment",reason,missionReference="",missionReportId="",relatedItem="",notes="",id,requestId="",timestamp=Date.now(),worldTime=0,userId="",privateData=null,corrects=""}={}){
   amount(balance);amount(delta);if(!Object.hasOwn(TRANSACTION_TYPES,type))throw Error(tr("Tipo de transacción desconocido."));
-  if(!String(reason??"").trim())throw Error(tr("Indica el motivo."));
   const resultingBalance=amount(balance+delta);
-  return {id,type,previousBalance:balance,delta,resultingBalance,reason:String(reason).trim(),missionReference:String(missionReference),missionReportId:String(missionReportId),relatedItem:String(relatedItem),notes:String(notes),requestId:String(requestId),timestamp,worldTime,userId,privateData,corrects:String(corrects)};
+  return {id,type,previousBalance:balance,delta,resultingBalance,reason:String(reason??"").trim(),missionReference:String(missionReference),missionReportId:String(missionReportId),relatedItem:String(relatedItem),notes:String(notes),requestId:String(requestId),timestamp,worldTime,userId,privateData,corrects:String(corrects)};
 }
 export function ledger(actor){const value=actor.system.creditLedger;return structuredClone(value?.toObject?.()??value??{history:[]});}
 export function purchaseCost(item,quantity){

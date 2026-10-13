@@ -2,7 +2,7 @@
   "id": "paranoia-2-edition",
   "title": "Paranoia 2nd Edition",
   "description": "Paranoia 2nd Edition with character creation and bundled Item catalogues.",
-  "version": "0.2.0-rc.1",
+  "version": "0.2.0-rc.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14.368",

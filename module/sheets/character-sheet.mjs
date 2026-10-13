@@ -1,4 +1,7 @@
+import {portraitContext,editPortrait} from "./portrait.mjs";
 import {tr} from "../i18n/index.mjs";
+import {getApparentService,serviceState} from "../actors/service.mjs";
+import {serviceAction} from "../actors/service-dialog.mjs";
 import {documentText} from "../i18n/documents.mjs";
 import { SECURITY_CLEARANCES } from "../data/models/character.mjs";
 import { LABELS } from "./labels.mjs";
@@ -29,7 +32,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(foundry.applicati
     position: {width: 1020, height: 860},
     window: {resizable: true},
     form: {submitOnChange: true, closeOnSubmit: false},
-    actions: {creditAction,developmentAction,clearanceAction,societyAction,treasonAction,powerAction,activateClone,healthAction,toggleArmor,changeQuantity,rollCheck: sheetCheck, attributeDuel: sheetDuel, createItem, editItem, deleteItem, createCharacter: async function() {
+    actions:{editPortrait,serviceAction,creditAction,developmentAction,clearanceAction,societyAction,treasonAction,powerAction,activateClone,healthAction,toggleArmor,changeQuantity,rollCheck: sheetCheck, attributeDuel: sheetDuel, createItem, editItem, deleteItem, createCharacter: async function() {
       if (this.isEditable) await openCharacterCreation(this.actor);
     }}
   };
@@ -85,8 +88,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(foundry.applicati
     }
     // Only explicit public data reaches public markup; secret context is owner/GM-only.
     return {
-      tabs, editable, clearancePanel:clearancePanel(this.actor),clearanceLabel:LABELS.clearances[system.securityClearance],treasonPanel:panelHTML(this.actor), rootId:this.actor.id, labels: ITEM_LABELS, rollLabels: ROLL_LABELS, isGM: game.user.isGM, name: this.actor.name, canViewSecret: this.canViewSecret,
-      identity: {...system.identity, service: system.service, cloneNumber: system.cloneNumber},
+      ...portraitContext(this.actor),tabs, editable, clearancePanel:clearancePanel(this.actor),clearanceLabel:LABELS.clearances[system.securityClearance],treasonPanel:panelHTML(this.actor), rootId:this.actor.id, labels: ITEM_LABELS, rollLabels: ROLL_LABELS, isGM: game.user.isGM, name: this.actor.name, canViewSecret: this.canViewSecret,
+      identity: {...system.identity, service: getApparentService(this.actor), isSSI:system.service === "SSI", cloneNumber: system.cloneNumber},
       legacyIdentity: !system.identity.name,
       clearances: SECURITY_CLEARANCES.map(value => ({value, label: LABELS.clearances[value], selected: value === system.securityClearance})),
       attributes: Object.keys(system.attributes).map(key => ({
@@ -100,7 +103,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(foundry.applicati
       })),
       capabilities, inventory, developmentPanel:developmentPanel(this.actor),canEditSkills:game.user.isGM||(!system.creation.complete&&!system.development.history.length),societyPanel:await societyPanel(this.actor), publicNotes: system.publicNotes, healthView:this.canViewSecret?healthView(this.actor):null,
       secret: this.canViewSecret ? {
-        creditPanel:creditPanel(this.actor),
+        service:serviceState(this.actor), creditPanel:creditPanel(this.actor),
         powerView:powerView(this.actor),
         cloneHistory:cloneHistoryView(this.actor),terminal:isTerminal(system.health),cloneNumber:system.cloneNumber,
         mutantPower: {...system.mutantPower,name:identifyPower(system.mutantPower.name)?tr(identifyPower(system.mutantPower.name).label):system.mutantPower.name},

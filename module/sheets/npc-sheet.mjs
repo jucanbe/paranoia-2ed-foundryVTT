@@ -1,3 +1,6 @@
+import {portraitContext,editPortrait} from "./portrait.mjs";
+import {getApparentService,serviceState} from "../actors/service.mjs";
+import {serviceAction} from "../actors/service-dialog.mjs";
 import {documentText} from "../i18n/documents.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
 import {LABELS} from "./labels.mjs";
@@ -41,11 +44,11 @@ const choices=(map,value)=>Object.entries(map).map(([key,label])=>({key,label,se
 /** A separate compact view over the shared Citizen schema and rule services. */
 export class NPCSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
   static DEFAULT_OPTIONS={classes:["paranoia-sheet","paranoia-npc"],position:{width:860,height:820},window:{resizable:true},
-    form:{submitOnChange:true,closeOnSubmit:false},actions:{creditAction,developmentAction,clearanceAction,societyAction,treasonAction,createItem,editItem,deleteItem,changeQuantity,rollCheck:sheetCheck,attributeDuel:sheetDuel,healthAction,powerAction,activateClone,equipArmor,combatAction,
+    form:{submitOnChange:true,closeOnSubmit:false},actions:{editPortrait,serviceAction,creditAction,developmentAction,clearanceAction,societyAction,treasonAction,createItem,editItem,deleteItem,changeQuantity,rollCheck:sheetCheck,attributeDuel:sheetDuel,healthAction,powerAction,activateClone,equipArmor,combatAction,
       generateNPC:openNPCGenerator,
       duplicateNPC:async function(){if(this.isEditable)(await duplicateNPC(this.actor)).sheet.render(true);},
       toggleSkills:async function(){this.showAllSkills=!this.showAllSkills;await this.render();}}};
-  static PARTS={body:{template:"systems/paranoia-2-edition/templates/npc/sheet.hbs",scrollable:[".p2-scroll"]}};
+  static PARTS={body:{template:"systems/paranoia-2-edition/templates/npc/sheet.hbs",scrollable:[".p2-scroll",".p2-skills"]}};
   get isEditable(){return game.user.isGM&&super.isEditable;}
   _canDragStart(){return this.isEditable;}
   _canDragDrop(){return this.isEditable;}
@@ -60,15 +63,15 @@ export class NPCSheet extends foundry.applications.api.HandlebarsApplicationMixi
       id:i.id,name:documentText(i),quantity:i.system.quantity,experimental:i.system.experimental,assigned:i.system.assigned,equipped:i.system.equipped,isArmor:type==="armor",unauthorized:clearanceIndex(i.system.securityClearance)>clearanceIndex(s.securityClearance),
       summary:type==="weapon"?trHTML`${WEAPON_CATEGORIES[i.system.weaponCategory]?.code??i.system.weaponType??"—"} · ${skillLabel(i.system.skill)} · ND ${i.system.damageNumber??"—"} · ${i.system.range??"—"}`:type==="armor"?armorCode(i.system.protectionType,i.system.protectionValue):""}))}));
     // Never serialize the complete Actor/system into a public sheet context.
-    return {name:this.actor.name,clearancePanel:isGM?clearancePanel(this.actor):"",clearanceLabel:LABELS.clearances[s.securityClearance],treasonPanel:panelHTML(this.actor),societyPanel:await societyPanel(this.actor),editable:this.isEditable,isGM,identity:{...s.identity,cloneNumber:s.cloneNumber,service:s.service},
+    return {...portraitContext(this.actor),name:this.actor.name,clearancePanel:isGM?clearancePanel(this.actor):"",clearanceLabel:LABELS.clearances[s.securityClearance],treasonPanel:panelHTML(this.actor),societyPanel:await societyPanel(this.actor),editable:this.isEditable,isGM,identity:{...s.identity,cloneNumber:s.cloneNumber,service:getApparentService(this.actor),isSSI:s.service === "SSI"},
       clearances:choices(Object.fromEntries(Object.keys(CLEARANCE_CODES).map(k=>[k,LABELS.clearances[k]])),s.securityClearance),attributes,skillGroups,showAllSkills:this.showAllSkills,
       capabilities:capabilityRows(s),developmentPanel:isGM?developmentPanel(this.actor):"",combatCapacities:capabilityRows(s).slice(1,3),health:healthView(this.actor),inventory,
-      activeWeapon:this.actor.items.get(s.npc.activeWeaponId)?.name??tr("Sin arma activa"),
-      equippedArmor:this.actor.items.filter(i=>i.type==="armor"&&i.system.equipped).map(i=>`${i.name} (${armorCode(i.system.protectionType,i.system.protectionValue)})`).join(", ")||tr("Sin armadura equipada"),
-      secret:isGM?{...s.npc,creditPanel:creditPanel(this.actor),roles:choices(NPC_ROLES,s.npc.role),credits:s.credits,coverService:s.coverService,privateNotes:s.privateNotes,
+      activeWeapon:(this.actor.items.get(s.npc.activeWeaponId)?documentText(this.actor.items.get(s.npc.activeWeaponId)):null)??tr("Sin arma activa"),
+      equippedArmor:this.actor.items.filter(i=>i.type==="armor"&&i.system.equipped).map(i=>`${documentText(i)} (${armorCode(i.system.protectionType,i.system.protectionValue)})`).join(", ")||tr("Sin armadura equipada"),
+      secret:isGM?{...s.npc,service:serviceState(this.actor),creditPanel:creditPanel(this.actor),roles:choices(NPC_ROLES,s.npc.role),credits:s.credits,coverService:s.coverService,privateNotes:s.privateNotes,
         power:s.mutantPower,powerScore:s.attributes.mutantPower.value,powerView:powerView(this.actor),
         powers:choices(Object.fromEntries(Object.entries(POWER_REGISTRY).map(([k,p])=>[k,p.label])),s.mutantPower.key),
-        weapons:this.actor.items.filter(i=>i.type==="weapon").map(i=>({key:i.id,label:i.name,selected:i.id===s.npc.activeWeaponId})),
+        weapons:this.actor.items.filter(i=>i.type==="weapon").map(i=>({key:i.id,label:documentText(i),selected:i.id===s.npc.activeWeaponId})),
         nextClone:s.identity.useCitizenId&&isTerminal(s.health)}:null};
   }
 }

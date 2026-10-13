@@ -29,12 +29,16 @@ export function readCheck(actor, type, key) {
   return {actor, type, key, name, baseValue};
 }
 
-export async function postRolls(actor, rolls, content, messageMode, flags = {}) {
+export async function postRolls(actor, rolls, content, messageMode, flags = {}, requesterId = null) {
   const Message = foundry.utils.getDocumentClass("ChatMessage");
   // Native dice markup supplies Foundry's expandable die tooltip, even with custom cards.
   content += (await Promise.all(rolls.map(roll => roll.render()))).join("");
   const message = new Message({speaker: Message.getSpeaker({actor}), content, rolls, flags, sound: CONFIG.sounds.dice});
   message.applyMode(messageMode);
+  // A GM posting on a player's behalf keeps that player among the private recipients.
+  if (requesterId && ["self", "gm"].includes(messageMode) && !message.whisper.includes(requesterId)) {
+    message.updateSource({whisper: [...message.whisper, requesterId]});
+  }
   return Message.create(message);
 }
 

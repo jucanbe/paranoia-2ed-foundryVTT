@@ -29,7 +29,6 @@ export function improvementPlan(actor,rows,metadata={},options={}){
     const normal=improvementCost(key,row.increase,metadata);
     const overridden=row.overrideCost!==undefined;
     const cost=overridden?integer(row.overrideCost,tr("Coste elegido por el DJ")):normal.cost;
-    if((overridden||options.overrideRestrictions)&&!String(options.reason??"").trim())throw Error(tr("La excepción del DJ requiere motivo."));
     result.push({skillKey:key,oldValue,newValue,cost,rule:overridden?"gmOverride":normal.rule,multiplier:normal.multiplier});
   }
   const totalCost=result.reduce((sum,row)=>sum+row.cost,0);integer(totalCost,tr("Coste total"));

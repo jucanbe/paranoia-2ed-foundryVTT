@@ -11,8 +11,20 @@ export const NPC_GENERATION_CONFIG=Object.freeze(localizedRecord({
   // No verified mappings exist yet. Never manufacture Service skills; reuse verified additions later.
   serviceSkillBonuses:SERVICE_SKILLS,
   serviceSkillIncrease:0,
-  names:["MARTA","LUIS","ANA","DAVID","ROSA","PABLO","ELENA","JUAN","INES","MARIO","LARA","BRUNO"],
   sectorAlphabet:"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   randomEquipmentCount:1
 }));
 export const NPC_EQUIPMENT_PRESETS=Object.freeze(localizedRecord({troubleshooter:{label:"Equipo básico de Esclarecedor",role:"troubleshooter",minimumClearance:"red",catalogIds:STARTER_IDS}}));
+/**
+ * Cosmetic personal names (never translated), built like /^(C?V C?){1,3}$/ from these parts:
+ * an optional onset, a vowel nucleus and an optional coda per syllable. ~10^7 combinations.
+ */
+export const NPC_NAME_PARTS=Object.freeze({
+  onsets:Object.freeze(["","","B","BR","C","CH","D","DR","F","G","GR","J","K","L","M","M","N","P","PR","R","R","S","SH","ST","T","TR","V","Z"]),
+  vowels:Object.freeze(["A","A","A","E","E","I","I","O","O","U","IA","IO","AU"]),
+  // Mid-word codas stay simple; clusters only close the name.
+  midCodas:Object.freeze(["N","R","L","S","M"]),
+  codas:Object.freeze(["","","","N","R","L","S","M","X","K","NT","RK","ST","NE"]),
+  syllables:Object.freeze([1,2,2,2,2,3,3]),
+  minLength:3,maxLength:8
+});

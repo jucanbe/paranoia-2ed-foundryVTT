@@ -114,3 +114,13 @@ test("draft isolation, final identity, completion flag and unrelated data preser
   assert.equal(changes.secretSociety.rank.level,1);
   assert.equal(changes.secretSociety.membershipHistory[0].notes,"Preserve society notes");
 });
+import {serviceState,getApparentService} from "../module/actors/service.mjs";
+
+test("only SSI rolls a cover; real training affiliation remains SSI",async()=>{
+ for(const [roll,expected]of [[5,"SBD"],[16,"SEG"],[3,"STC"]]){const s=session([roll]);await s.rollTable("service");assert.equal(s.data.service,expected);assert.equal(s.data.coverService,null);s.validateStep("service");await assert.rejects(s.rollTable("coverService"));assert.equal(getApparentService(s.data),expected);}
+ for(const [roll,cover,expected]of [[1,10,"SDF"],[2,18,"SID"]]){const s=session([roll,cover]);await s.rollTable("service");assert.throws(()=>s.validateStep("service"));await s.rollTable("coverService");s.validateStep("service");assert.equal(s.data.service,"SSI");assert.equal(getApparentService(s.data),expected);}
+ const s=session([1,2,1,12]);await s.rollTable("service");await s.rollTable("coverService");assert.deepEqual(s.tableRolls.coverService.rolls,[2,1,12]);assert.equal(s.data.service,"SSI");assert.equal(getApparentService(s.data),"SPL");s.setService("service","SBD");assert.equal(s.data.coverService,null);assert.equal(s.tableRolls.coverService,undefined);s.setService("service","SSI");assert.throws(()=>s.validateStep("service"));
+});
+test("legacy cover inspection preserves data and flags GM review without inventing history",()=>{
+ const legacy={service:"SBD",coverService:"SPL"};assert.equal(serviceState(legacy).invalidCoverService,true);assert.equal(getApparentService(legacy),"SBD");assert.equal(legacy.coverService,"SPL");assert.equal(serviceState({service:"SSI"}).needsCoverService,true);assert.equal(getApparentService({service:"SSI"}),"—");assert.equal(serviceState({service:"SSI",coverService:"SSI"}).needsCoverService,true);assert.equal(serviceState({service:"SSI",coverService:"SDF"}).invalidCoverService,false);
+});

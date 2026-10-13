@@ -42,7 +42,7 @@ export async function runClearanceChecks(){
   await a.sheet.render(true);check(a.sheet.element.querySelector(".p2-clearance"),"Character panel missing");
   await npc.sheet.render(true);check(npc.sheet.element.querySelector(".p2-clearance"),"NPC panel missing");await npc.sheet.close();
   const dashboard=await openDashboard();check(dashboard.element.textContent.includes("ASCENSOS"),"Dashboard missing");await dashboard.close();
-  return {version:game.version,actorId:a.id,npcId:npc.id,ownerName:owner.name,observerName:observer.name,creation:true,report:true,promotion:true,demotion:true,clone:true,GM-onlyHistory:true,itemWarnings:true,npc:true};
+  return {version:game.version,actorId:a.id,npcId:npc.id,ownerName:owner.name,observerName:observer.name,creation:true,report:true,promotion:true,demotion:true,clone:true,"GM-onlyHistory":true,itemWarnings:true,npc:true};
 }
 export async function checkClearancePermissions(actorId,isOwner){
   const a=game.actors.get(actorId),s=game.paranoia.SecurityClearanceService;

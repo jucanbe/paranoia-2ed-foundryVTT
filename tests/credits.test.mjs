@@ -23,7 +23,7 @@ ItemCatalog.entries=async()=>[kit,rope,flashlight];
 test("creation budget and distinct consolidated ledger preserve the existing 100 credits",()=>{
   const a=actor(),purchases=purchaseSummary({Kit:1,Linterna:1},[kit,flashlight],"red");assert.equal(purchases.remaining,65);
   const history=creationLedger(a,purchases,{id:"create",userId:"gm"}).history;assert.deepEqual(history.map(h=>h.delta),[100,-25,-10]);assert.equal(history.at(-1).resultingBalance,65);
-  assert.equal(purchaseCost(rope,4),12);assert.throws(()=>purchaseCost(kit,1.5));assert.throws(()=>entry(0,10,{}));
+  assert.equal(purchaseCost(rope,4),12);assert.throws(()=>purchaseCost(kit,1.5));assert.equal(entry(0,10,{}).reason,"");
 });
 test("credit ledger, negative balances, purchases, privacy, corrections, reports and permissions",async t=>{
   const a=actor(200),b=actor(50),npc=actor(20,"npc");

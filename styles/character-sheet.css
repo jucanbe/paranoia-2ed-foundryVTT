@@ -12,6 +12,8 @@
   --color-text-primary: #171717;
   --color-text-secondary: #444;
   --color-text-emphatic: #171717;
+  --color-text-subtle: #555;
+  color-scheme: light;
   color: var(--p2-ink);
 }
 .paranoia-sheet .window-content {
@@ -42,7 +44,7 @@
 .paranoia-sheet select option { background: white; color: #111; }
 .paranoia-sheet input:not([type=checkbox]), .paranoia-sheet select { height: 30px; }
 .paranoia-sheet textarea { resize: vertical; min-height: 64px; }
-.paranoia-sheet input:disabled, .paranoia-sheet select:disabled, .paranoia-sheet textarea:disabled { opacity: 1; color: #444; background: #eee; }
+.paranoia-sheet input:disabled, .paranoia-sheet select:disabled, .paranoia-sheet textarea:disabled, .paranoia-sheet input[readonly] { opacity: 1; color: #444; background: #eee; }
 .paranoia-sheet button { background: #eeede8; color: var(--p2-ink); border: 1px solid #888; box-shadow: none; }
 .paranoia-sheet button:hover { background: #dddcd5; }
 .paranoia-sheet :is(button, input, select, textarea):focus-visible { outline: 2px solid #111; outline-offset: 2px; }

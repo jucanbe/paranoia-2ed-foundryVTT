@@ -16,7 +16,7 @@ export function readInbox(){
   requireGM();const inbox={};
   for(const message of game.messages){
     const value=message.getFlag?.(NS,"treasonReport");
-    if(!value||!["trust","accusation","proposal"].includes(value.kind)||!String(value.reason??"").trim())continue;
+    if(!value||!["trust","accusation","proposal"].includes(value.kind)||(value.kind==="proposal"&&!String(value.reason??"").trim()))continue;
     const actor=game.actors.find(a=>a.uuid===value.actorUuid)??globalThis.fromUuidSync?.(value.actorUuid);
     if(!actor||(!message.author?.isGM&&!actor.testUserPermission(message.author,"OWNER")))continue;
     const recipients=game.users.filter(u=>u.isGM||u.id===message.author.id).map(u=>u.id);

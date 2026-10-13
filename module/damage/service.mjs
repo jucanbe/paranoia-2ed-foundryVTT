@@ -36,7 +36,7 @@ export class DamageService {
     if(protectionVehicle){requireGM(protectionVehicle);if(protectionVehicle.type!=="vehicle")throw Error(tr("Protección externa: selecciona un vehículo."));}
     const hull=protectionVehicle??(target.type==="vehicle"?target:null),damageCategory=category||weapon?.system.weaponCategory;
     const armor=applyArmor?armorForAttack(hull?hull.items.filter(i=>i.type==="armor"&&i.system.integrated):target.items,damageCategory):{armorProtection:0,armorLabel:tr("Omitida por el DJ"),warnings:[]};
-    if(hull&&applyArmor){const smoke=smokeProtection(hull.system.vehicle,damageCategory);armor.armorProtection+=smoke;if(smoke)armor.armorLabel+=" · Humo antiláser +5";
+    if(hull&&applyArmor){const smoke=smokeProtection(hull.system.vehicle,damageCategory);armor.armorProtection+=smoke;if(smoke)armor.armorLabel+=" · "+tr("Humo antiláser +5");
       if(protectionVehicle)armor.armorLabel=trHTML`${hull.name}: ${armor.armorLabel} (sin acumular armadura personal)`;
       if(hull.system.vehicle.defense.smallArmsProtection)armor.warnings.push(tr("Protección frente a armas pequeñas: el DJ debe decidir si el arma puede afectar al vehículo/ocupantes. No hay inmunidad automática por categoría."));}
     if(!applyStamina)armor.warnings.push(tr("Aguante omitido por el DJ."));
@@ -74,7 +74,8 @@ export class DamageService {
       await applyHealthResult(result.target,selected,{announce:false,damageId:result.id});
       result.applied=true;
       if(post)await publish(result);
-      if(selected==="wounded")await woundDialog(result.target,result.id);
+      // The optional location prompt must not hold the GM request queue (player requests time out after 30 s).
+      if(selected==="wounded")woundDialog(result.target,result.id).catch(error=>ui.notifications.error(error.message));
       return result;
     })();
     applications.set(result.id,operation);

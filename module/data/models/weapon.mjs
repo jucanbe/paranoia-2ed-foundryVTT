@@ -1,3 +1,4 @@
+import {tr} from "../../i18n/index.mjs";
 import {LegacyDataModel,legacyField} from "./legacy.mjs";
 import { textField } from "./fields.mjs";
 import {sourceDetails} from "./source-details.mjs";
@@ -11,7 +12,7 @@ export class WeaponData extends LegacyDataModel {
     if(user.isGM)return;
     const incoming=foundry.utils.expandObject(changes).system;if(!incoming)return;
     for(const [key,rule] of [["ammoCurrent","ammunition"],["malfunctioned","malfunctions"]])if(enabled(rule)&&(Object.hasOwn(incoming,`-=${key}`)||(incoming[key]!==undefined&&incoming[key]!==this[key])||(options.recursive===false&&!Object.hasOwn(incoming,key)))){
-      ui.notifications.warn("Usa las acciones de combate; solo el DJ puede ajustar munición o averías directamente.");return false;
+      ui.notifications.warn(tr("Usa las acciones de combate; solo el DJ puede ajustar munición o averías directamente."));return false;
     }
   }
   static defineSchema() {

@@ -50,7 +50,6 @@ export async function applyMissionReport(rows,options={}){
     const key=actorKey(actor);if(seen.has(key))throw Error(tr("Ciudadano duplicado."));seen.add(key);
     if(options.missionId&&!record(body,actor).enabled){
       integer(delta);if(delta!==0)throw Error(tr("Activa el seguimiento de traición para modificar PT del PNJ."));
-      if(!String(reason??"").trim())throw Error(tr("Indica el motivo."));
       return structuredClone(record(body,actor));
     }
     return change(body,actor,delta,{reason,category:"missionReport"});
@@ -107,7 +106,8 @@ export async function submitReport(payload){
   const actor=await fromUuid(payload.actorUuid);owner(actor);
   if(!game.users.activeGM)throw Error(tr("Se necesita un DJ conectado."));
   if(!["trust","accusation","proposal"].includes(payload.kind))throw Error(tr("Solicitud desconocida."));
-  if(!String(payload.reason??"").trim())throw Error(tr("Indica el motivo o solicitud."));
+  // Accusations and trust reports may omit the reason; a request needs its text.
+  if(payload.kind==="proposal"&&!String(payload.reason??"").trim())throw Error(tr("Indica el motivo o solicitud."));
   // Public reports use ordinary Chat; private reports use native recipients.
   const publiclyVisible=["accusation","trust"].includes(payload.kind)&&payload.public===true;
   if(payload.kind==="accusation")actorKey(await fromUuid(payload.accusedUuid));

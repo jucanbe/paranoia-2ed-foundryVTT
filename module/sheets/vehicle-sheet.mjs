@@ -1,3 +1,4 @@
+import {portraitContext,editPortrait} from "./portrait.mjs";
 import {staticMarkup} from "../i18n/index.mjs";
 import {documentText,documentView,preserveTranslatedFields} from "../i18n/documents.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
@@ -34,12 +35,13 @@ async function vehicleAction(_event,button){
   }catch(e){ui.notifications.error(e.message);}finally{button.disabled=false;}
 }
 export class VehicleSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
-  static DEFAULT_OPTIONS={classes:["paranoia-sheet","paranoia-vehicle"],position:{width:900,height:850},window:{resizable:true},form:{submitOnChange:true,closeOnSubmit:false},actions:{proposeFine,vehicleAction,createItem,editItem,deleteItem,toggleArmor,rollCheck:sheetCheck}};
+  static DEFAULT_OPTIONS={classes:["paranoia-sheet","paranoia-vehicle"],position:{width:900,height:850},window:{resizable:true},form:{submitOnChange:true,closeOnSubmit:false},actions:{editPortrait,proposeFine,vehicleAction,createItem,editItem,deleteItem,toggleArmor,rollCheck:sheetCheck}};
   static PARTS={body:{template:"systems/paranoia-2-edition/templates/vehicles/sheet.hbs",scrollable:[".p2-scroll"]}};
   get isEditable(){return game.user.isGM&&super.isEditable;}
   _canDragStart(){return this.isEditable;}_canDragDrop(){return this.isEditable;}
   async _onDropActor(_event,actor){
     if(!this.isEditable)return;if(!actor||actor.uuid===this.actor.uuid)return;
+    if(this.actor.system.vehicle.crew.some(c=>c.actorUuid===actor.uuid))return ui.notifications.info(trHTML`${actor.name} ya forma parte de la tripulación.`);
     await this.actor.update({"system.vehicle.crew":[...this.actor.system.toObject().vehicle.crew,{actorUuid:actor.uuid,role:"passenger",notes:""}]});
   }
   async _onDropDocument(event,document){
@@ -50,7 +52,7 @@ export class VehicleSheet extends foundry.applications.api.HandlebarsApplication
   _processFormData(event,form,formData){return preserveTranslatedFields(this.actor,super._processFormData(event,form,formData));}
   async _prepareContext(options){
     await super._prepareContext(options);const a=this.actor,v=documentView(a,"system.vehicle"),gm=game.user.isGM,crew=await occupants(a);
-    return {expanded:this.element?.querySelector("details")?.open??false,name:documentText(a),model:documentText(a,"system.vehicle.model"),category:VEHICLE_CATEGORIES[v.category]??v.category,gm,state:VEHICLE_STATES[a.system.health.status],control:CONTROL_MODES[v.control.currentMode],movement:movementSummary(v),capacity:currentMovement(v)?.capacity??v.capacity??"—",clearance:ITEM_LABELS.clearances[v.requiredClearance]??tr("Sin especificar"),crewSummary:crew.filter(c=>c.actor&&c.role!=="passenger").map(c=>`${CREW_ROLES[c.role]}: ${c.actor.name}`).join(" · "),capacityWarning:capacityWarning(v),smoke:v.defense.smokeActive,notes:v.notes,
+    return {...portraitContext(this.actor),name:documentText(a),model:documentText(a,"system.vehicle.model"),category:VEHICLE_CATEGORIES[v.category]??v.category,gm,state:VEHICLE_STATES[a.system.health.status],control:CONTROL_MODES[v.control.currentMode],movement:movementSummary(v),capacity:currentMovement(v)?.capacity??v.capacity??"—",clearance:ITEM_LABELS.clearances[v.requiredClearance]??tr("Sin especificar"),crewSummary:crew.filter(c=>c.actor&&c.role!=="passenger").map(c=>`${CREW_ROLES[c.role]}: ${c.actor.name}`).join(" · "),capacityWarning:capacityWarning(v),smoke:v.defense.smokeActive,notes:v.notes,
       accidentPending:gm&&v.accidentPending,
       inventory:["weapon","armor","equipment"].map(type=>({type,label:{weapon:tr("Armamento"),armor:tr("Armadura integrada"),equipment:tr("Defensas / equipo")}[type],items:a.items.filter(i=>i.type===type).map(i=>({id:i.id,name:documentText(i),armor:type==="armor",equipped:i.system.equipped,integrated:i.system.integrated,summary:type==="armor"?armorCode(i.system.protectionType,i.system.protectionValue):type==="weapon"?trHTML`${skillLabel(i.system.skill)||tr("Habilidad sin configurar")} · ND ${i.system.damageNumber??"—"} · Cargas ${i.system.charges.value??"—"}/${i.system.charges.max??"—"}`:documentText(i,"system.description")}))})),
       rows:[{type:"crew",label:tr("Tripulación / pasajeros"),entries:crew.map(c=>({index:c.index,name:c.actor?.name??tr("Referencia no disponible"),summary:`${CREW_ROLES[c.role]} · ${c.notes}`}))},

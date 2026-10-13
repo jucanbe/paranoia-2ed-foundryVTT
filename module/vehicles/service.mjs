@@ -41,7 +41,7 @@ export async function recordAccident(actor,{type,notes=""}={}){
   vehicleGM(actor);const people=await occupants(actor),v=actor.system.vehicle;
   const record={id:foundry.utils.randomID(),vehicleUuid:actor.uuid,type,notes,movement:currentMovement(v),speed:v.movement.currentSpeed,
     occupants:people.map(p=>({uuid:p.actorUuid,name:p.actor?.name??tr("Referencia no disponible"),successfulEscape:false,resolved:false})),sourceColumn:actor.system.health.status==="vaporized"?19:null};
-  const message=await postRolls(actor,[],trHTML`<p><strong>Accidente: ${esc(actor.name)}</strong> · ${esc(type)}</p><p>${esc(notes)}</p><p>Anexo B no disponible: el DJ debe seleccionar el ND / columna y resultado de cada ocupante.${record.sourceColumn===19?" Vaporización: la fuente indica columna 19.":""}</p>`,"gm",{"paranoia-2-edition":{vehicleAccident:record}});
+  const message=await postRolls(actor,[],trHTML`<p><strong>Accidente: ${esc(actor.name)}</strong> · ${esc(type)}</p><p>${esc(notes)}</p><p>Anexo B no disponible: el DJ debe seleccionar el ND / columna y resultado de cada ocupante.${record.sourceColumn===19?" "+tr("Vaporización: la fuente indica columna 19."):""}</p>`,"gm",{"paranoia-2-edition":{vehicleAccident:record}});
   await actor.update({"system.vehicle.lastAccident":message.id,"system.vehicle.accidentPending":true});return message;
 }
 const accidentLocks=new Set();

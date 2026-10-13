@@ -1,6 +1,6 @@
 # Unavailable catalogue statistics
 
-Full manual audit: 2026-10-03. Unknown numbers are null; no invented values.
+Generated from the source JSON. Unset text is stored as an empty string to preserve the existing schema; unknown numeric values are null. Malfunction damage, web length and area radii are never used as normal damage or weapon range.
 
 ## Missing normal Damage Number (5)
 
@@ -74,6 +74,10 @@ Full manual audit: 2026-10-03. Unknown numbers are null; no invented values.
 - Emisor de interferencias Gauss (interference-emitter-gauss)
 - Emisor de interferencias T (interference-emitter-t)
 
-## Exceptions
+## Other unavailable values
 
-The starter uniform has no inferred protection. Printed ? values and gas Pt require the GM. Type O does not cause normal damage. Cg/RCg are literal table metadata, not guessed capacity or automated reload duration. Reflect colors, special effects and Gauss robot-only targeting remain manual.
+- Starter uniform: protection type and value; not assumed to equal the separate L4 example.
+- Clearance and prices are filled only where Annex B lists the specific model; starting purchase eligibility remains independently verified as Red.
+- Generic legacy axe and unknown mounted payload damage/type remain manual. Gas uses the printed Pt effect, and type O is non-damaging.
+- Exact model/program specifications for generic communicator and multirecorder entries are pending.
+- Detailed reflect-color interactions and special gas, stun, web and Gauss target restrictions remain descriptive/manual.

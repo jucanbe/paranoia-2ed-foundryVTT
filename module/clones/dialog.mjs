@@ -24,7 +24,7 @@ export async function activateClone(){
           appearanceNotes:f.appearanceNotes.value,livingOverride:f.livingOverride?.checked===true,silent:f.silent.checked};
         const result=await CloneService.activateNextClone(actor,options);
         ui.notifications.info(trHTML`${result.name} está preparado para entrar en servicio.`);
-      })},
+      }).catch(error=>{ui.notifications.error(error.message);return null;})},
       {action:"cancel",label:tr("Cancelar"),default:true}
     ]});
   }catch(error){ui.notifications.error(error.message);}finally{pending.delete(actor.uuid);}

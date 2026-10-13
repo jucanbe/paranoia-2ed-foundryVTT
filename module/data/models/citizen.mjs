@@ -1,3 +1,4 @@
+import {tr} from "../../i18n/index.mjs";
 import {LegacyDataModel,legacyField} from "./legacy.mjs";
 import { numberField, textField, valueField } from "./fields.mjs";
 import {healthFields} from "./health.mjs";
@@ -54,7 +55,7 @@ export class CitizenData extends LegacyDataModel {
         countedMissionIds:new foundry.data.fields.ArrayField(textField(),{required:true,initial:[]})
       }),
       clearanceProgressionEnabled:new foundry.data.fields.BooleanField({required:true,initial:false}),
-      coverService: textField(),
+      coverService: new StringField({required:true,nullable:true,initial:null}),
 
       cloneNumber: numberField({integer: true, min: 1, initial: 1}),
 
@@ -155,6 +156,7 @@ export class CitizenData extends LegacyDataModel {
   }
 
   static migrateData(source){
+    if(source.coverService === "")source.coverService=null;
     // Migrations also run on partial updates: a notes-only edit must not reset health.
     if(source.health&&Object.hasOwn(source.health,"status"))source.health=migrateHealth(source.health);
     if(source.secretSociety)source.secretSociety=migrateMembership(source.secretSociety);
@@ -165,13 +167,13 @@ export class CitizenData extends LegacyDataModel {
   async _preCreate(data, options, user) {
     if (await super._preCreate(data, options, user) === false) return false;
     if(!user.isGM&&(this.credits!==0||this.creditLedger.history.length||this.creditTrackingEnabled)){
-      ui.notifications.warn("Crea el personaje mediante el asistente; solo el DJ puede conceder créditos.");return false;
+      ui.notifications.warn(tr("Crea el personaje mediante el asistente; solo el DJ puede conceder créditos."));return false;
     }
     if(!user.isGM&&(this.development.available||this.development.lifetimeEarned||this.development.lifetimeSpent||this.development.lifetimeRefunded||this.development.history.length||this.development.restricted||this.development.eligibleSkills.length||this.development.usage.length||this.developmentEnabled)){
-      ui.notifications.warn("Solo el DJ puede conceder PD posteriores a aventuras.");return false;
+      ui.notifications.warn(tr("Solo el DJ puede conceder PD posteriores a aventuras."));return false;
     }
     if(!user.isGM&&(this.securityProgress.successfulMissions!==0||this.securityProgress.requirementSatisfied||this.securityProgress.countedMissionIds.length||this.clearanceProgressionEnabled)){
-      ui.notifications.warn("Solo el DJ puede conceder progreso de ascenso.");return false;
+      ui.notifications.warn(tr("Solo el DJ puede conceder progreso de ascenso."));return false;
     }
     const changes = {system: {identity: {
       name: normalizeIdentityText(this.identity.name || data.name),
@@ -184,11 +186,13 @@ export class CitizenData extends LegacyDataModel {
   async _preUpdate(changes, options, user) {
     if (await super._preUpdate(changes, options, user) === false) return false;
     const expanded=foundry.utils.expandObject(changes);
+    // Explicit GM edits follow canonical coverage; migrations retain non-empty legacy data.
+    if(user.isGM&&expanded.system?.service!==undefined&&expanded.system.service!==this.service&&expanded.system.service!=="SSI")changes["system.coverService"]=null;
     const pool=expanded.system?.mutantPower?.points;
     if(pool){
       const next={...this.mutantPower.points,...pool};
       if(next.value!=null&&next.max!=null&&next.value>next.max){
-        ui.notifications.warn("Los PM actuales no pueden superar el máximo. Reduce primero los PM actuales.");return false;
+        ui.notifications.warn(tr("Los PM actuales no pueden superar el máximo. Reduce primero los PM actuales."));return false;
       }
     }
     if(!user.isGM){
@@ -198,12 +202,12 @@ export class CitizenData extends LegacyDataModel {
         for(const [key,rule] of [["ammoCurrent","ammunition"],["malfunctioned","malfunctions"]])if(optionalCombatEnabled(rule)&&((source.system?.[key]!==undefined&&source.system[key]!==prior.system[key])||(options.recursive===false&&source.system?.[key]===undefined)))return false;
       }
       if(expanded.system&&options.recursive===false&&(!Object.hasOwn(incomingSystem,"credits")||!Object.hasOwn(incomingSystem,"creditLedger"))){
-        ui.notifications.warn("La sustitución de datos debe conservar el saldo y su historial económico.");return false;
+        ui.notifications.warn(tr("La sustitución de datos debe conservar el saldo y su historial económico."));return false;
       }
       const firstCreation=options.paranoiaCharacterCreation&&!this.creation?.complete&&this.credits===0&&this.creditLedger.history.length===0&&incomingSystem.creation?.complete===true;
       if(Object.hasOwn(incomingSystem,"-=credits")||Object.hasOwn(incomingSystem,"-=creditLedger")||Object.hasOwn(incomingSystem,"-=creditTrackingEnabled"))return false;
       if(incomingSystem.creditTrackingEnabled!==undefined&&incomingSystem.creditTrackingEnabled!==this.creditTrackingEnabled)return false;
-      if(incomingSystem.credits!==undefined&&incomingSystem.credits!==this.credits&&!firstCreation){ui.notifications.warn("Usa el servicio de créditos; el saldo no se edita directamente.");return false;}
+      if(incomingSystem.credits!==undefined&&incomingSystem.credits!==this.credits&&!firstCreation){ui.notifications.warn(tr("Usa el servicio de créditos; el saldo no se edita directamente."));return false;}
       if(firstCreation&&(typeof incomingSystem.credits!=="number"||incomingSystem.credits>100||!Number.isFinite(incomingSystem.credits)))return false;
       if(firstCreation){
         // Reconstruct the initial economy from trusted catalogue prices, never a player-supplied ledger.
@@ -224,14 +228,14 @@ export class CitizenData extends LegacyDataModel {
       }
       if(incomingSystem.creditLedger!==undefined&&!firstCreation){
         const prior=this.toObject().creditLedger,next=foundry.utils.mergeObject(prior,incomingSystem.creditLedger,{inplace:false});
-        if(JSON.stringify(prior)!==JSON.stringify(next)){ui.notifications.warn("Solo el DJ puede guardar transacciones de créditos.");return false;}
+        if(JSON.stringify(prior)!==JSON.stringify(next)){ui.notifications.warn(tr("Solo el DJ puede guardar transacciones de créditos."));return false;}
       }
       if(Object.hasOwn(incomingSystem,"-=development")||Object.hasOwn(incomingSystem,"-=developmentEnabled"))return false;
       if(incomingSystem.developmentEnabled!==undefined&&incomingSystem.developmentEnabled!==this.developmentEnabled)return false;
       if(incomingSystem.development!==undefined){
         const prior=this.toObject().development,next=foundry.utils.mergeObject(prior,incomingSystem.development,{inplace:false});
         const beforeUsage=prior.usage,afterUsage=next.usage;delete prior.usage;delete next.usage;
-        if(JSON.stringify(prior)!==JSON.stringify(next)){ui.notifications.warn("Solo el DJ coordinador puede guardar concesiones y gastos de PD.");return false;}
+        if(JSON.stringify(prior)!==JSON.stringify(next)){ui.notifications.warn(tr("Solo el DJ coordinador puede guardar concesiones y gastos de PD."));return false;}
         if(JSON.stringify(beforeUsage)!==JSON.stringify(afterUsage)){
           if(!Array.isArray(afterUsage)||new Set(afterUsage.map(r=>r.skillKey)).size!==afterUsage.length)return false;
           const keys=new Set([...beforeUsage,...afterUsage].map(r=>r.skillKey));let increments=0;
@@ -247,7 +251,7 @@ export class CitizenData extends LegacyDataModel {
       if((this.creation?.complete||this.development.history.length)&&(Object.hasOwn(incomingSystem,"-=skills")||incomingSystem.skills!==undefined)){
         const previous=this.toObject().skills,proposed=foundry.utils.mergeObject(previous,incomingSystem.skills??{},{inplace:false});
         if(Object.hasOwn(incomingSystem,"-=skills")||JSON.stringify(previous)!==JSON.stringify(proposed)){
-          ui.notifications.warn("Usa «Mejorar habilidades» para gastar PD. Las correcciones manuales corresponden al DJ.");return false;
+          ui.notifications.warn(tr("Usa «Mejorar habilidades» para gastar PD. Las correcciones manuales corresponden al DJ."));return false;
         }
       }
       const initialCreation=options.paranoiaCharacterCreation&&!this.creation?.complete;
@@ -256,17 +260,17 @@ export class CitizenData extends LegacyDataModel {
       if((incomingSystem.securityClearance!==undefined&&incomingSystem.securityClearance!==this.securityClearance&&!initialCreation)||
         (incomingSystem.clearanceProgressionEnabled!==undefined&&incomingSystem.clearanceProgressionEnabled!==this.clearanceProgressionEnabled)||
         ((incomingSystem.creation===null||incomingSystem.creation?.complete===false)&&this.creation?.complete)){
-        ui.notifications.warn("Solo el DJ puede modificar el Nivel de Seguridad y su seguimiento.");return false;
+        ui.notifications.warn(tr("Solo el DJ puede modificar el Nivel de Seguridad y su seguimiento."));return false;
       }
       if(incomingSystem.securityProgress!==undefined){
         const previous=this.toObject().securityProgress;
         const next=foundry.utils.mergeObject(previous,incomingSystem.securityProgress,{inplace:false});
-        if(JSON.stringify(previous)!==JSON.stringify(next)){ui.notifications.warn("Solo el DJ puede registrar progreso de ascenso.");return false;}
+        if(JSON.stringify(previous)!==JSON.stringify(next)){ui.notifications.warn(tr("Solo el DJ puede registrar progreso de ascenso."));return false;}
       }
       const proposedPowers=expanded.system?.mutantPower;
       if(proposedPowers&&(Object.hasOwn(proposedPowers,"learned")||Object.hasOwn(proposedPowers,"-=learned"))){
         if(Object.hasOwn(proposedPowers,"-=learned")||JSON.stringify(proposedPowers.learned)!==JSON.stringify(this.toObject().mutantPower.learned)){
-          ui.notifications.warn("Solo el DJ puede conceder poderes aprendidos.");return false;
+          ui.notifications.warn(tr("Solo el DJ puede conceder poderes aprendidos."));return false;
         }
       }
       if(expanded.system&&Object.hasOwn(expanded.system,"-=secretSociety"))return false;
@@ -275,7 +279,7 @@ export class CitizenData extends LegacyDataModel {
         const proposed=foundry.utils.mergeObject(previous,expanded.system.secretSociety,{inplace:false});
         delete previous.notes;delete proposed.notes;
         if(JSON.stringify(previous)!==JSON.stringify(proposed)){
-          ui.notifications.warn("Solo el DJ puede modificar afiliación, rango o misiones.");return false;
+          ui.notifications.warn(tr("Solo el DJ puede modificar afiliación, rango o misiones."));return false;
         }
       }
       if(expanded.system&&Object.hasOwn(expanded.system,"-=clones"))return false;
@@ -283,7 +287,7 @@ export class CitizenData extends LegacyDataModel {
         const prior=this.toObject().clones;
         const proposed=foundry.utils.mergeObject(prior,expanded.system.clones,{inplace:false});
         if(JSON.stringify(prior)!==JSON.stringify(proposed)){
-          ui.notifications.warn("Solo el DJ puede modificar el historial de clones.");return false;
+          ui.notifications.warn(tr("Solo el DJ puede modificar el historial de clones."));return false;
         }
       }
       const incoming=expanded.system?.health;
@@ -293,7 +297,7 @@ export class CitizenData extends LegacyDataModel {
         const proposed=foundry.utils.mergeObject(prior,incoming,{inplace:false});
         delete prior.notes;delete proposed.notes;
         if(JSON.stringify(prior)!==JSON.stringify(proposed)){
-          ui.notifications.warn("Solo el DJ puede modificar el estado de salud o aplicar tratamiento.");return false;
+          ui.notifications.warn(tr("Solo el DJ puede modificar el estado de salud o aplicar tratamiento."));return false;
         }
       }
     }

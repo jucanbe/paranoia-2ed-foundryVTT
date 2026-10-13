@@ -38,7 +38,7 @@ export async function applyHealthResult(actor,result,{announce=true,damageId="",
       const warning=next.status==="vaporized"?tr("Vehículo vaporizado: ocupantes según columna 19; adjudicación manual, sin muerte automática."):next.status==="destroyed"?tr("Vehículo destruido: resuelve el accidente de sus ocupantes."):actor.system.vehicle.airDamageWarning&&actor.system.vehicle.movement.currentMode==="air"?tr("Daño en vuelo: posible rotura de hélice. El DJ decide si provoca accidente."):"";
       if(warning){await actor.update({"system.vehicle.accidentPending":true,...(!actor.system.vehicle.accidentPending?{"system.vehicle.lastAccident":""}:{})});ui.notifications.warn(warning,{permanent:true});}
       if(announce)await healthChat(actor,`${VEHICLE_RESULTS[result]} → ${VEHICLE_STATES[next.status]}`);
-    }else if(announce)await healthChat(actor,actor.type==="robot"?`${ROBOT_RESULTS[result]} → ${ROBOT_STATES[next.status]}`:`${manual?"Resultado determinado por el GM. ":""}${DAMAGE_RESULTS[result]} → ${HEALTH_STATES[next.status]}${next.stunned?" · Aturdimiento temporal":""}${next.status==="wounded"?" · −4 a Atributos y Habilidades":""}`);
+    }else if(announce)await healthChat(actor,actor.type==="robot"?`${ROBOT_RESULTS[result]} → ${ROBOT_STATES[next.status]}`:`${manual?tr("Resultado determinado por el GM.")+" ":""}${DAMAGE_RESULTS[result]} → ${HEALTH_STATES[next.status]}${next.stunned?" · "+tr("Aturdimiento temporal"):""}${next.status==="wounded"?" · "+tr("−4 a Atributos y Habilidades"):""}`);
     return next;
   });
 }

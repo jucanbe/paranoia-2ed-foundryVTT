@@ -21,7 +21,6 @@ export function missionProgress(value,{missionId,result,validSurvivor,countForPr
   const p=progress(value);
   missionId=typeof missionId==="string"?missionId.trim():"";
   if(!missionId)throw Error(tr("Indica una referencia de misión única."));
-  if(override&&!String(reason).trim())throw Error(tr("La excepción requiere un motivo del DJ."));
   if(result!=="success"||!countForPromotion||(!override&&(!validSurvivor||declaredTraitor)))return {progress:p,counted:false};
   if(p.countedMissionIds.includes(missionId)&&!override)return {progress:p,counted:false};
   if(!Number.isSafeInteger(p.successfulMissions+1))throw Error(tr("El contador de misiones supera el máximo seguro."));

@@ -1,3 +1,4 @@
+import {rollCoverService} from "../actors/service.mjs";
 import {tr} from "../i18n/index.mjs";
 import { basicSkillForAttribute, isGeneratedAttribute } from "../data/derived-capabilities.mjs";
 import {initialPoints} from "../powers/rules.mjs";
@@ -14,7 +15,7 @@ export class CreationSession {
     this.rollD20 = rollD20;
     this.data.cloneNumber ||= 1;
     this.data.service = "";
-    this.data.coverService = "";
+    this.data.coverService = null;
     this.data.mutantPower.name = "";
     this.data.mutantPower.registered = false;
     this.data.secretSociety.name = "";
@@ -84,9 +85,10 @@ export class CreationSession {
 
   setService(key, value) {
     if (!["service", "coverService"].includes(key) || !Object.hasOwn(SERVICES, value)) throw new Error(tr("Servicio no válido."));
+    if(key === "coverService" && (this.data.service !== "SSI" || value === "SSI")) throw new Error(tr("La cobertura requiere SSI y otro Servicio."));
     if (this.data[key] !== value) {
       this.data[key] = value;
-      if (key === "service") this.resetSkills();
+      if (key === "service") { this.resetSkills(); this.data.coverService=null; delete this.tableRolls.coverService; }
     }
   }
 
@@ -105,8 +107,10 @@ export class CreationSession {
   async rollTable(key) {
     const tables = {service: serviceForRoll, coverService: serviceForRoll, mutation: powerForRoll, society: societyForRoll};
     if (!Object.hasOwn(tables, key) || this.busy || Object.hasOwn(this.tableRolls, key)) throw new Error(tr("Esta tirada ya se ha realizado."));
+    if(key === "coverService" && this.data.service !== "SSI") throw new Error(tr("La cobertura requiere SSI y otro Servicio."));
     this.busy = true;
     try {
+      if(key === "coverService") { const result=await rollCoverService(this.rollD20); this.setService(key,result.result); this.tableRolls[key]=result; return; }
       const rolled = validateD20(await this.rollD20());
       const result = tables[key](rolled);
       this.tableRolls[key] = {rolled, result};
@@ -134,7 +138,7 @@ export class CreationSession {
       if (!Object.hasOwn(CLEARANCE_CODES, d.securityClearance) || !Number.isInteger(d.cloneNumber) || d.cloneNumber < 1) throw new Error(tr("Revisa nivel y número de clon."));
     }
     if (["attributes", "derived", "skills"].includes(step) && !this.attributesReady) throw new Error(tr("Establece los ocho atributos (1–20)."));
-    if (step === "service" && (!Object.hasOwn(SERVICES, d.service) || !Object.hasOwn(SERVICES, d.coverService))) throw new Error(tr("Determina el Servicio real y el de cobertura."));
+    if (step === "service" && (!Object.hasOwn(SERVICES, d.service) || (d.service === "SSI" ? !Object.hasOwn(SERVICES,d.coverService) || d.coverService === "SSI" : d.coverService !== null))) throw new Error(tr("Determina el Servicio real y el de cobertura."));
     if (step === "mutation" && !d.mutantPower.name.trim()) throw new Error(tr("Determina el Poder Mutante."));
     if (step === "society") {
       if (!d.secretSociety.name.trim()) throw new Error(tr("Determina la Sociedad Secreta o introduce Otra."));

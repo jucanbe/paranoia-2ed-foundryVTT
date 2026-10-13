@@ -20,6 +20,11 @@
 .paranoia-creation .p2-secret-creation { border: 3px double #111; }
 .paranoia-creation .p2-secret-creation > label { margin: 12px 0; }
 .paranoia-creation .p2-pd { display: flex; justify-content: space-between; gap: 10px; background: #171717; color: white; padding: 10px; position: sticky; top: 0; z-index: 1; }
+.paranoia-creation .p2-credit-budget { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; margin: 8px 0; padding: 8px 12px; border: 2px solid #111; background: #e8e5db; color: #111; font-family: "Courier New", monospace; font-size: 14px; position: sticky; top: 0; z-index: 1; }
+.paranoia-creation .p2-credit-budget :is(span, strong) { color: #111; }
+.paranoia-creation .p2-credit-budget strong { font-size: 16px; }
+.paranoia-creation .p2-credit-budget .p2-credit-remaining strong { color: #0a6b1f; }
+.paranoia-creation .p2-credit-budget.over-budget .p2-credit-remaining strong { color: #b00000; }
 .paranoia-creation .p2-allocation-grid { columns: 2; column-gap: 20px; }
 .paranoia-creation .p2-allocation-grid > section { break-inside: avoid; padding-bottom: 16px; }
 .paranoia-creation .p2-allocation-row { display: grid; grid-template-columns: minmax(0, 1fr) 28px 30px 28px; gap: 6px; align-items: center; border-bottom: 1px dotted #aaa; padding: 5px 0; }

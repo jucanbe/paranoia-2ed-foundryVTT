@@ -9,7 +9,7 @@ async function selectValue(title,values,callback){
   const content=await foundry.applications.handlebars.renderTemplate("systems/paranoia-2-edition/templates/health/select.hbs",{options:Object.entries(values).map(([value,label])=>({value,label}))});
   let submitted;
   return foundry.applications.api.DialogV2.wait({window:{title},content,buttons:[
-    {action:"apply",label:tr("Aplicar (DJ)"),default:true,callback:(_e,b)=>submitted??=Promise.resolve().then(()=>callback(b.form.elements.value.value,b.form.elements.notes.value))},
+    {action:"apply",label:tr("Aplicar (DJ)"),default:true,callback:(_e,b)=>submitted??=Promise.resolve().then(()=>callback(b.form.elements.value.value,b.form.elements.notes.value)).catch(error=>{ui.notifications.error(error.message);return null;})},
     {action:"cancel",label:tr("Cancelar")}
   ]});
 }

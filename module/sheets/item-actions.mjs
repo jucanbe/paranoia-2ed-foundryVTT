@@ -1,4 +1,5 @@
 import {tr} from "../i18n/index.mjs";
+import {documentText} from "../i18n/documents.mjs";
 import { LABELS } from "./labels.mjs";
 
 function ownedItem(sheet, target) {
@@ -22,7 +23,7 @@ export async function deleteItem(event, target) {
   const item = ownedItem(this, target);
   if (!item || !this.isEditable) return;
   const confirmed = await foundry.applications.api.DialogV2.confirm({
-    window: {title: LABELS.deleteTitle}, content: `<p>${LABELS.deletePrompt}</p>`,
+    window: {title: LABELS.deleteTitle}, content: `<p>${LABELS.deletePrompt}</p><p><strong>${foundry.utils.escapeHTML(documentText(item))}</strong></p>`,
     yes: {label: LABELS.yes}, no: {label: LABELS.no}
   });
   if (confirmed && this.isEditable) await this.actor.deleteEmbeddedDocuments("Item", [item.id]);

@@ -1,3 +1,4 @@
+import {portraitContext,editPortrait} from "./portrait.mjs";
 import {documentText,documentView,preserveTranslatedFields} from "../i18n/documents.mjs";
 import {tr,trHTML} from "../i18n/index.mjs";
 import {ROBOT_STATES,ROBOT_TYPES,ASIMOV,FIVE_LAWS,peripheralWarnings} from "../robots/rules.mjs";
@@ -29,7 +30,7 @@ async function robotAction(_event,button){
   }catch(e){ui.notifications.error(e.message);}finally{button.disabled=false;}
 }
 export class RobotSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2){
-  static DEFAULT_OPTIONS={classes:["paranoia-sheet","paranoia-robot"],position:{width:860,height:820},window:{resizable:true},form:{submitOnChange:true,closeOnSubmit:false},actions:{proposeFine,robotAction,rollCheck:sheetCheck,createItem,editItem,deleteItem,toggleArmor}};
+  static DEFAULT_OPTIONS={classes:["paranoia-sheet","paranoia-robot"],position:{width:860,height:820},window:{resizable:true},form:{submitOnChange:true,closeOnSubmit:false},actions:{editPortrait,proposeFine,robotAction,rollCheck:sheetCheck,createItem,editItem,deleteItem,toggleArmor}};
   static PARTS={body:{template:"systems/paranoia-2-edition/templates/robots/sheet.hbs",scrollable:[".p2-scroll"]}};
   get isEditable(){return game.user.isGM&&super.isEditable;}
   _canDragStart(){return this.isEditable;}_canDragDrop(){return this.isEditable;}
@@ -38,7 +39,7 @@ export class RobotSheet extends foundry.applications.api.HandlebarsApplicationMi
   async _prepareContext(options){
     await super._prepareContext(options);const s=this.actor.system,r=documentView(this.actor,"system.robot"),gm=game.user.isGM;
     const fields=(list)=>list.map(([path,label,kind="text",choices])=>{const value=documentText(this.actor,`system.${path}`,foundry.utils.getProperty(s,path));return {path:`system.${path}`,label,value,number:kind==="number",check:kind==="check",area:kind==="area",choices:choices?Object.entries(choices).map(([key,label])=>({key,label,selected:key===value})):null};});
-    return {name:documentText(this.actor),model:documentText(this.actor,"system.robot.model"),typeLabel:ROBOT_TYPES[r.type]??r.type,state:ROBOT_STATES[s.health.status],gm,editable:this.isEditable,
+    return {...portraitContext(this.actor),name:documentText(this.actor),model:documentText(this.actor,"system.robot.model"),typeLabel:ROBOT_TYPES[r.type]??r.type,state:ROBOT_STATES[s.health.status],gm,editable:this.isEditable,
       inventory:["weapon","armor","equipment"].map(type=>({type,label:{weapon:tr("Armas"),armor:tr("Chasis / armadura"),equipment:tr("Equipo")}[type],items:this.actor.items.filter(i=>i.type===type).map(i=>({id:i.id,name:documentText(i),armor:type==="armor",integrated:i.system.integrated,equipped:i.system.equipped,summary:type==="armor"?armorCode(i.system.protectionType,i.system.protectionValue):type==="weapon"?trHTML`${skillLabel(i.system.skill)} · ND ${i.system.damageNumber??"—"}`:""}))})),
       internal:gm?{memory:r.memory,warnings:peripheralWarnings(this.actor),laws:FIVE_LAWS,swap:r.cardSwap,asimov:ASIMOV[r.asimovStatus],erratic:r.erratic,
         damaged:s.health.status==="lightDamage",salvage:s.health.status==="destroyed",vaporized:s.health.status==="vaporized",repairable:["lightDamage","seriousDamage"].includes(s.health.status),shortCircuit:s.health.stunned||s.health.status==="shortCircuit",
